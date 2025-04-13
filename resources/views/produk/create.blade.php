@@ -125,28 +125,64 @@
         .user-info span { font-weight: bold; }
         .user-info small { font-size: 12px; color: gray; }
 
-        .dropdown-user {
-            position: absolute;
-            right: 0;
-            top: 100%;
-            display: none;
-            background: white;
-            border-radius: 0.375rem;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            width: 200px;
-            z-index: 20;
+        @keyframes dropdownFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .dropdown-user a, .dropdown-user button {
-            width: 100%;
-            padding: 10px 16px;
-            text-align: left;
-            font-size: 14px;
-            color: #333;
-            text-decoration: none;
-            background: none;
-            border: none;
-            cursor: pointer;
+/* Animasi fade-out */
+        @keyframes dropdownFadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+        .dropdown-user {
+        position: absolute;
+        top: 100%;
+        display: none;
+        flex-direction: column;
+        background: white;
+        border-radius: 0.375rem;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.8);
+        width: 200px;
+        z-index: 20;
+        margin-top: 0.5rem;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .dropdown-user.show {
+            display: flex;
+            animation: dropdownFadeIn 0.8s forwards; /* Animasi fade-in */
+        }
+
+        .dropdown-user.hide {
+            animation: dropdownFadeOut 0.8s forwards; /* Animasi fade-out */
+        }
+        .dropdown-user a,
+        .dropdown-user button {
+        display: block;
+        width: 100%;
+        padding: 10px 16px;
+        text-align: left;
+        font-size: 14px;
+        color: #333;
+        text-decoration: none;
+        background: none;
+        border: none;
+        cursor: pointer;
         }
 
         .dropdown-user a:hover, .dropdown-user button:hover {
@@ -333,6 +369,7 @@
                 </div>
                 <div class="dropdown-user" id="dropdownUser">
                     <a href="{{ route('profile.edit') }}">Profile</a>
+                    <a href="{{ route('pesananku') }}">Pesananku</a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit">Logout</button>
@@ -372,7 +409,7 @@
 
                     <div class="form-group">
                         <label for="harga_produk">Harga Produk</label>
-                        <input type="text" id="harga_produk" name="harga_produk" placeholder="Rp. 10.000" required>
+                        <input type="text" id="harga_produk" name="harga_produk" placeholder="10000" required>
                     </div>
 
                     <div class="form-group">
@@ -387,8 +424,8 @@
 
                     <div class="form-group">
                         <label for="deskripsi_produk">Deskripsi Produk</label>
-                        <textarea id="deskripsi_produk" name="deskripsi_produk" maxlength="800" placeholder="A detailed description of the product helps customers to learn more about the product."></textarea>
-                        <div class="char-limit">0/800</div>
+                        <textarea id="deskripsi_produk" name="deskripsi_produk" maxlength="305" placeholder="A detailed description of the product helps customers to learn more about the product."></textarea>
+                        <div class="char-limit">0/305</div>
                     </div>
 
                     <button type="submit" class="btn-submit">Tambahkan Produk</button>
@@ -416,16 +453,28 @@
         const dropdownUser = document.getElementById('dropdownUser');
         const productGrid = document.getElementById('product-grid');
 
-        menuButton.addEventListener('click', function(e) {
+            menuButton.addEventListener('click', function (e) {
             e.stopPropagation();
-            dropdownUser.style.display = dropdownUser.style.display === 'block' ? 'none' : 'block';
+
+            if (dropdownUser.classList.contains('show')) {
+                dropdownUser.classList.remove('show');
+                dropdownUser.classList.add('hide');
+            } else {
+                dropdownUser.classList.remove('hide');
+                dropdownUser.classList.add('show');
+            }
         });
 
-        document.addEventListener('click', function() {
-            dropdownUser.style.display = 'none';
+        // Fungsi untuk menyembunyikan dropdown saat klik di luar
+        document.addEventListener('click', function () {
+            if (dropdownUser.classList.contains('show')) {
+                dropdownUser.classList.remove('show');
+                dropdownUser.classList.add('hide');
+            }
         });
 
-        dropdownUser.addEventListener('click', function(e) {
+        // Mencegah dropdown menutup saat diklik
+        dropdownUser.addEventListener('click', function (e) {
             e.stopPropagation();
         });
         const textarea = document.getElementById("deskripsi_produk");
@@ -433,7 +482,7 @@
 
         textarea.addEventListener("input", function () {
             const count = textarea.value.length;
-            counter.textContent = `${count}/800`;
+            counter.textContent = `${count}/305`;
         });
     </script>
 
