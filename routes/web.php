@@ -51,7 +51,7 @@ Route::get('/invoice/{id}', [CheckoutController::class, 'invoice'])->name('check
 Route::get('/pesananku', [App\Http\Controllers\PesananController::class, 'pesananku'])->name('pesananku');
 Route::post('/pesananku/konfirmasi/{id}', [App\Http\Controllers\PesananController::class, 'konfirmasi'])->name('pesananku.konfirmasi');
 
-Route::post('/register', [RegisteredUserController::class, 'store'])
-    ->middleware('guest')
-    ->name('register');
+Route::get('/register', [RegisteredUserController::class, 'create'])->middleware('guest')->name('register');
+Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('guest');
+
 require __DIR__.'/auth.php';
