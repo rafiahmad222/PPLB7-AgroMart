@@ -65,7 +65,7 @@
             <div class="pt-4 mt-6 border-t">
                 <p>Harga {{ $jumlah }} Produk: <strong>Rp {{ number_format($totalHarga, 0, ',', '.') }}</strong></p>
                 <p>Ongkir: <strong id="ongkirDisplay">Rp 0</strong></p>
-                <p>Total Pembayaran: <strong id="totalDisplay">Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</strong></p>
+                <p>Total Pembayaran: <strong id="totalDisplay">Rp {{ number_format($totalHarga), 0, ',', '.' }}</strong></p>
             </div>
 
             <!-- Hidden -->
@@ -111,12 +111,16 @@
 
         function hitungTotal() {
             const jarak = document.querySelector('input[name="jarak"]')?.value || 0;
-            const harga = parseInt(document.getElementById('harga_produk').value);
-            const ongkir = jarak * 5000;
+            const hargaProduk = parseInt(document.getElementById('harga_produk').value);
+            const jumlah = parseInt(document.getElementById('jumlahInput').value);
+            const ongkir = jarak * 5000; // Contoh perhitungan ongkir (5000 per km)
+
+            const totalHarga = hargaProduk * jumlah;
+            const totalPembayaran = totalHarga + ongkir;
 
             document.getElementById('ongkirInput').value = ongkir;
             document.getElementById('ongkirDisplay').innerText = 'Rp ' + ongkir.toLocaleString();
-            document.getElementById('totalDisplay').innerText = 'Rp ' + (harga + ongkir).toLocaleString();
+            document.getElementById('totalDisplay').innerText = 'Rp ' + totalPembayaran.toLocaleString();
         }
     </script>
 </body>

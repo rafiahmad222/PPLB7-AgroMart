@@ -30,13 +30,16 @@ public function index(Request $request)
             'no_hp' => 'required',
             'pengiriman' => 'required',
             'pembayaran' => 'required',
+            'jumlah' => 'required|integer|min:1',
         ]);
 
         $produk = Produk::findOrFail($request->produk_id);
-        $total = $produk->harga_produk + $request->ongkir;
+        $totalHarga = $produk->harga_produk * $request->jumlah;
+        $totalPembayaran = $totalHarga + $request->ongkir;
 
         $pesanan = Pesanan::create([
             'produk_id'   => $produk->id_produk,
+            'jumlah'      => $request->jumlah,
             'nama'        => Auth::user()->name,
             'alamat'      => $request->alamat,
             'no_hp'       => $request->no_hp,
@@ -44,7 +47,7 @@ public function index(Request $request)
             'jarak'       => $request->pengiriman == 'wa_jek' ? $request->jarak : null,
             'ongkir'      => $request->ongkir,
             'pembayaran'  => $request->pembayaran,
-            'total'       => $total,
+            'total'       => $totalPembayaran,
             'status'      => 'Diproses', // default status awal
         ]);
 
