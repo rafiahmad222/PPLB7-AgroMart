@@ -448,9 +448,14 @@
                         <button
                             style="width: 100%; padding: 0.75rem; background-color: #10b981; color: white; border: none; border-radius: 8px; font-weight: 600; margin-bottom: 0.5rem; box-sizing: border-box;">+
                             Keranjang</button>
-                        <a href="{{ route('checkout.index', ['produk' => $produk->id_produk]) }}"
-                            style="width: 100%; padding: 0.75rem; background-color: white; color: #10b981; border: 2px solid #10b981; border-radius: 8px; font-weight: 600; text-align: center; display: block; text-decoration: none; box-sizing: border-box;">Beli
-                            Langsung</a>
+                        <form action="{{ route('checkout.index') }}" method="GET">
+                            <input type="hidden" id="jumlahCheckout" name="jumlah" value="1">
+                            <input type="hidden" name="produk_id" value="{{ $produk->id_produk }}">
+                            <button type="submit"
+                                style="width: 100%; padding: 0.75rem; background-color: white; color: #10b981; border: 2px solid #10b981; border-radius: 8px; font-weight: 600; text-align: center; display: block; text-decoration: none; box-sizing: border-box;">
+                                Beli Langsung
+                            </button>
+                        </form>
                     </div>
             </div>
         </div>
@@ -462,11 +467,13 @@
             const maxPembelian = {{ $produk->jumlah_stok - 2 }};
             const hargaProduk = {{ $produk->harga_produk }};
             const totalHargaElement = document.getElementById('totalHarga');
-
+            const jumlahCheckoutInput = document.getElementById('jumlahCheckout');
             function updateTotalHarga() {
                 const jumlah = parseInt(jumlahInput.value);
                 const totalHarga = hargaProduk * jumlah;
                 totalHargaElement.textContent = totalHarga.toLocaleString('id-ID');
+
+                jumlahCheckoutInput.value = jumlah; // Update hidden input for checkout
             }
 
             decrementButton.addEventListener('click', () => {

@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
 });
 Route::middleware('auth')->group(function () {
-    Route::get('/checkout/{produk}', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::get('/invoice/{id}', [CheckoutController::class, 'invoice'])->name('checkout.invoice');
     Route::get('/pesananku', [App\Http\Controllers\PesananController::class, 'pesananku'])->name('pesananku');

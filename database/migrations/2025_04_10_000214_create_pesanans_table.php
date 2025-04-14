@@ -17,9 +17,10 @@ return new class extends Migration
             $table->string('nama');
             $table->string('alamat');
             $table->string('no_hp');
-            $table->enum('pengiriman', ['wa_jek', 'kurir']);
+            $table->enum('pengiriman', ['wa_jek', 'ambil_ditempat']);
             $table->integer('jarak')->nullable();
             $table->integer('ongkir');
+            $table->integer('jumlah')->default(1);
             $table->enum('pembayaran', ['transfer', 'cod']);
             $table->integer('total');
             $table->enum('status', ['Diproses', 'Dikirim', 'Diterima','Selesai'])->default('Diproses');

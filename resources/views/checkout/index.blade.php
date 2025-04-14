@@ -63,13 +63,16 @@
 
             <!-- Ringkasan -->
             <div class="pt-4 mt-6 border-t">
-                <p>Harga Produk: <strong>Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</strong></p>
+                <p>Harga {{ $jumlah }} Produk: <strong>Rp {{ number_format($totalHarga, 0, ',', '.') }}</strong></p>
                 <p>Ongkir: <strong id="ongkirDisplay">Rp 0</strong></p>
-                <p>Total: <strong id="totalDisplay">Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</strong></p>
+                <p>Total Pembayaran: <strong id="totalDisplay">Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</strong></p>
             </div>
 
             <!-- Hidden -->
+
+            <input type="hidden" name="jumlah" value="{{ $jumlah }}">
             <input type="hidden" name="produk_id" value="{{ $produk->id_produk }}">
+            <input type="hidden" name="total" value="{{ $totalHarga }}">
             <input type="hidden" id="harga_produk" value="{{ $produk->harga_produk }}">
             <input type="hidden" name="ongkir" id="ongkirInput" value="0">
 

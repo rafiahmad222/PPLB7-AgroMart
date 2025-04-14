@@ -9,10 +9,18 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 class CheckoutController extends Controller
 {
-    public function index(Produk $produk)
-    {
-        return view('checkout.index', compact('produk'));
-    }
+public function index(Request $request)
+{
+    $produk = Produk::findOrFail($request->input('produk_id'));
+    $jumlah = $request->input('jumlah', 1); // Default ke 1 jika tidak ada input
+    $totalHarga = $produk->harga_produk * $jumlah;
+
+    return view('checkout.index', [
+        'produk' => $produk,
+        'jumlah' => $jumlah,
+        'totalHarga' => $totalHarga,
+    ]);
+}
 
     public function store(Request $request)
     {
