@@ -44,13 +44,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/produk/{id}', [ProdukController::class, 'show'])->name('produk.show');
     Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
 });
-
-Route::get('/checkout/{produk}', [CheckoutController::class, 'index'])->name('checkout.index');
-Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-Route::get('/invoice/{id}', [CheckoutController::class, 'invoice'])->name('checkout.invoice');
-Route::get('/pesananku', [App\Http\Controllers\PesananController::class, 'pesananku'])->name('pesananku');
-Route::post('/pesananku/konfirmasi/{id}', [App\Http\Controllers\PesananController::class, 'konfirmasi'])->name('pesananku.konfirmasi');
-
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout/{produk}', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/invoice/{id}', [CheckoutController::class, 'invoice'])->name('checkout.invoice');
+    Route::get('/pesananku', [App\Http\Controllers\PesananController::class, 'pesananku'])->name('pesananku');
+    Route::post('/pesananku/konfirmasi/{id}', [App\Http\Controllers\PesananController::class, 'konfirmasi'])->name('pesananku.konfirmasi');
+});
 Route::get('/register', [RegisteredUserController::class, 'create'])->middleware('guest')->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('guest');
 
