@@ -65,7 +65,7 @@
             <div class="pt-4 mt-6 border-t">
                 <p>Harga {{ $jumlah }} Produk: <strong>Rp {{ number_format($totalHarga, 0, ',', '.') }}</strong></p>
                 <p>Ongkir: <strong id="ongkirDisplay">Rp 0</strong></p>
-                <p>Total Pembayaran: <strong id="totalDisplay">Rp {{ number_format($totalHarga), 0, ',', '.' }}</strong></p>
+                <p>Total Pembayaran: <strong id="totalDisplay">Rp {{ number_format($totalPembayaran, 0, ',', '.') }}</strong></p>
             </div>
 
             <!-- Hidden -->
@@ -110,18 +110,26 @@
         }
 
         function hitungTotal() {
-            const jarak = document.querySelector('input[name="jarak"]')?.value || 0;
-            const hargaProduk = parseInt(document.getElementById('harga_produk').value);
-            const jumlah = parseInt(document.getElementById('jumlahInput').value);
+            const jarak = document.querySelector('input[name="jarak"]')?.value || 0; // Ambil jarak dari input
+            const hargaProduk = parseInt(document.getElementById('harga_produk').value); // Harga produk
+            const jumlah = parseInt(document.querySelector('input[name="jumlah"]').value); // Jumlah produk
             const ongkir = jarak * 5000; // Contoh perhitungan ongkir (5000 per km)
 
-            const totalHarga = hargaProduk * jumlah;
-            const totalPembayaran = totalHarga + ongkir;
+            const totalHarga = hargaProduk * jumlah; // Total harga produk
+            const totalPembayaran = totalHarga + ongkir; // Total pembayaran (harga + ongkir)
 
+            // Perbarui input tersembunyi untuk ongkir
             document.getElementById('ongkirInput').value = ongkir;
+
+            // Perbarui tampilan ongkir dan total pembayaran
             document.getElementById('ongkirDisplay').innerText = 'Rp ' + ongkir.toLocaleString();
             document.getElementById('totalDisplay').innerText = 'Rp ' + totalPembayaran.toLocaleString();
         }
+
+            // Inisialisasi total saat halaman dimuat
+            document.addEventListener('DOMContentLoaded', function() {
+                hitungTotal();
+        });
     </script>
 </body>
 </html>

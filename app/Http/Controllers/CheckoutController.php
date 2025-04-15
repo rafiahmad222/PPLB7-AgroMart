@@ -14,11 +14,14 @@ public function index(Request $request)
     $produk = Produk::findOrFail($request->input('produk_id'));
     $jumlah = $request->input('jumlah', 1); // Default ke 1 jika tidak ada input
     $totalHarga = $produk->harga_produk * $jumlah;
+    $ongkir = 0;
+    $totalPembayaran = $totalHarga + $ongkir; // Default ongkir ke 0 jika tidak ada input
 
     return view('checkout.index', [
         'produk' => $produk,
         'jumlah' => $jumlah,
         'totalHarga' => $totalHarga,
+        'totalPembayaran' => $totalPembayaran,
     ]);
 }
 
