@@ -182,7 +182,7 @@
         text-decoration: none;
         background: none;
         border: none;
-        cursor: pointer;
+        cursor: pointer;    
         }
 
         .dropdown-user a:hover, .dropdown-user button:hover {

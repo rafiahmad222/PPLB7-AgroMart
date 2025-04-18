@@ -1,352 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home - AgroMart</title>
     <link rel="icon" type="image/png" sizes="45x45" href="images/icon-40x40.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Signika:wght@300..700&family=Volkhov:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Poppins:wght@100..900&family=Signika:wght@300..700&family=Volkhov:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-        box-sizing: border-box;
-        }
-
-        body {
-        font-family: 'Poppins', sans-serif;
-        }
-
-        header {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        background-color: white;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        nav {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0.75rem 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: start;
-        }
-
-        .logo img {
-        height: 48px;
-        margin-right: 1.5rem;
-        }
-
-        .keranjang img,
-        .notifikasi img {
-        width: 40px;
-        height: 40px;
-        margin-left: 0.75rem;
-        cursor: pointer;
-        }
-
-        .notifikasi img {
-        margin-right: auto;
-        }
-        .keranjang img:hover,
-        .notifikasi img:hover {
-        transform: scale(1.1);
-        transition: transform 0.3s;
-        }
-        .keranjang img:active,
-        .notifikasi img:active {
-        transform: scale(0.9);
-        transition: transform 0.1s;
-        }
-
-        .nav-menu {
-        display: flex;
-        align-items: center;
-        gap: 21px;
-        font-weight: 600;
-        font-family: 'Signika', sans-serif;
-        margin-right: auto;
-        }
-
-        .nav-menu a {
-        color: #047857;
-        text-decoration: none;
-        position: relative;
-        transition: color 0.3s;
-        }
-
-        .nav-menu a:hover {
-        color: #059669;
-        }
-
-        .dropdown-container {
-        position: relative;
-        }
-
-        .dropdown-container:hover .dropdown-menu {
-        display: block;
-        animation: fadeIn 0.3s ease-in-out;
-        }
-
-        .dropdown-label::after {
-        content: '▼';
-        font-size: 10px;
-        margin-left: 6px;
-        }
-
-        .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: white;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-        border-radius: 0.25rem;
-        overflow: hidden;
-        min-width: 160px;
-        }
-
-        .dropdown-menu a {
-        display: block;
-        padding: 10px 16px;
-        color: #333;
-        font-size: 14px;
-        text-decoration: none;
-        }
-
-        .dropdown-menu a:hover {
-        background-color: #f3f4f6;
-        }
-
-        .avatar-section {
-        position: relative;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        gap: 0.5rem;
-        margin-left: 0.5rem;
-        /* margin-left: 3rem; */
-        }
-
-        .avatar-section img {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        }
-
-        .user-info {
-        display: none;
-        }
-
-        @media (min-width: 768px) {
-        .user-info {
-            display: block;
-        }
-        }
-
-        .user-info span {
-        font-weight: bold;
-        }
-
-        .user-info small {
-        font-size: 12px;
-        color: gray;
-        }
-
-        @keyframes dropdownFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-/* Animasi fade-out */
-        @keyframes dropdownFadeOut {
-            from {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-        }
-        .dropdown-user {
-        position: absolute;
-        top: 100%;
-        display: none;
-        flex-direction: column;
-        background: white;
-        border-radius: 0.375rem;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.8);
-        width: 200px;
-        z-index: 20;
-        margin-top: 0.5rem;
-        opacity: 0;
-        transform: translateY(-10px);
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .dropdown-user.show {
-            display: flex;
-            animation: dropdownFadeIn 0.8s forwards; /* Animasi fade-in */
-        }
-
-        .dropdown-user.hide {
-            animation: dropdownFadeOut 0.8s forwards; /* Animasi fade-out */
-        }
-        .dropdown-user a,
-        .dropdown-user button {
-        display: block;
-        width: 100%;
-        padding: 10px 16px;
-        text-align: left;
-        font-size: 14px;
-        color: #333;
-        text-decoration: none;
-        background: none;
-        border: none;
-        cursor: pointer;
-        }
-
-        .dropdown-user a:hover,
-        .dropdown-user button:hover {
-        background-color: #f3f4f6;
-        }
-
-        .banner {
-            width: 100%;
-            height: 400px;
-            background-size: cover;
-            background-position: center;
-            margin-top: 20px;
-            position: relative;
-            border-radius: 1.5rem;
-            overflow: hidden;
-        }
-
-        .banner-content {
-            position: absolute;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .banner a {
-            background-color: #10b981;
-            padding: 10px 20px;
-            color: white;
-            border-radius: 8px;
-            text-decoration: none;
-        }
-
-        .banner a:hover { background-color: #059669; }
-
         @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(-5px); }
-        to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-5px); }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .animate-fadeOut {
+            animation: fadeOut 0.3s ease-out forwards;
         }
     </style>
 </head>
+
 <body>
-    <header>
-    <nav>
-        <div class="logo">
-        <a href="{{ route('home') }}">
-            <img src="{{ asset('images/Logo_AgroMart.png') }}" alt="Logo AgroMart" />
-        </a>
-        </div>
-
-        <div class="nav-menu">
-        <a href="{{ route('home') }}">HOME</a>
-        <div class="dropdown-container">
-            <a class="dropdown-label" href="{{ route('produk.index') }}">PRODUK</a>
-            <div class="dropdown-menu">
-            @foreach($kategoris as $kategori)
-                <a href="{{ route('produk.index', $kategori->id_kategori) }}">{{ $kategori->nama_kategori }}</a>
-            @endforeach
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <nav class="flex items-center justify-between max-w-screen-xl px-4 py-3 mx-auto">
+            <div class="flex items-center space-x-6">
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('images/Logo_AgroMart.png') }}" alt="Logo AgroMart" class="h-12">
+                </a>
+                <div class="items-center hidden gap-4 text-base font-semibold md:flex text-emerald-700 font-signika">
+                    <a href="{{ route('home') }}" class="hover:text-emerald-600">HOME</a>
+                    <div class="relative group">
+                        <a href="{{ route('produk.index') }}" class="flex items-center gap-1">PRODUK</a>
+                        <div class="absolute hidden w-40 bg-white rounded-md shadow-lg z-5 group-hover:block animate-fadeIn">
+                            @foreach($kategoris as $kategori)
+                            <a href="{{ route('produk.index', $kategori->id_kategori) }}" class="block px-4 py-2 text-xs text-gray-800 rounded-md hover:bg-gray-100">{{ $kategori->nama_kategori }}</a>
+                            @endforeach
+                        </div>
+                    </div>
+                    <a href="#edukasi" class="hover:text-emerald-600">EDUKASI</a>
+                    <a href="#galeri" class="hover:text-emerald-600">GALERI</a>
+                    <a href="#layanan" class="hover:text-emerald-600">LAYANAN</a>
+                    <a href="#contact" class="hover:text-emerald-600">CONTACT US</a>
+                </div>
             </div>
-        </div>
-        <a href="#edukasi">EDUKASI</a>
-        <a href="#galeri">GALERI</a>
-        <a href="#layanan">LAYANAN</a>
-        <a href="#contact">CONTACT US</a>
-        </div>
-
-        <div class="keranjang">
-            <img src="{{ asset('images/keranjangIcon.png') }}" alt="Keranjang" />
-        </div>
-        <div class="notifikasi">
-            <img src="{{ asset('images/notifIcon.png') }}" alt="Notifikasi" />
-        </div>
-        <div class="avatar-section" id="menuButton">
-            <img src="{{  asset('images/avatar.png') }}" alt="Avatar">
-            <div class="user-info">
-                <span>{{ Auth::user()->name }}</span>
-                <br />
-                <small>{{ Auth::user()->email }}</small>
+            <div class="flex items-center space-x-4">
+                <img src="{{ asset('images/keranjangIcon.png') }}" alt="Keranjang" class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
+                <img src="{{ asset('images/notifIcon.png') }}" alt="Notifikasi" class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
+                <div id="menuButton" class="relative">
+                    <div class="flex items-center gap-2 cursor-pointer">
+                        <img src="{{ asset('images/avatar.png') }}" alt="Avatar" class="w-12 h-12 rounded-full">
+                        <div class="hidden text-left md:block">
+                            <span class="block font-bold">{{ Auth::user()->name }}</span>
+                            <small class="text-gray-500">{{ Auth::user()->email }}</small>
+                        </div>
+                    </div>
+                    <div id="dropdownUser" class="absolute right-0 z-30 flex-col hidden w-48 mt-4 bg-white rounded-md shadow-2xl">
+                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Profile</a>
+                        <a href="{{ route('pesananku') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Pesananku</a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="w-full px-4 py-2 text-sm text-left rounded-md hover:bg-gray-100">Logout</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="dropdown-user" id="dropdownUser">
-                <a href="{{ route('profile.edit') }}">Profile</a>
-                <a href="{{ route('pesananku') }}">Pesananku</a>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit">Logout</button>
-                </form>
-            </div>
-        </div>
-    </nav>
+        </nav>
     </header>
 
-    <div class="banner" style="background-image: url('{{ asset('images/Landing Page.png') }}');">
-        <div class="banner-content">
+    <div class="h-[400px] bg-cover bg-center mt-3 mx-4 rounded-3xl overflow-hidden relative" style="background-image: url('{{ asset('images/Landing Page.png') }}');">
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-white bg-black bg-opacity-50">
             <h1 class="mb-2 text-4xl font-bold">CV. Hidroponik Jember</h1>
-            <p class="text-lg">We all need a little space to grow. Give yourself the space you need to grow your inner you.</p>
-            <a href="#">Hubungi Kami</a>
+            <p class="mb-4 text-lg">We all need a little space to grow. Give yourself the space you need to grow your inner you.</p>
+            <a href="#" class="px-4 py-2 text-white rounded-md bg-emerald-500 hover:bg-emerald-600">Hubungi Kami</a>
         </div>
     </div>
 
     <script>
-    const menuButton = document.getElementById('menuButton');
-    const dropdownUser = document.getElementById('dropdownUser');
+        const menuButton = document.getElementById('menuButton');
+        const dropdownUser = document.getElementById('dropdownUser');
 
-    // Fungsi untuk menampilkan dropdown
-    menuButton.addEventListener('click', function (e) {
-        e.stopPropagation();
+        let isDropdownVisible = false;
 
-        if (dropdownUser.classList.contains('show')) {
-            dropdownUser.classList.remove('show');
-            dropdownUser.classList.add('hide');
-        } else {
-            dropdownUser.classList.remove('hide');
-            dropdownUser.classList.add('show');
-        }
-    });
+        menuButton.addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (!isDropdownVisible) {
+                dropdownUser.classList.remove('hidden');
+                dropdownUser.classList.remove('animate-fadeOut');
+                dropdownUser.classList.add('animate-fadeIn');
+                isDropdownVisible = true;
+            } else {
+                dropdownUser.classList.remove('animate-fadeIn');
+                dropdownUser.classList.add('animate-fadeOut');
+                setTimeout(() => {
+                    dropdownUser.classList.add('hidden');
+                    isDropdownVisible = false;
+                }, 300);
+            }
+        });
 
-    // Fungsi untuk menyembunyikan dropdown saat klik di luar
-    document.addEventListener('click', function () {
-        if (dropdownUser.classList.contains('show')) {
-            dropdownUser.classList.remove('show');
-            dropdownUser.classList.add('hide');
-        }
-    });
+        document.addEventListener('click', function () {
+            if (isDropdownVisible) {
+                dropdownUser.classList.remove('animate-fadeIn');
+                dropdownUser.classList.add('animate-fadeOut');
+                setTimeout(() => {
+                    dropdownUser.classList.add('hidden');
+                    isDropdownVisible = false;
+                }, 300);
+            }
+        });
 
-    // Mencegah dropdown menutup saat diklik
-    dropdownUser.addEventListener('click', function (e) {
-        e.stopPropagation();
-    });
+        dropdownUser.addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
     </script>
 </body>
+
 </html>

@@ -275,12 +275,12 @@
             color: #374151;
             /* Warna teks */
             font-size: 1rem;
-            cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
         .jumlah_input button:hover {
             background-color: #d1d5db;
+            cursor: pointer;
             /* Warna hover */
         }
 
@@ -452,7 +452,7 @@
                             <input type="hidden" id="jumlahCheckout" name="jumlah" value="1">
                             <input type="hidden" name="produk_id" value="{{ $produk->id_produk }}">
                             <button type="submit"
-                                style="width: 100%; padding: 0.75rem; background-color: white; color: #10b981; border: 2px solid #10b981; border-radius: 8px; font-weight: 600; text-align: center; display: block; text-decoration: none; box-sizing: border-box;">
+                                style="width: 100%; padding: 0.75rem; background-color: white; color: #10b981; border: 2px solid #10b981; border-radius: 8px; font-weight: 600; text-align: center; display: block; text-decoration: none; box-sizing: border-box; hover:cursor: pointer;">
                                 Beli Langsung
                             </button>
                         </form>
