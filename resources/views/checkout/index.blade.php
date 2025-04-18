@@ -5,93 +5,126 @@
     <title>Checkout</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="py-10 bg-gray-100">
-    <div class="max-w-2xl p-6 mx-auto bg-white rounded shadow">
-        <h2 class="mb-6 text-2xl font-bold">Checkout</h2>
+<body class="bg-gray-100 ">
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <nav class="flex items-center justify-between max-w-screen-xl px-4 py-3 mx-auto">
+            <div class="flex items-center space-x-6">
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('images/Logo_AgroMart.png') }}" alt="Logo AgroMart" class="h-12">
+                </a>
+            </div>
+        </nav>
+    </header>
 
-        <div class="mb-4">
-            <h3 class="text-lg font-semibold">Produk yang Dipesan</h3>
-            <p class="mt-2 text-gray-700">{{ $produk->nama_produk }}</p>
+    <div class="grid max-w-5xl grid-cols-1 gap-6 p-6 mx-auto mt-4 bg-white rounded shadow-md md:grid-cols-3">
+        <!-- Alamat Pengiriman dan Produk -->
+        <div class="space-y-6 md:col-span-2">
+            <div>
+                <h2 class="mb-2 text-xl font-bold">Alamat Pengiriman</h2>
+                <div class="p-4 border rounded bg-gray-50">
+                    <p class="font-semibold">{{ Auth::user()->name }}</p>
+                    <p>{{ Auth::user()->address }}</p>
+                    <p>{{ Auth::user()->phone }}</p>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="mb-2 text-xl font-bold">Produk yang Dipesan</h2>
+                <div class="flex items-start gap-4 p-4 border rounded bg-gray-50">
+                    <img src="{{ asset('storage/' . $produk->gambar_produk) }}" alt="Produk" class="object-cover w-20 h-20 rounded">
+                    <div>
+                        <p class="font-semibold">{{ $produk->nama_produk }}</p>
+                        <p class="text-gray-600">Harga: Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</p>
+                        <p class="text-gray-600">Jumlah: {{ $jumlah }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <form action="{{ route('checkout.store') }}" method="POST">
+
+
+        <form action="{{ route('checkout.store') }}" method="POST" class="space-y-4">
             @csrf
+        <!-- Ringkasan dan Submit -->
+            <div class="space-y-4">
+                <div>
+                    <h2 class="mb-2 text-xl font-bold">Metode Pengiriman</h2>
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="pengiriman" value="wa_jek" onclick="toggleOngkir()" class="pengiriman-radio">
+                            WA Jek
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="pengiriman" value="ambil_ditempat" onclick="toggleOngkir()" class="pengiriman-radio">
+                            Ambil di Tempat
+                        </label>
+                    </div>
+                    <div class="hidden mt-2" id="ongkirField">
+                        <label class="block text-sm font-medium">Perkiraan Jarak (KM)</label>
+                        <input type="number" name="jarak" min="1" placeholder="Contoh: 3" class="w-full px-3 py-2 mt-1 border rounded" onchange="hitungTotal()">
+                    </div>
+                </div>
 
-            <!-- Detail Pembeli -->
-            <div class="mb-4">
-                <label class="block mb-1 font-medium">Nama</label>
-                <input type="text" name="nama" value="{{ Auth::user()->name }}" class="w-full px-3 py-2 border rounded">
+                <!-- Metode Pembayaran -->
+                <div>
+                    <h2 class="mb-2 text-xl font-bold">Metode Pembayaran</h2>
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="pembayaran" value="transfer" class="pembayaran-radio" onclick="toggleRekening()">
+                            Transfer
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="pembayaran" value="cod" class="pembayaran-radio" onclick="toggleRekening()" id="codOption">
+                            COD
+                        </label>
+                    </div>
+                    <div class="hidden mt-2 text-sm text-gray-600" id="rekeningField">
+                        Transfer ke: BRI 123456789 a.n. Toko Hidroponik
+                    </div>
+                </div>
+
+                <div class="p-4 border rounded bg-gray-50">
+                    <h2 class="mb-4 text-xl font-bold">Ringkasan Pembayaran</h2>
+                    <p>Harga Produk: <strong>Rp {{ number_format($totalHarga, 0, ',', '.') }}</strong></p>
+                    <p>Ongkir: <strong id="ongkirDisplay">Rp 0</strong></p>
+                    <p>Total: <strong id="totalDisplay">Rp {{ number_format($totalPembayaran, 0, ',', '.') }}</strong></p>
+                </div>
+
+                    <input type="hidden" name="jumlah" value="{{ $jumlah }}">
+                    <input type="hidden" name="produk_id" value="{{ $produk->id_produk }}">
+                    <input type="hidden" name="total" value="{{ $totalHarga }}">
+                    <input type="hidden" id="harga_produk" value="{{ $produk->harga_produk }}">
+                    <input type="hidden" name="ongkir" id="ongkirInput" value="0">
+                    <input type="hidden" name="nama" value="{{ Auth::user()->name }}">
+                    <input type="hidden" name="alamat" value="{{ Auth::user()->address }}">
+                    <input type="hidden" name="no_hp" value="{{ Auth::user()->phone }}">
+                    <button type="submit" class="w-full px-4 py-2 font-bold text-white bg-green-600 rounded hover:bg-green-700">
+                        Bayar Sekarang
+                    </button>
+                    </div>
+                </div>
             </div>
-
-            <div class="mb-4">
-                <label class="block mb-1 font-medium">Alamat</label>
-                <textarea name="alamat" rows="2" required class="w-full px-3 py-2 border rounded"></textarea>
-            </div>
-
-            <div class="mb-4">
-                <label class="block mb-1 font-medium">No. HP</label>
-                <input type="text" name="no_hp" required class="w-full px-3 py-2 border rounded">
-            </div>
-
-            <!-- Pengiriman -->
-            <div class="mb-4">
-                <label class="block mb-1 font-medium">Metode Pengiriman</label>
-                <select name="pengiriman" id="pengiriman" class="w-full px-3 py-2 border rounded" required onchange="toggleOngkir()">
-                    <option value="">-- Pilih --</option>
-                    <option value="wa_jek">WA Jek</option>
-                    <option value="ambil_ditempat">Ambil di Tempat</option>
-                </select>
-            </div>
-
-            <div class="hidden mb-4" id="ongkirField">
-                <label class="block mb-1 font-medium">Perkiraan Jarak (KM)</label>
-                <input type="number" name="jarak" min="1" placeholder="Contoh: 3" class="w-full px-3 py-2 border rounded" onchange="hitungTotal()">
-            </div>
-
-            <!-- Pembayaran -->
-            <div class="mb-4">
-                <label class="block mb-1 font-medium">Metode Pembayaran</label>
-                <select name="pembayaran" id="pembayaran" class="w-full px-3 py-2 border rounded" required onchange="toggleRekening()">
-                    <option value="">-- Pilih --</option>
-                    <option value="transfer">Transfer</option>
-                    <option value="cod">COD</option>
-                </select>
-            </div>
-
-            <div class="hidden mb-4" id="rekeningField">
-                <p class="text-sm text-gray-600">Transfer ke: BRI 123456789 a.n. Toko Hidroponik</p>
-            </div>
-
-            <!-- Ringkasan -->
-            <div class="pt-4 mt-6 border-t">
-                <p>Harga {{ $jumlah }} Produk: <strong>Rp {{ number_format($totalHarga, 0, ',', '.') }}</strong></p>
-                <p>Ongkir: <strong id="ongkirDisplay">Rp 0</strong></p>
-                <p>Total Pembayaran: <strong id="totalDisplay">Rp {{ number_format($totalPembayaran, 0, ',', '.') }}</strong></p>
-            </div>
-
-            <!-- Hidden -->
-
-            <input type="hidden" name="jumlah" value="{{ $jumlah }}">
-            <input type="hidden" name="produk_id" value="{{ $produk->id_produk }}">
-            <input type="hidden" name="total" value="{{ $totalHarga }}">
-            <input type="hidden" id="harga_produk" value="{{ $produk->harga_produk }}">
-            <input type="hidden" name="ongkir" id="ongkirInput" value="0">
-
-            <!-- Submit -->
-            <button type="submit" class="w-full px-4 py-2 mt-6 text-white bg-green-600 rounded hover:bg-green-700">
-                Pesan Sekarang
-            </button>
         </form>
     </div>
 
     <script>
         function toggleOngkir() {
-            const pengiriman = document.getElementById('pengiriman').value;
-            const ongkirField = document.getElementById('ongkirField');
+            const pengirimanRadios = document.querySelectorAll('.pengiriman-radio');
+            let selectedPengiriman = '';
+            pengirimanRadios.forEach(radio => {
+                if (radio.checked) selectedPengiriman = radio.value;
+            });
 
-            if (pengiriman === 'wa_jek') {
+            const ongkirField = document.getElementById('ongkirField');
+            const codOption = document.getElementById('codOption');
+
+            if (selectedPengiriman === 'wa_jek') {
                 ongkirField.classList.remove('hidden');
+                codOption.disabled = true;
+                codOption.checked = false;
+                toggleRekening(); // to hide rekeningField if needed
             } else {
                 ongkirField.classList.add('hidden');
+                codOption.disabled = false;
                 document.getElementById('ongkirInput').value = 0;
                 document.getElementById('ongkirDisplay').innerText = 'Rp 0';
                 hitungTotal();
@@ -99,10 +132,14 @@
         }
 
         function toggleRekening() {
-            const pembayaran = document.getElementById('pembayaran').value;
-            const rekeningField = document.getElementById('rekeningField');
+            const pembayaranRadios = document.querySelectorAll('.pembayaran-radio');
+            let selectedPembayaran = '';
+            pembayaranRadios.forEach(radio => {
+                if (radio.checked) selectedPembayaran = radio.value;
+            });
 
-            if (pembayaran === 'transfer') {
+            const rekeningField = document.getElementById('rekeningField');
+            if (selectedPembayaran === 'transfer') {
                 rekeningField.classList.remove('hidden');
             } else {
                 rekeningField.classList.add('hidden');
@@ -110,25 +147,21 @@
         }
 
         function hitungTotal() {
-            const jarak = document.querySelector('input[name="jarak"]')?.value || 0; // Ambil jarak dari input
-            const hargaProduk = parseInt(document.getElementById('harga_produk').value); // Harga produk
-            const jumlah = parseInt(document.querySelector('input[name="jumlah"]').value); // Jumlah produk
-            const ongkir = jarak * 5000; // Contoh perhitungan ongkir (5000 per km)
+            const jarak = document.querySelector('input[name="jarak"]').value || 0;
+            const hargaProduk = parseInt(document.getElementById('harga_produk').value);
+            const jumlah = parseInt(document.querySelector('input[name="jumlah"]').value);
+            const ongkir = jarak * 5000;
 
-            const totalHarga = hargaProduk * jumlah; // Total harga produk
-            const totalPembayaran = totalHarga + ongkir; // Total pembayaran (harga + ongkir)
+            const totalHarga = hargaProduk * jumlah;
+            const totalPembayaran = totalHarga + ongkir;
 
-            // Perbarui input tersembunyi untuk ongkir
             document.getElementById('ongkirInput').value = ongkir;
-
-            // Perbarui tampilan ongkir dan total pembayaran
             document.getElementById('ongkirDisplay').innerText = 'Rp ' + ongkir.toLocaleString();
             document.getElementById('totalDisplay').innerText = 'Rp ' + totalPembayaran.toLocaleString();
         }
 
-            // Inisialisasi total saat halaman dimuat
-            document.addEventListener('DOMContentLoaded', function() {
-                hitungTotal();
+        document.addEventListener('DOMContentLoaded', function () {
+            hitungTotal();
         });
     </script>
 </body>
