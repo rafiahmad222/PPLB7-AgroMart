@@ -419,7 +419,9 @@
                 <input type="text" name="search" placeholder="Cari produk..." value="{{ request('search') }}">
                 <button type="submit">Cari</button>
             </form>
-            <a href="{{ route('produk.create') }}">+ Tambah Produk</a>
+            @if (Auth::user()->hasRole == 'admin')
+                <a href="{{ route('produk.create') }}">+ Tambah Produk</a>
+            @endif
         </div>
 
         <div class="content">
