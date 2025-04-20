@@ -2,9 +2,10 @@
     <div class="product-card" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; margin-bottom: 16px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
         <a href="{{ route('produk.show', $produk->id_produk) }}" style="text-decoration: none; color: inherit;">
             @if ($produk->gambar_produk)
-                <img src="{{ asset('storage/' . $produk->gambar_produk) }}" alt="{{ $produk->nama_produk }}" style="width: 100%; height: 200px; object-fit: contain;">
+            <img src="{{ asset('storage/' . $produk->gambar_produk) }}" alt="{{ $produk->nama_produk }}"
+                style="width: 100%; height: 200px; object-fit: contain; border-radius: 12px;">
             @else
-                <div style="height: 200px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af;">
+                <div style="height: 200px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af; border-radius: 12px;">
                     Tidak ada gambar
                 </div>
             @endif

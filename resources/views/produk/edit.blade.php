@@ -10,7 +10,6 @@
 </head>
 <body class="bg-gray-100">
     <div class="max-w-5xl p-8 mx-auto mt-10 bg-white rounded-lg shadow-md">
-        <h1 class="mb-8 text-3xl font-bold text-center text-gray-800">Edit Produk</h1>
 
         <form method="POST" action="{{ route('produk.update', $produk->id_produk) }}" enctype="multipart/form-data">
             @csrf
@@ -38,7 +37,7 @@
                     <div>
                         <label for="nama_produk" class="block text-sm font-medium text-gray-700">Nama Produk</label>
                         <input type="text" name="nama_produk" id="nama_produk" value="{{ old('nama_produk', $produk->nama_produk) }}" required
-                               class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
                         @error('nama_produk')
                             <span class="text-sm text-red-500">{{ $message }}</span>
                         @enderror
@@ -47,7 +46,7 @@
                     <div>
                         <label for="jumlah_stok" class="block text-sm font-medium text-gray-700">Jumlah Stok</label>
                         <input type="number" name="jumlah_stok" id="jumlah_stok" value="{{ old('jumlah_stok', $produk->jumlah_stok) }}" required
-                               class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
                         @error('jumlah_stok')
                             <span class="text-sm text-red-500">{{ $message }}</span>
                         @enderror
@@ -56,7 +55,7 @@
                     <div>
                         <label for="harga_produk" class="block text-sm font-medium text-gray-700">Harga Produk</label>
                         <input type="number" name="harga_produk" id="harga_produk" value="{{ old('harga_produk', $produk->harga_produk) }}" required
-                               class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
                         @error('harga_produk')
                             <span class="text-sm text-red-500">{{ $message }}</span>
                         @enderror
@@ -81,7 +80,7 @@
                     <div>
                         <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi Produk</label>
                         <textarea name="deskripsi" id="deskripsi" maxlength="305" rows="4"
-                                  class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring-blue-500 focus:border-blue-500">{{ old('deskripsi', $produk->deskripsi_produk) }}</textarea>
+                                class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring-blue-500 focus:border-blue-500">{{ old('deskripsi', $produk->deskripsi_produk) }}</textarea>
                         <div class="text-sm text-right text-gray-500" id="char-count">{{ strlen(old('deskripsi', $produk->deskripsi_produk)) }}/305</div>
                         @error('deskripsi')
                             <span class="text-sm text-red-500">{{ $message }}</span>
@@ -100,10 +99,10 @@
 
     <!-- Modal Cropper -->
     <div id="crop-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
-        <div class="w-full max-w-3xl max-h-[90vh] overflow-auto p-6 bg-white rounded-lg shadow-lg">
+        <div class="w-full max-w-lg p-4 bg-white rounded-lg shadow-lg">
             <h2 class="mb-4 text-lg font-semibold text-center">Crop Gambar</h2>
             <div class="flex justify-center">
-                <img id="crop-image" class="max-w-full max-h-[70vh] rounded-md shadow" />
+                <img id="crop-image" class="max-w-full rounded-md shadow max-h-64" />
             </div>
             <div class="flex justify-end mt-4 space-x-4">
                 <button id="crop-cancel" class="px-4 py-2 text-white bg-gray-400 rounded hover:bg-gray-500">Batal</button>
