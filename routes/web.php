@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/produk/filter', [ProdukController::class, 'filter'])->name('produk.filter');
     Route::get('/produk/{id}', [ProdukController::class, 'show'])->name('produk.show');
     Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
+    Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
 });
 Route::middleware('auth')->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
