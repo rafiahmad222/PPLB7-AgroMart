@@ -108,20 +108,16 @@
         <p>AgroMart adalah sistem berbasis website yang dirancang untuk mendigitalisasi proses pemesanan, mengoptimalkan pengantaran produk melalui kurir lokal, serta memudahkan manajemen bisnis hidroponik pada CV. Hidroponik Jember.</p>
         @if (Route::has('login'))
             @auth
-                {{-- @if (Auth::user()->hasRole('admin'))
+                @if (Auth::user()->hasRole('admin'))
                     <a href="{{ url('/admin/dashboard') }}" class="button">Admin Dashboard</a>
                 @elseif (Auth::user()->hasRole('user'))
-                    <a href="{{ url('/home') }}" class="button">Kurir Dashboard</a>
-                @endif --}}
+                    <a href="{{ url('/home') }}" class="button">Back To Home</a>
+                @endif
             @else
                 <a href="{{ route('login') }}" class="button">Log in</a>
                 @if (Route::has('register'))
                     <a href="{{ route('register') }}" class="button">Register</a>
                 @endif
-                <a href="auth/redirect" class="google-button">
-                    <img src="{{ asset('images/google_icons.png') }}" alt="google">
-                    <span>Login with Google</span>
-                </a>
             @endauth
         @endif
     </div>
