@@ -194,40 +194,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .banner {
-            width: 100%;
-            height: 400px;
-            background-size: cover;
-            background-position: center;
-            margin-top: 20px;
-            position: relative;
-            border-radius: 1.5rem;
-            overflow: hidden;
-        }
-
-        .banner-content {
-            position: absolute;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .banner a {
-            background-color: #10b981;
-            padding: 10px 20px;
-            color: white;
-            border-radius: 8px;
-            text-decoration: none;
-        }
-
-        .banner a:hover { background-color: #059669; }
-
         .form-wrapper {
             max-width: 850px;
             margin: 2.5rem auto;
@@ -379,13 +345,6 @@
         </nav>
     </header>
 
-    <div class="banner" style="background-image: url('{{ asset('images/Landing Page.png') }}');">
-        <div class="banner-content">
-            <h1 class="mb-2 text-4xl font-bold">CV. Hidroponik Jember</h1>
-            <p class="text-lg">We all need a little space to grow. Give yourself the space you need to grow your inner you.</p>
-            <a href="#">Hubungi Kami</a>
-        </div>
-    </div>
     <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-wrapper">

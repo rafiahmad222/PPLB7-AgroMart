@@ -18,7 +18,7 @@
                 <div>
                     <p style="margin: 0; color: #6b7280;">Stok: {{ $produk->jumlah_stok }}</p>
                 </div>
-                @if (Auth::user()->hasRole == 'admin')
+                @if (Auth::user()->hasRole('admin'))
                     <div class="actions" style="">
                         <a href="{{ route('produk.edit', $produk->id_produk) }}" class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 decoration-none" style="text-decoration: none; color: white; border-radius: 8px; background-color: #3b82f6; padding: 8px 16px;">
                             Edit
