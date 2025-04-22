@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Kategori;
 
 class ProfileController extends Controller
 {
@@ -16,65 +17,52 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $kategoris = Kategori::all();
         return view('profile.edit', [
             'user' => $request->user(),
+            'kategoris' => $kategoris,
         ]);
     }
 
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $user = $request->user();
-
-        // Update data umum
-        $user->fill($request->only(['name', 'email', 'address', 'phone']));
-
-        // Reset email verification jika email diubah
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
-        // Update password jika diisi
-        if ($request->filled('password')) {
-            $user->password = bcrypt($request->password);
-        }
-
-        // Update avatar jika diunggah
-        if ($request->hasFile('avatar')) {
-            // Hapus avatar lama jika ada
-            if ($user->avatar_url) {
-                \Illuminate\Support\Facades\Storage::delete(str_replace('/storage/', '', $user->avatar_url));
-            }
-            // Simpan avatar baru
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $user->avatar_url = '/storage/' . $path;
-        }
-
-        $user->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    }
-
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $request->user()->id],
+            'phone' => ['nullable', 'string', 'max:15'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'cropped_avatar' => ['nullable', 'string'],
         ]);
 
         $user = $request->user();
 
-        Auth::logout();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
 
-        $user->delete();
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        if ($request->filled('cropped_avatar')) {
+            $avatarData = $request->input('cropped_avatar');
+            $avatarPath = 'avatars/' . uniqid() . '.png';
 
-        return Redirect::to('/');
+            Storage::disk('public')->put(
+                $avatarPath,
+                base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $avatarData))
+            );
+
+            $user->avatar_url = '/storage/' . $avatarPath;
+        }
+
+        $user->save();
+
+        return redirect()->route('profile.edit')->with('status', 'Profil berhasil diperbarui.');
     }
 }
+

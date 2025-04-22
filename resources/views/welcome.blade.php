@@ -109,7 +109,7 @@
         @if (Route::has('login'))
             @auth
                 @if (Auth::user()->hasRole('admin'))
-                    <a href="{{ url('/admin/dashboard') }}" class="button">Admin Dashboard</a>
+                    <a href="{{ url('/dashboard') }}" class="button">Admin Dashboard</a>
                 @elseif (Auth::user()->hasRole('user'))
                     <a href="{{ url('/home') }}" class="button">Back To Home</a>
                 @endif
