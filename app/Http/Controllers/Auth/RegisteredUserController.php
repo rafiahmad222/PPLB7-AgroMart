@@ -28,8 +28,18 @@ class RegisteredUserController extends Controller
             'name'     => ['required', 'string', 'max:255'],
             'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'min:8'],
-            'address'  => ['required', 'string', 'max:255'],
-            'phone'    => ['required', 'string', 'max:20'],
+            'address'  => ['required', 'string', 'max:255', 'min:10', 'regex:/^[a-zA-Z0-9\s,.-]+$/'],
+            'phone'    => ['required', 'string', 'max:13','min:10', 'regex:/^[0-9]+$/'],
+        ],[
+            'name.required' => 'Nama tidak boleh kosong',
+            'email.required' => 'Email tidak boleh kosong',
+            'password.required' => 'Password tidak boleh kosong',
+            'address.required' => 'Alamat tidak boleh kosong',
+            'phone.required' => 'Nomor telepon tidak boleh kosong',
+            'password.min' => 'Password minimal 8 karakter',
+            'phone.regex' => 'Nomor telepon hanya boleh mengandung angka',
+            'address.min' => 'Alamat minimal 10 karakter',
+            'phone.min' => 'Nomor telepon minimal 10 karakter',
         ]);
 
         $user = User::create([
@@ -46,6 +56,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('home'); 
+        return redirect()->route('home');
     }
 }

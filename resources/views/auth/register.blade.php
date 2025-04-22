@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Akun</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="{{ asset('js/eyeicon.js') }}"></script>
 </head>
@@ -19,7 +20,7 @@
                 </div>
                 <h2 class="text-3xl font-bold text-center text-gray-800">Daftar Akun!</h2>
                 <p class="mt-2 text-sm text-center text-gray-600">Harap Mengisi Data Akun Dengan Lengkap</p>
-                <form method="POST" action="{{ route('register') }}" class="mt-6 space-y-4">
+                <form method="POST" action="{{ route('register') }}" class="mt-6 space-y-4" novalidate>
                     @csrf
 
                     <!-- Username -->
@@ -58,7 +59,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Address -->
                     <div>
                         <label for="address" class="block text-sm font-medium text-gray-700">Informasi Alamat</label>
@@ -91,6 +92,22 @@
                     <p class="mt-4 text-center text-gray-600">Sudah mempunyai akun? <a href="{{ route('login') }}"
                             class="text-blue-600">Login</a></p>
                 </form>
+                @if ($errors->any())
+                    <script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            html: `
+                                    <ul style="text-align: left;">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                `,
+                            confirmButtonText: 'OK'
+                        });
+                    </script>
+                @endif
             </div>
 
             <!-- Image Section -->

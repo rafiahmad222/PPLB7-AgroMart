@@ -13,7 +13,8 @@ class DashboardController extends Controller
     {
         $status = $request->query('status');
 
-        $query = Pesanan::query(); // tanpa relasi
+        $query = Pesanan::query()
+            ->where('status', '!=', 'Selesai');
 
         if ($status) {
             $query->where('status', $status);
