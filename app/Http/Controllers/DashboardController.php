@@ -11,6 +11,11 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+        $listTahun = Pesanan::selectRaw('YEAR(created_at) as tahun')
+                        ->distinct()
+                        ->orderBy('tahun', 'desc')
+                        ->pluck('tahun');
+
         $status = $request->query('status');
 
         $query = Pesanan::query()
@@ -23,7 +28,7 @@ class DashboardController extends Controller
         $pesanans = $query->get();
         $kategoris = Kategori::all();
 
-        return view('dashboard', compact('kategoris', 'pesanans'));
+        return view('dashboard', compact('kategoris', 'pesanans', 'listTahun'));
         }
 
     public function updateStatus(Request $request, $id)
@@ -37,5 +42,24 @@ class DashboardController extends Controller
         $pesanan->save();
 
         return back()->with('success', 'Status pesanan berhasil diperbarui.');
+    }
+
+    public function chartData(Request $request)
+    {
+        $bulan = $request->input('bulan');
+        $tahun = $request->input('tahun');
+
+        $query = Pesanan::with(['produk.kategori'])
+            ->when($bulan, fn ($q) => $q->whereMonth('created_at', $bulan))
+            ->when($tahun, fn ($q) => $q->whereYear('created_at', $tahun));
+
+        $data = $query->get()
+            ->groupBy(fn ($item) => $item->produk->kategori->nama_kategori ?? 'Lainnya')
+            ->map(fn ($group) => $group->sum('jumlah'));
+
+        return response()->json([
+            'labels' => $data->keys(),
+            'values' => $data->values(),
+        ]);
     }
 }

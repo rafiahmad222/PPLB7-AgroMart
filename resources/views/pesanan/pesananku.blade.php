@@ -263,7 +263,11 @@
                 </div>
                 <div class="dropdown-user" id="dropdownUser">
                     <a href="{{ route('profile.edit') }}">Profile</a>
-                    <a href="{{ route('pesananku') }}">Pesananku</a>
+                    @if (Auth::user()->role === 'admin')
+                        <a href="{{ route('dashboard') }}">Dashboard</a>
+                    @else
+                        <a href="{{ route('pesananku') }}">Pesananku</a>
+                    @endif
                     <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit">Logout</button>

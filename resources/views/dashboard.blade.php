@@ -76,93 +76,129 @@
         </nav>
     </header>
 
-    <div class="max-w-4xl px-4 py-10 mx-auto">
-        <h1 class="mb-6 text-2xl font-bold">Manajemen Pesanan</h1>
+<div class="max-w-4xl px-4 py-10 mx-auto">
+    <div class="flex justify-center mb-6 text-lg font-semibold text-gray-700 gap-80">
+        <button id="tabPesanan" class="px-4 py-2 text-white rounded-full bg-emerald-600 hover:bg-emerald-500">Manajemen Pesanan</button>
+        <button id="tabGrafik" class="px-4 py-2 bg-gray-200 rounded-full hover:bg-emerald-500">Grafik Penjualan</button>
+    </div>
+        <div id="contentPesanan">
+            <div class="flex justify-center gap-4 mb-6">
+                @php
+                    $statuses = ['Diproses', 'Dikirim', 'Diterima'];
+                    $currentStatus = request('status');
+                @endphp
 
-        <div class="flex justify-center gap-4 mb-6">
-            @php
-                $statuses = ['Diproses', 'Dikirim', 'Diterima'];
-                $currentStatus = request('status');
-            @endphp
-
-            <a href="{{ route('dashboard') }}"
-                class="px-4 py-2 rounded-full text-sm font-semibold
-                    {{ !$currentStatus ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-emerald-100' }}">
-                Semua
-            </a>
-
-            @foreach ($statuses as $status)
-                <a href="{{ route('dashboard', ['status' => $status]) }}"
+                <a href="{{ route('dashboard') }}"
                     class="px-4 py-2 rounded-full text-sm font-semibold
-                        {{ $currentStatus === $status ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-emerald-100' }}">
-                    {{ $status }}
+                        {{ !$currentStatus ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-emerald-100' }}">
+                    Semua
                 </a>
-            @endforeach
-        </div>
 
-        @foreach ($pesanans as $pesanan)
-        <div class="p-6 mb-6 bg-white shadow-md rounded-2xl">
-            <div class="flex items-start justify-between">
-                <div class="flex items-center gap-4">
-                    <img src="{{ asset($pesanan->user->avatar_url ?? 'images/avatar.png') }}" alt="Avatar"
-                        class="object-cover w-16 h-16 rounded-full">
-                    <div>
-                        <p class="text-lg font-semibold text-gray-800">{{ $pesanan->nama }}</p>
-                        <p class="text-sm text-gray-600">{{ $pesanan->alamat }}</p>
-                        <p class="text-sm text-gray-600">{{ $pesanan->no_hp }}</p>
+                @foreach ($statuses as $status)
+                    <a href="{{ route('dashboard', ['status' => $status]) }}"
+                        class="px-4 py-2 rounded-full text-sm font-semibold
+                            {{ $currentStatus === $status ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-emerald-100' }}">
+                        {{ $status }}
+                    </a>
+                @endforeach
+            </div>
+
+            @foreach ($pesanans as $pesanan)
+            <div class="p-6 mb-6 bg-white shadow-md rounded-2xl">
+                <div class="flex items-start justify-between">
+                    <div class="flex items-center gap-4">
+                        <img src="{{ asset($pesanan->user->avatar_url ?? 'images/avatar.png') }}" alt="Avatar"
+                            class="object-cover w-16 h-16 rounded-full">
+                        <div>
+                            <p class="text-lg font-semibold text-gray-800">{{ $pesanan->nama }}</p>
+                            <p class="text-sm text-gray-600">{{ $pesanan->alamat }}</p>
+                            <p class="text-sm text-gray-600">{{ $pesanan->no_hp }}</p>
+                        </div>
+                    </div>
+
+                    <div class=>
+                        <p class="mb-1 text-sm text-right text-gray-600">Status Pengiriman:</p>
+                        <form action="{{ route('dashboard.pesanan.updateStatus', $pesanan->id_pesanan) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <select name="status"
+                                    onchange="this.form.submit()"
+                                    class="text-sm font-semibold py-2 rounded-full text-white px-5 text-left cursor-pointer
+                                        {{ $pesanan->status === 'Diterima' ? 'bg-green-500' : ($pesanan->status === 'Dikirim' ? 'bg-yellow-400' : 'bg-blue-400') }}">
+                                <option value="Diproses" @selected($pesanan->status === 'Diproses')>Diproses</option>
+                                <option value="Dikirim" @selected($pesanan->status === 'Dikirim')>Dikirim</option>
+                                <option value="Diterima" @selected($pesanan->status === 'Diterima')>Diterima</option>
+                            </select>
+                        </form>
                     </div>
                 </div>
 
-                <div class=>
-                    <p class="mb-1 text-sm text-right text-gray-600">Status Pengiriman:</p>
-                    <form action="{{ route('dashboard.pesanan.updateStatus', $pesanan->id_pesanan) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <select name="status"
-                                onchange="this.form.submit()"
-                                class="text-sm font-semibold py-2 rounded-full text-white px-5 text-left cursor-pointer
-                                    {{ $pesanan->status === 'Diterima' ? 'bg-green-500' : ($pesanan->status === 'Dikirim' ? 'bg-yellow-400' : 'bg-blue-400') }}">
-                            <option value="Diproses" @selected($pesanan->status === 'Diproses')>Diproses</option>
-                            <option value="Dikirim" @selected($pesanan->status === 'Dikirim')>Dikirim</option>
-                            <option value="Diterima" @selected($pesanan->status === 'Diterima')>Diterima</option>
-                        </select>
-                    </form>
+                <div class="mt-4 space-y-1 text-sm text-gray-700">
+                    <div>
+                        <img src="{{ asset('storage/' . $pesanan->produk->gambar_produk ?? 'images/default-product.png') }}" alt="{{ $pesanan->produk->nama_produk }}"
+                            class="object-cover w-20 h-20 rounded-lg">
+                    </div>
+                    <p><span class="font-medium">Nama Barang</span> : {{ $pesanan->produk->nama_produk }}</p>
+                    <p><span class="font-medium">Jumlah</span> : {{ $pesanan->jumlah }} pcs</p>
+                    <p><span class="font-medium">Total</span> : Rp {{ number_format($pesanan->total, 0, ',', '.') }}</p>
+                    <p><span class="font-medium">Metode Pembayaran</span> :
+                        @if ($pesanan->pembayaran === 'transfer')
+                            Transfer
+                        @elseif ($pesanan->pembayaran === 'cod')
+                            Cash on Delivery (COD)
+                        @else
+                            {{ $pesanan->pembayaran ?? '-' }}
+                        @endif
+                    </p>
+
+                    <p><span class="font-medium">Metode Pengiriman</span> :
+                        @if ($pesanan->pengiriman === 'wa_jek')
+                            WA Jek
+                        @elseif ($pesanan->pengiriman === 'ambil_ditempat')
+                            Ambil di Tempat
+                        @else
+                            {{ $pesanan->pengiriman ?? '-' }}
+                        @endif
+                    </p>
                 </div>
             </div>
-
-            <div class="mt-4 space-y-1 text-sm text-gray-700">
-                <div>
-                    <img src="{{ asset('storage/' . $pesanan->produk->gambar_produk ?? 'images/default-product.png') }}" alt="{{ $pesanan->produk->nama_produk }}"
-                        class="object-cover w-20 h-20 rounded-lg">
-                </div>
-                <p><span class="font-medium">Nama Barang</span> : {{ $pesanan->produk->nama_produk }}</p>
-                <p><span class="font-medium">Jumlah</span> : {{ $pesanan->jumlah }} pcs</p>
-                <p><span class="font-medium">Total</span> : Rp {{ number_format($pesanan->total, 0, ',', '.') }}</p>
-                <p><span class="font-medium">Metode Pembayaran</span> :
-                    @if ($pesanan->pembayaran === 'transfer')
-                        Transfer
-                    @elseif ($pesanan->pembayaran === 'cod')
-                        Cash on Delivery (COD)
-                    @else
-                        {{ $pesanan->pembayaran ?? '-' }}
-                    @endif
-                </p>
-
-                <p><span class="font-medium">Metode Pengiriman</span> :
-                    @if ($pesanan->pengiriman === 'wa_jek')
-                        WA Jek
-                    @elseif ($pesanan->pengiriman === 'ambil_ditempat')
-                        Ambil di Tempat
-                    @else
-                        {{ $pesanan->pengiriman ?? '-' }}
-                    @endif
-                </p>
-            </div>
+            @endforeach
         </div>
-        @endforeach
     </div>
+    <div id="contentGrafik" class="hidden">
+        <div class="p-2 bg-white shadow-md rounded-2xl"> <!-- Kurangi padding -->
+            <div class="flex flex-wrap items-center justify-between gap-2 px-4"> <!-- Kurangi margin -->
+                <div class="flex gap-2">
+                    <select id="filterBulan" class="px-2 py-1 text-sm border rounded-md"> <!-- Kurangi padding -->
+                        <option value="">Semua Bulan</option>
+                        <option value="1">Januari</option>
+                        <option value="2">Februari</option>
+                        <option value="3">Maret</option>
+                        <option value="4">April</option>
+                        <option value="5">Mei</option>
+                        <option value="6">Juni</option>
+                        <option value="7">Juli</option>
+                        <option value="8">Agustus</option>
+                        <option value="9">September</option>
+                        <option value="10">Oktober</option>
+                        <option value="11">November</option>
+                        <option value="12">Desember</option>
+                    </select>
+                    <select id="filterTahun" class="px-2 py-1 text-sm border rounded-md"> <!-- Kurangi padding -->
+                        <option value="">Semua Tahun</option>
+                        @foreach ($listTahun as $tahun)
+                            <option value="{{ $tahun }}">{{ $tahun }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <canvas id="chartPenjualan" class="w-full max-h-64"></canvas> <!-- Atur tinggi maksimal -->
+        </div>
+    </div>
+</div>
 
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const menuButton = document.getElementById('menuButton');
         const dropdownUser = document.getElementById('dropdownUser');
@@ -199,6 +235,74 @@
 
         dropdownUser.addEventListener('click', function (e) {
             e.stopPropagation();
+        });
+        // Tab Switching
+        const tabPesanan = document.getElementById('tabPesanan');
+        const tabGrafik = document.getElementById('tabGrafik');
+        const contentPesanan = document.getElementById('contentPesanan');
+        const contentGrafik = document.getElementById('contentGrafik');
+
+        tabPesanan.addEventListener('click', () => {
+            tabPesanan.classList.add('bg-green-700', 'text-white');
+            tabGrafik.classList.remove('bg-green-700', 'text-white');
+            tabGrafik.classList.add('bg-gray-200');
+
+            contentPesanan.classList.remove('hidden');
+            contentGrafik.classList.add('hidden');
+        });
+
+        tabGrafik.addEventListener('click', () => {
+            tabGrafik.classList.add('bg-green-700', 'text-white');
+            tabPesanan.classList.remove('bg-green-700', 'text-white');
+            tabPesanan.classList.add('bg-gray-200');
+
+            contentGrafik.classList.remove('hidden');
+            contentPesanan.classList.add('hidden');
+        });
+        // Chart.js
+        const ctx = document.getElementById('chartPenjualan').getContext('2d');
+        let chartInstance;
+
+        function fetchChartData(bulan = '', tahun = '') {
+            fetch(`/api/chart-data?bulan=${bulan}&tahun=${tahun}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (chartInstance) chartInstance.destroy();
+
+                    chartInstance = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'Jumlah Terjual',
+                                data: data.values,
+                                backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                                borderRadius: 6,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: { beginAtZero: true }
+                            }
+                        }
+                    });
+                });
+        }
+
+        // Inisialisasi awal
+        fetchChartData();
+
+        document.getElementById('filterBulan').addEventListener('change', function () {
+            const bulan = this.value;
+            const tahun = document.getElementById('filterTahun').value;
+            fetchChartData(bulan, tahun);
+        });
+
+        document.getElementById('filterTahun').addEventListener('change', function () {
+            const tahun = this.value;
+            const bulan = document.getElementById('filterBulan').value;
+            fetchChartData(bulan, tahun);
         });
     </script>
 </body>

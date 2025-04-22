@@ -22,6 +22,8 @@ Route::get('/', function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'admin'])->name('dashboard');
 Route::put('/dashboard/pesanan/{id}/update-status', [DashboardController::class, 'updateStatus'])
     ->name('dashboard.pesanan.updateStatus');
+Route::get('/api/chart-data', [App\Http\Controllers\DashboardController::class, 'chartData'])->name('api.chartData');
+
 
 Route::get('/home', [HomeController::class, 'index'], function () {
     return view('home');
