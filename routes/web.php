@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProdukController;
@@ -16,9 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified', 'admin'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'admin'])->name('dashboard');
 
 Route::get('/home', [HomeController::class, 'index'], function () {
     return view('home');
@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pesananku', [App\Http\Controllers\PesananController::class, 'pesananku'])->name('pesananku');
     Route::post('/pesananku/konfirmasi/{id}', [App\Http\Controllers\PesananController::class, 'konfirmasi'])->name('pesananku.konfirmasi');
 });
+
 Route::get('/register', [RegisteredUserController::class, 'create'])->middleware('guest')->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('guest');
 

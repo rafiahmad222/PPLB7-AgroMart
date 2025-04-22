@@ -36,7 +36,7 @@
                 <a href="{{ route('home') }}">
                     <img src="{{ asset('images/Logo_AgroMart.png') }}" alt="Logo AgroMart" class="h-12">
                 </a>
-                <div class="items-center hidden gap-4 text-base font-semibold md:flex text-emerald-700 font-signika">
+                <div class="items-center hidden gap-4 text-base font-semibold md:flex text-emerald-700 font-[signika]">
                     <a href="{{ route('home') }}" class="hover:text-emerald-600">HOME</a>
                     <div class="relative group">
                         <a href="{{ route('produk.index') }}" class="flex items-center gap-1">PRODUK</a>
