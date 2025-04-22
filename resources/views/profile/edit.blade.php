@@ -44,6 +44,18 @@
                 class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
         </div>
 
+        <div>
+            <label class="block font-semibold text-gray-700">Nomor Telepon</label>
+            <input type="text" name="phone" value="{{ old('phone', Auth::user()->phone) }}"
+                class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+        </div>
+
+        <div>
+            <label class="block font-semibold text-gray-700">Alamat</label>
+            <textarea name="address" rows="4"
+                class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring-blue-500 focus:border-blue-500">{{ old('address', Auth::user()->address) }}</textarea>
+        </div>
+
         <div class="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
             <div class="max-w-xl">
                 @include('profile.partials.update-password-form')
