@@ -80,7 +80,7 @@
             <!-- Login dengan Google -->
             <a href="{{ url('auth/redirect') }}"
                 class="flex items-center justify-center w-full py-2 transition border border-gray-300 rounded hover:bg-gray-100">
-                <img src="{{ asset('images/google_icons.png') }}" alt="Google" class="w-5 h-5 mr-2"> Sign in with
+                <img src="{{ asset('images/google_icons.png') }}" alt="Google" class="w-5 h-5 mr-2"> Login with
                 Google
             </a>
 
