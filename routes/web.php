@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\AdminPesananController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CheckoutController;
@@ -19,6 +20,8 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'admin'])->name('dashboard');
+Route::put('/dashboard/pesanan/{id}/update-status', [DashboardController::class, 'updateStatus'])
+    ->name('dashboard.pesanan.updateStatus');
 
 Route::get('/home', [HomeController::class, 'index'], function () {
     return view('home');
