@@ -40,6 +40,7 @@ class RegisteredUserController extends Controller
             'phone.regex' => 'Nomor telepon hanya boleh mengandung angka',
             'address.min' => 'Alamat minimal 10 karakter',
             'phone.min' => 'Nomor telepon minimal 10 karakter',
+            'email.unique' => 'Email and sudah terdaftar',
         ]);
 
         $user = User::create([
@@ -55,7 +56,10 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Registrasi berhasil!']);
+        }
 
-        return redirect()->route('home');
+        return redirect()->route('home')->with('success', 'Registrasi berhasil! Silakan login.');
     }
 }

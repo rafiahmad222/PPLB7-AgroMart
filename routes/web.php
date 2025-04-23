@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserShowController;
 use App\Models\User;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\Route;
@@ -19,15 +20,17 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'admin'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['admin'])->name('dashboard');
 Route::put('/dashboard/pesanan/{id}/update-status', [DashboardController::class, 'updateStatus'])
     ->name('dashboard.pesanan.updateStatus');
 Route::get('/api/chart-data', [App\Http\Controllers\DashboardController::class, 'chartData'])->name('api.chartData');
 
+Route::middleware(['auth'])->get('/profile/adminshowuser', [UserShowController::class, 'showUser'])->name('profile.adminshowuser');
 
-Route::get('/home', [HomeController::class, 'index'], function () {
-    return view('home');
-})->middleware(['auth'])->name('home');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');

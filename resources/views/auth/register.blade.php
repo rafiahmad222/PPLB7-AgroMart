@@ -20,8 +20,7 @@
                 </div>
                 <h2 class="text-3xl font-bold text-center text-gray-800">Daftar Akun!</h2>
                 <p class="mt-2 text-sm text-center text-gray-600">Harap Mengisi Data Akun Dengan Lengkap</p>
-                <form method="POST" action="{{ route('register') }}" class="mt-6 space-y-4" novalidate>
-                    @csrf
+                <form id="register-form" class="mt-6 space-y-4" novalidate>
 
                     <!-- Username -->
                     <div>
@@ -79,7 +78,7 @@
                     <!-- Submit Buttons -->
                     <div class="flex flex-col space-y-2">
                         <button type="submit"
-                            class="w-full px-6 py-3 text-white bg-green-700 rounded-lg shadow-md hover:bg-green-800">Save</button>
+                            class="w-full px-6 py-3 text-white bg-green-700 rounded-lg shadow-md hover:bg-green-800">Simpan</button>
                         <a href="{{ route('welcome') }}"
                             class="w-full px-6 py-3 text-center text-white bg-gray-500 rounded-lg shadow-md hover:bg-gray-600">Batal</a>
                         <a href="{{ url('auth/redirect') }}"
@@ -104,6 +103,16 @@
                                         @endforeach
                                     </ul>
                                 `,
+                            confirmButtonText: 'OK'
+                        });
+                    </script>
+                @endif
+                @if (session('success'))
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Registrasi Berhasil!',
+                            text: '{{ session('success') }}',
                             confirmButtonText: 'OK'
                         });
                     </script>
@@ -166,6 +175,55 @@
                 `;
             }
         }
+        document.getElementById('register-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch("{{ route('register') }}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Registrasi Berhasil!',
+                    text: 'Akun Anda berhasil dibuat.',
+                    confirmButtonText: 'OK'
+                });
+                form.reset(); // Reset form setelah sukses
+            } else {
+                let errorMessages = '';
+                for (let key in result.errors) {
+                    result.errors[key].forEach(msg => {
+                        errorMessages += `<li>${msg}</li>`;
+                    });
+                }
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Mendaftar',
+                    html: `<ul style="text-align:left;">${errorMessages}</ul>`,
+                    confirmButtonText: 'OK'
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Email anda sudah terdaftar',
+                text: 'Silakan gunakan email lain..'
+            });
+        }
+    });
     </script>
 </body>
 

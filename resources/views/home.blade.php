@@ -57,7 +57,7 @@
                 <img src="{{ asset('images/notifIcon.png') }}" alt="Notifikasi" class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
                 <div id="menuButton" class="relative">
                     <div class="flex items-center gap-2 cursor-pointer">
-                        <img src="{{ asset('images/avatar.png') }}" alt="Avatar" class="w-12 h-12 rounded-full">
+                        <img src="{{ Auth::user()->avatar_url }}" alt="Avatar" class="w-12 h-12 rounded-full">
                         <div class="hidden text-left md:block">
                             <span class="block font-bold">{{ Auth::user()->name }}</span>
                             <small class="text-gray-500">{{ Auth::user()->email }}</small>
@@ -67,6 +67,7 @@
                         <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun</a>
                         @if (Auth::user()->role === 'admin')
                         <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100" >Transaksi</a>
+                        <a href="{{ route('profile.adminshowuser') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun Customer</a>
                         @else
                             <a href="{{ route('pesananku') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Transaksi</a>
                         @endif

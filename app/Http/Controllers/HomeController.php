@@ -5,16 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use App\Models\Produk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
 {
+    $user = Auth::user();
     $kategoris = Kategori::all();
-    return view('home', compact('kategoris'));
+    return view('home', compact('kategoris', 'user'));
 }
 
 }

@@ -47,7 +47,7 @@ class GoogleAuthController extends Controller
     private function redirectUser()
     {
         if (Auth::user()->role == 'admin') {
-            return redirect('/dashboard');
+            return redirect('/home');
         } else {
             return redirect('/home');
         }

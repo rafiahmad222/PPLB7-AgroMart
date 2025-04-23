@@ -37,7 +37,7 @@
                     <img src="{{ asset('images/Logo_AgroMart.png') }}" alt="Logo AgroMart" class="h-12">
                 </a>
                 <div class="items-center hidden gap-4 text-base font-semibold md:flex text-emerald-700 font-[signika]">
-                    <a href="{{ route('dashboard') }}" class="hover:text-emerald-600">DASHBOARD</a>
+                    <a href="{{ route('home') }}" class="hover:text-emerald-600">HOME</a>
                     <div class="relative group">
                         <a href="{{ route('produk.index') }}" class="flex items-center gap-1">PRODUK</a>
                         <div class="absolute hidden w-40 bg-white rounded-md shadow-lg z-5 group-hover:block animate-fadeIn">
@@ -64,8 +64,13 @@
                         </div>
                     </div>
                     <div id="dropdownUser" class="absolute right-0 z-30 flex-col hidden w-48 mt-4 bg-white rounded-md shadow-2xl">
-                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Profile</a>
-                        <a href="{{ route('pesananku') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Pesananku</a>
+                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun</a>
+                        @if (Auth::user()->role === 'admin')
+                        <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100" >Transaksi</a>
+                        <a href="{{ route('profile.adminshowuser') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun Customer</a>
+                        @else
+                            <a href="{{ route('pesananku') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Transaksi</a>
+                        @endif
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" class="w-full px-4 py-2 text-sm text-left rounded-md hover:bg-gray-100">Logout</button>
