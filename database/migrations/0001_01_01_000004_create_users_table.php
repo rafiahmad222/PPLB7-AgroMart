@@ -22,12 +22,15 @@ return new class extends Migration
             $table->string('password');
             $table->string('role')->default('user');
             $table->string('avatar_url')->default('avatar.png');
-            $table->string('address')->nullable();
+            $table->unsignedBigInteger('id_alamat')->nullable(); // <-- ini pengganti address
             $table->string('phone')->nullable();
             $table->rememberToken();
             $table->timestamps();
-        });
 
+            // Foreign Key setelah semua kolom dibuat
+            $table->foreign('id_alamat')->references('id_alamat')->on('alamat')->onDelete('set null');
+        });
+    
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
