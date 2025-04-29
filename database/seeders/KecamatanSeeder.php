@@ -16,16 +16,29 @@ class KecamatanSeeder extends Seeder
         // Isi data kecamatan
         $data = [
             'Situbondo' => [
-                'Panarukan', 'Mangaran', 'Kapongan', 'Panji', 'Situbondo Kota'
+                'Arjasa', 'Asembagus', 'Banyuglugur', 'Banyuputih', 'Besuki',
+                'Bungatan', 'Jangkar', 'Jatibanteng', 'Kapongan', 'Kendit',
+                'Mangaran', 'Mlandingan', 'Panarukan','Panji', 'Situbondo',
+                'Sumbermalang', 'Suboh',
             ],
             'Bondowoso' => [
-                'Tamanan', 'Curahdami', 'Bondowoso Kota', 'Maesan', 'Pujer'
+                'Binakal', 'Bondowoso', 'Botolinggo','Cermee', 'Curahdami', 'Grujugan',
+                'Jambesari', 'Klabang','Maesan', 'Pakem', 'Prajekan', 'Pujer', 'Sempol',
+                'Sukosari','Sumberwringin', 'Taman Krocok', 'Tamanan', 'Tapen', 'Tegalampel',
+                'Tenggarang', 'Tlogosari', 'Wonosari', 'Wringin', 'Wonosari',
             ],
             'Jember' => [
-                'Kaliwates', 'Sumbersari', 'Patrang', 'Rambipuji', 'Pakusari'
+                'Ajung', 'Arjasa', 'Ambulu', 'Bangsalsari', 'Balung', 'Gumukmas',
+                'Jelbuk', 'Jenggawah', 'Jombang', 'Kalisat', 'Kaliwates', 'Kencong',
+                'Ledokombo', 'Mayang', 'Mumbulsari', 'Panti', 'Pakusari', 'Patrang',
+                'Puger', 'Rambipuji', 'Semboro', 'Silo', 'Sukorambi', 'Sukowono', 'Sumberbaru',
+                'Sumberjambe', 'Sumbersari', 'Tanggul', 'Tempurejo', 'Umbulsari', 'Wuluhan',
             ],
             'Banyuwangi' => [
-                'Banyuwangi Kota', 'Giri', 'Glagah', 'Rogojampi', 'Genteng'
+                'Pesanggaran','Siliragung','Bangorejo','Purwoharjo','Tegaldlimo',
+                'Muncar','Cluring','Gambiran','Tegalsari','Glenmore','Kalibaru',
+                'Srono','Rogojampi','Kabat','Singojuruh','Sempu','Songgon','Glagah',
+                'Licin','Banyuwangi','Giri','Kalipuro','Wongsorejo','Blimbingsari',
             ],
         ];
 
