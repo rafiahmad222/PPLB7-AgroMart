@@ -59,14 +59,6 @@
                         </div>
                     </div>
 
-                    <!-- Address -->
-                    <div>
-                        <label for="address" class="block text-sm font-medium text-gray-700">Informasi Alamat</label>
-                        <input id="address" type="text" name="address" value="{{ old('address') }}" required
-                            placeholder="Masukkan Alamat Anda"
-                            class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500" />
-                    </div>
-
                     <!-- Phone Number -->
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700">No. HP</label>
@@ -199,6 +191,8 @@
                     title: 'Registrasi Berhasil!',
                     text: 'Akun Anda berhasil dibuat.',
                     confirmButtonText: 'OK'
+                }).then(() => {
+                    window.location.href = "{{ route('home') }}"; // Redirect to login page
                 });
                 form.reset(); // Reset form setelah sukses
             } else {
