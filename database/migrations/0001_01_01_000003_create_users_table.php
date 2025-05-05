@@ -26,8 +26,6 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
 
-            // Foreign Key setelah semua kolom dibuat
-            $table->foreign('id_alamat')->references('id_alamat')->on('alamat')->onDelete('set null');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
