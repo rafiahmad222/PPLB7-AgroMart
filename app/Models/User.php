@@ -28,10 +28,13 @@ class User extends Authenticatable
         'password',
         'role',
         'avatar_url',
-        'address',
         'phone',
     ];
 
+    public function alamats()
+    {
+        return $this->hasMany(Alamat::class, 'user_id');
+    }
     /**
      * The attributes that should be hidden for arrays.
      */
@@ -48,4 +51,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
 }

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('alamat', function (Blueprint $table) {
             $table->id('id_alamat');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->unsignedBigInteger('id_kabupaten_kota');
             $table->unsignedBigInteger('id_kecamatan');
             $table->unsignedBigInteger('id_kode_pos');
