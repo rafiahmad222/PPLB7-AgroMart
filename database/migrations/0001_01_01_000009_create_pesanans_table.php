@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('pesanans', function (Blueprint $table) {
             $table->id('id_pesanan');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('produk_id')->constrained('produks', 'id_produk')->onDelete('cascade');
-            $table->string('nama');
-            $table->string('alamat');
-            $table->string('no_hp');
+            $table->foreignId('alamat_id')->constrained('alamat', 'id_alamat')->onDelete('cascade');
             $table->enum('pengiriman', ['wa_jek', 'ambil_ditempat']);
             $table->integer('jarak')->nullable();
             $table->integer('ongkir');

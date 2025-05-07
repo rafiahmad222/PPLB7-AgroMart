@@ -10,21 +10,32 @@ class Pesanan extends Model
     protected $table = 'pesanans';
     protected $primaryKey = 'id_pesanan';
     protected $fillable = [
+        'user_id',
+        'alamat_id',
         'produk_id',
-        'jumlah',
-        'nama',
-        'alamat',
-        'no_hp',
         'pengiriman',
         'jarak',
         'ongkir',
+        'jumlah',
         'pembayaran',
         'total',
-        'status'
+        'status',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    // Relasi ke Alamat
+    public function alamat()
+    {
+        return $this->belongsTo(Alamat::class, 'alamat_id');
+    }
+
+    // Relasi ke Produk
     public function produk()
     {
-        return $this->belongsTo(Produk::class, 'produk_id', 'id_produk');
+        return $this->belongsTo(Produk::class, 'produk_id');
     }
 }

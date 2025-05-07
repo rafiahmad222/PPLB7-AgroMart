@@ -37,7 +37,7 @@ class KategoriController extends Controller
             'nama_kategori' => $request->nama_kategori,
         ])->save();
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori created successfully.');
+        return redirect()->route('produk.index')->with('success', 'Kategori created successfully.');
     }
 
     /**

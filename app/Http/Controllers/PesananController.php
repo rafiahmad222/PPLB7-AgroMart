@@ -15,7 +15,7 @@ class PesananController extends Controller
     {
         $kategoris = Kategori::all();
         $user = Auth::user();
-        $pesanans = Pesanan::where('nama', $user->name)->get();
+        $pesanans = Pesanan::where('user_id', $user->id)->get();
 
         return view('pesanan.pesananku', compact('kategoris', 'pesanans'));
     }
@@ -31,5 +31,5 @@ class PesananController extends Controller
             return redirect()->route('pesananku')->with('error', 'Pesanan tidak dapat dikonfirmasi.');
         }
     }
-    
+
 }

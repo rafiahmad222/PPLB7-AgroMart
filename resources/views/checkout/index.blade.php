@@ -19,31 +19,36 @@
     <div class="grid max-w-5xl grid-cols-1 gap-6 p-6 mx-auto mt-4 bg-white rounded shadow-md md:grid-cols-3">
         <!-- Alamat Pengiriman dan Produk -->
         <div class="space-y-6 md:col-span-2">
-            <div>
-                <h2 class="mb-2 text-xl font-bold">Alamat Pengiriman</h2>
-                <div class="p-4 border rounded bg-gray-50">
-                    <p class="font-semibold">{{ Auth::user()->name }}</p>
-                    <p>{{ Auth::user()->address }}</p>
-                    <p>{{ Auth::user()->phone }}</p>
+            <form action="{{ route('checkout.store') }}" method="POST" class="space-y-4">
+                @csrf
+                <div>
+                    <h2 class="mb-2 text-xl font-bold">Alamat Pengiriman</h2>
+                    <div class="p-4 border rounded bg-gray-50">
+                        <label for="alamat_id" class="block font-semibold">Pilih Alamat</label>
+                        <select name="alamat_id" id="alamat_id" class="w-full px-3 py-2 mt-2 border rounded" required>
+                            <option value="">Pilih Alamat</option>
+                            @foreach ($alamat as $item)
+                                <option value="{{ $item->id_alamat }}">
+                                    {{ $item->label_alamat }} - {{ $item->detail_alamat }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
-            </div>
 
-            <div>
-                <h2 class="mb-2 text-xl font-bold">Produk yang Dipesan</h2>
-                <div class="flex items-start gap-4 p-4 border rounded bg-gray-50">
-                    <img src="{{ asset('storage/' . $produk->gambar_produk) }}" alt="Produk" class="object-cover w-20 h-20 rounded">
-                    <div>
-                        <p class="font-semibold">{{ $produk->nama_produk }}</p>
-                        <p class="text-gray-600">Harga: Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</p>
-                        <p class="text-gray-600">Jumlah: {{ $jumlah }}</p>
+                <div>
+                    <h2 class="mb-2 text-xl font-bold">Produk yang Dipesan</h2>
+                    <div class="flex items-start gap-4 p-4 border rounded bg-gray-50">
+                        <img src="{{ asset('storage/' . $produk->gambar_produk) }}" alt="Produk" class="object-cover w-20 h-20 rounded">
+                        <div>
+                            <p class="font-semibold">{{ $produk->nama_produk }}</p>
+                            <p class="text-gray-600">Harga: Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</p>
+                            <p class="text-gray-600">Jumlah: {{ $jumlah }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <form action="{{ route('checkout.store') }}" method="POST" class="space-y-4">
-            @csrf
         <!-- Ringkasan dan Submit -->
             <div class="space-y-4">
                 <div>
@@ -94,9 +99,6 @@
                     <input type="hidden" name="total" value="{{ $totalHarga }}">
                     <input type="hidden" id="harga_produk" value="{{ $produk->harga_produk }}">
                     <input type="hidden" name="ongkir" id="ongkirInput" value="0">
-                    <input type="hidden" name="nama" value="{{ Auth::user()->name }}">
-                    <input type="hidden" name="alamat" value="{{ Auth::user()->address }}">
-                    <input type="hidden" name="no_hp" value="{{ Auth::user()->phone }}">
                     <button type="submit" class="w-full px-4 py-2 font-bold text-white bg-green-600 rounded hover:bg-green-700">
                         Bayar Sekarang
                     </button>
