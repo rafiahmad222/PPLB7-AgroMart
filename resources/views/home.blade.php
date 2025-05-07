@@ -57,7 +57,7 @@
                 <img src="{{ asset('images/notifIcon.png') }}" alt="Notifikasi" class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
                 <div id="menuButton" class="relative">
                     <div class="flex items-center gap-2 cursor-pointer">
-                        <img src="{{ Auth::user()->avatar_url }}" alt="Avatar" class="w-12 h-12 rounded-full">
+                        <img src="{{ Auth::user()->avatar_url }}" alt="Avatar" class="w-12 h-12 border-2 rounded-full border-emerald-500">
                         <div class="hidden text-left md:block">
                             <span class="block font-bold">{{ Auth::user()->name }}</span>
                             <small class="text-gray-500">{{ Auth::user()->email }}</small>

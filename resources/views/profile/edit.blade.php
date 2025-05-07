@@ -91,7 +91,7 @@
             </div>
         </nav>
     </header>
-    <div class="max-w-3xl p-8 mx-auto mt-10 space-y-10 bg-white rounded shadow">
+    <div class="max-w-3xl p-4 mx-auto mt-10 space-y-10 rounded shadow-md bg-white-500">
         {{-- STATUS NOTIFIKASI --}}
         @if (session('status'))
             <div class="mb-4 text-green-600">
@@ -147,11 +147,6 @@
                         class="w-full px-3 py-2 border rounded">
                 </div>
 
-                <div class="mb-4">
-                    <label>Alamat</label>
-                    <textarea name="address" class="w-full px-3 py-2 border rounded">{{ old('address', Auth::user()->address) }}</textarea>
-                </div>
-
                 <button type="submit" class="px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
                     Simpan Profil
                 </button>
@@ -190,13 +185,15 @@
     </div>
 
     {{-- MODAL CROP --}}
-    <div id="crop-modal" class="fixed inset-0 z-50 items-center justify-center hidden bg-black bg-opacity-50">
-        <div class="w-full max-w-md p-4 bg-white rounded">
-            <h2 class="mb-2 font-bold">Crop Avatar</h2>
-            <img id="crop-image" class="mx-auto max-h-64">
-            <div class="flex justify-end gap-2 mt-4">
-                <button id="crop-cancel" class="px-4 py-2 text-white bg-gray-400 rounded">Batal</button>
-                <button id="crop-save" class="px-4 py-2 text-white bg-green-600 rounded">Simpan</button>
+    <div id="crop-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+        <div class="w-full max-w-lg p-4 bg-white rounded-lg shadow-lg">
+            <h2 class="mb-4 text-lg font-semibold text-center">Crop Gambar</h2>
+            <div class="flex justify-center">
+                <img id="crop-image" class="max-w-full rounded-md shadow max-h-64" />
+            </div>
+            <div class="flex justify-end mt-4 space-x-4">
+                <button id="crop-cancel" class="px-4 py-2 text-white bg-gray-400 rounded hover:bg-gray-500">Batal</button>
+                <button id="crop-save" class="px-4 py-2 text-white bg-green-600 rounded hover:bg-green-700">Simpan</button>
             </div>
         </div>
     </div>
@@ -258,6 +255,8 @@
                     cropper = new Cropper(cropImage, {
                         aspectRatio: 1,
                         viewMode: 1,
+                        responsive: true,
+                        autoCropArea: 1,
                     });
                 };
                 reader.readAsDataURL(file);

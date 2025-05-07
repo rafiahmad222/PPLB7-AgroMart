@@ -33,7 +33,6 @@ class ProfileController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $request->user()->id],
             'phone' => ['nullable', 'string', 'max:15'],
-            'address' => ['nullable', 'string', 'max:255'],
             'cropped_avatar' => ['nullable', 'string'],
         ]);
 
@@ -42,7 +41,6 @@ class ProfileController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->address = $request->address;
 
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
