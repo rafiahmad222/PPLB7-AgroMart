@@ -46,9 +46,9 @@
                             @endforeach
                         </div>
                     </div>
-                    <a href="#edukasi" class="hover:text-emerald-400">EDUKASI</a>
+                    <a href="{#edukasi}" class="hover:text-emerald-400">EDUKASI</a>
                     <a href="#galeri" class="hover:text-emerald-400">GALERI</a>
-                    <a href="#layanan" class="hover:text-emerald-400">LAYANAN</a>
+                    <a href="{{ route('layanan.index') }}" class="hover:text-emerald-400">LAYANAN</a>
                     <a href="#contact" class="hover:text-emerald-400">CONTACT US</a>
                 </div>
             </div>
