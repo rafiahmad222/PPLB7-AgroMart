@@ -10,21 +10,39 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Alamat;
 use App\Models\Kategori;
+use App\Models\KabupatenKota;
+use App\Models\Kecamatan;
+use App\Models\KodePos;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
+    public function getKecamatan($id_kabupaten_kota)
+    {
+        $kecamatan = Kecamatan::where('id_kabupaten_kota', $id_kabupaten_kota)->get();
+        return response()->json($kecamatan);
+    }
+
+    public function getKodePos($id_kecamatan)
+    {
+        $kodePos = KodePos::where('id_kecamatan', $id_kecamatan)->get();
+        return response()->json($kodePos);
+    }
     public function edit(Request $request): View
     {
+        $kabupatenKota = KabupatenKota::all();
+        $kecamatan = Kecamatan::all();
+        $kodePos = KodePos::all();
         $kategoris = Kategori::all();
         $alamat = Alamat::with(['kabupatenKota', 'kecamatan', 'kodePos'])
             ->where('user_id', Auth::user()->id)->get();
         return view('profile.edit', [
             'user' => $request->user(),
             'kategoris' => $kategoris,
+            'kabupatenKota' => $kabupatenKota,
+            'kecamatan' => $kecamatan,
+            'kodePos' => $kodePos,
             'alamat' => $alamat,
+
         ]);
     }
 

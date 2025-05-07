@@ -20,6 +20,7 @@ class Alamat extends Model
         'id_kecamatan',
         'id_kode_pos',
         'detail_alamat',
+        'label_alamat',
     ];
 
     // ====================

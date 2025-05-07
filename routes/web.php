@@ -15,6 +15,7 @@ use App\Models\User;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\AlamatController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -64,4 +65,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/register', [RegisteredUserController::class, 'create'])->middleware('guest')->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('guest');
 
+Route::get('/get-kecamatan/{id_kabupaten_kota}', [ProfileController::class, 'getKecamatan']);
+Route::get('/get-kode-pos/{id_kecamatan}', [ProfileController::class, 'getKodePos'])->name('get.kodepos');
+Route::post('/alamat/store', [AlamatController::class, 'store'])->name('alamat.store');
 require __DIR__.'/auth.php';
