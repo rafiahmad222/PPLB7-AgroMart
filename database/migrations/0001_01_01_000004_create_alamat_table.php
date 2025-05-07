@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_kecamatan');
             $table->unsignedBigInteger('id_kode_pos');
             $table->text('detail_alamat');
+            $table->string('label_alamat');
             $table->timestamps();
 
             $table->foreign('id_kabupaten_kota')->references('id_kabupaten_kota')->on('kabupaten_kota')->onDelete('restrict');

@@ -91,7 +91,7 @@
             </div>
         </nav>
     </header>
-    <div class="max-w-3xl p-4 mx-auto mt-10 space-y-10 rounded shadow-md bg-white-500">
+    <div class="max-w-lg p-4 mx-auto mt-10 space-y-10 rounded shadow-md bg-white-500">
         {{-- STATUS NOTIFIKASI --}}
         @if (session('status'))
             <div class="mb-4 text-green-600">
