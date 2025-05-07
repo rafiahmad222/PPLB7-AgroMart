@@ -184,6 +184,30 @@
         </section>
     </div>
 
+    <section>
+        <h2 class="mb-4 text-xl font-bold">Alamat Customer</h2>
+        <div class="space-y-4">
+            @if ($alamat->isEmpty())
+                <p class="text-gray-500">Tidak ada alamat yang ditambahkan.</p>
+                @foreach ($alamat as $alamats)
+                    <div class="p-4 border rounded shadow">
+                        <p class="font-semibold">{{ $alamats->label }}</p>
+                        <p>{{ $alamats->detail_alamat }}</p>
+                        <p>{{ $alamats->kabupatenKota->nama }}, {{ $alamats->kecamatan->nama }}</p>
+                        <p>{{ $address->kode_pos->kode }}</p>
+                        <div class="flex justify-end mt-2 space-x-2">
+                            <button class="px-4 py-2 text-sm text-white bg-yellow-500 rounded hover:bg-yellow-600">Edit</button>
+                            <button class="px-4 py-2 text-sm text-white bg-red-500 rounded hover:bg-red-600">Hapus</button>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+        </div>
+        <button id="add-address" class="w-full px-4 py-2 mt-4 text-white bg-green-600 rounded hover:bg-green-700">
+            Tambah Alamat
+        </button>
+    </section>
+
     {{-- MODAL CROP --}}
     <div id="crop-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
         <div class="w-full max-w-lg p-4 bg-white rounded-lg shadow-lg">
