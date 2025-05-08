@@ -69,6 +69,7 @@ Route::post('/register', [RegisteredUserController::class, 'store'])->middleware
 Route::get('/get-kecamatan/{id_kabupaten_kota}', [ProfileController::class, 'getKecamatan']);
 Route::get('/get-kode-pos/{id_kecamatan}', [ProfileController::class, 'getKodePos'])->name('get.kodepos');
 Route::post('/alamat/store', [AlamatController::class, 'store'])->name('alamat.store');
+Route::put('/alamat/update', [AlamatController::class, 'update'])->name('alamat.update');
 
 Route::resource('layanan', LayananController::class);
 Route::get('/layanan/{id}', [LayananController::class, 'show'])->name('layanan.show');

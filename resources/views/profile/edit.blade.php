@@ -191,10 +191,11 @@
                             <div class="p-4 border rounded shadow">
                                 <p class="font-semibold">{{ $alamats->label_alamat }}</p>
                                 <p>{{ $alamats->detail_alamat }}</p>
-                                <p>{{ $alamats->kecamatan->nama_kecamatan }}, {{ $alamats->kabupatenKota->nama_kabupaten_kota }}</p>
+                                <p>{{ $alamats->kecamatan->nama_kecamatan }},
+                                    {{ $alamats->kabupatenKota->nama_kabupaten_kota }}</p>
                                 <p>{{ $alamats->kodePos->kode_pos }}</p>
                                 <div class="flex justify-end mt-2 space-x-2">
-                                    <button
+                                    <button id="openEditModal"
                                         class="px-4 py-2 text-sm text-white bg-yellow-500 rounded hover:bg-yellow-600">Edit</button>
                                     <button
                                         class="px-4 py-2 text-sm text-white bg-red-500 rounded hover:bg-red-600">Hapus</button>
@@ -233,7 +234,8 @@
                         required>
                         <option value="">Pilih Kabupaten/Kota</option>
                         @foreach ($kabupatenKota as $kabupaten)
-                            <option value="{{ $kabupaten->id_kabupaten_kota }}">{{ $kabupaten->nama_kabupaten_kota }}</option>
+                            <option value="{{ $kabupaten->id_kabupaten_kota }}">{{ $kabupaten->nama_kabupaten_kota }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
