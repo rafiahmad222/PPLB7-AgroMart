@@ -31,9 +31,9 @@ class User extends Authenticatable
         'phone',
     ];
 
-    public function alamats()
+    public function alamat()
     {
-        return $this->hasMany(Alamat::class, 'user_id');
+        return $this->hasOne(Alamat::class, 'user_id', 'id');
     }
     /**
      * The attributes that should be hidden for arrays.
