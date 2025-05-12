@@ -16,7 +16,7 @@
             <div class="mb-4">
                 <label for="nama_layanan" class="block text-sm font-medium text-gray-700">Nama Layanan</label>
                 <input type="text" name="nama_layanan" id="nama_layanan" value="{{ $layanan->nama_layanan }}"
-                    class="block w-full mt-1 border-2 border-gray-300 rounded-md shadow-sm" required>
+                    class="block w-full px-3 py-1 mt-1 border-2 border-gray-300 rounded-md shadow-sm" required>
             </div>
             <div class="mb-4">
                 <label for="gambar_layanan" class="block text-sm font-medium text-gray-700">Gambar Layanan</label>
@@ -31,12 +31,12 @@
             <div class="mb-4">
                 <label for="harga_layanan" class="block text-sm font-medium text-gray-700">Harga Layanan</label>
                 <input type="number" name="harga_layanan" id="harga_layanan" value="{{ $layanan->harga_layanan }}"
-                    class="block w-full mt-1 border-2 border-gray-300 rounded-md shadow-sm" required>
+                    class="block w-full px-3 py-1 mt-1 border-2 border-gray-300 rounded-md shadow-sm" required>
             </div>
             <div class="mb-4">
                 <label for="deskripsi_layanan" class="block text-sm font-medium text-gray-700">Deskripsi Layanan</label>
                 <textarea name="deskripsi_layanan" id="deskripsi_layanan" rows="4"
-                    class="block w-full mt-1 border-2 border-gray-300 rounded-md shadow-sm">{{ $layanan->deskripsi_layanan }}</textarea>
+                    class="block w-full px-3 py-1 mt-1 border-2 border-gray-300 rounded-md shadow-sm">{{ $layanan->deskripsi_layanan }}</textarea>
             </div>
             <button type="submit" class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">Simpan</button>
         </form>
