@@ -13,4 +13,8 @@ class Layanan extends Model
         'deskripsi_layanan',
         'harga_layanan',
     ];
+    public function transaksiLayanan()
+    {
+        return $this->hasMany(TransaksiLayanan::class);
+    }
 }

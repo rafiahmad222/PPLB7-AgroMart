@@ -33,6 +33,11 @@ class Alamat extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function transaksiLayanan()
+    {
+        return $this->hasMany(TransaksiLayanan::class);
+    }
+
     // Alamat milik Kabupaten/Kota
     public function kabupatenKota()
     {

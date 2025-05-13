@@ -35,6 +35,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Alamat::class, 'user_id', 'id');
     }
+    public function transaksiLayanan()
+    {
+        return $this->hasMany(TransaksiLayanan::class);
+    }
     /**
      * The attributes that should be hidden for arrays.
      */
@@ -51,6 +55,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-
 }

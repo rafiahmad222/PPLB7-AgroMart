@@ -28,8 +28,9 @@
                 <p class="mt-4 text-gray-600">{{ $layanan->deskripsi_layanan }}</p>
                 <!-- Tombol Beli -->
                 <div class="flex mt-6">
-                    <form action="#" method="POST" class="w-full">
+                    <form action="{{ route('transaksi-layanan.create') }}" method="GET" class="w-full">
                         @csrf
+                        <input type="hidden" name="layanan_id" value="{{ $layanan->id }}">
                         <button type="submit"
                             class="w-full px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">Beli</button>
                     </form>

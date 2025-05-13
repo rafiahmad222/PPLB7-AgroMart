@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\LayananController;
+use App\Http\Controllers\TransaksiLayananController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,9 +41,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/auth/redirect', [GoogleAuthController:: class, 'redirect']);
+Route::get('/auth/redirect', [GoogleAuthController::class, 'redirect']);
 
-Route::get('/auth/google/callback', [GoogleAuthController:: class, 'callback']);
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 
 Route::resource('kategori', KategoriController::class);
 Route::get('/produk/filter', [ProdukController::class, 'filter'])->name('produk.filter');
@@ -72,6 +73,15 @@ Route::post('/alamat/store', [AlamatController::class, 'store'])->name('alamat.s
 Route::put('/alamat/update', [AlamatController::class, 'update'])->name('alamat.update');
 
 Route::resource('layanan', LayananController::class);
-Route::get('/layanan/{id}', [LayananController::class, 'show'])->name('layanan.show');
-Route::get('/layanan/{id}/edit', [LayananController::class, 'edit'])->name('layanan.edit');
-require __DIR__.'/auth.php';
+Route::middleware('auth')->group(function () {
+    Route::get('/layanan/{id}', [App\Http\Controllers\LayananController::class, 'show'])->name('layanan.show');
+
+    Route::get('/transaksi-layanan/create', [TransaksiLayananController::class, 'create'])->name('transaksi-layanan.create');
+    Route::post('/transaksi-layanan/store', [TransaksiLayananController::class, 'store'])->name('transaksi-layanan.store');
+});
+
+// Admin
+Route::middleware(['auth', 'can:admin'])->group(function () {
+    Route::get('/layanan/{id}/edit', [LayananController::class, 'edit'])->name('layanan.edit');
+});
+require __DIR__ . '/auth.php';
