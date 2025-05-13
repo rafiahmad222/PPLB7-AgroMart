@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class TransaksiLayanan extends Model
 {
     use HasFactory;
+    protected $table = 'transaksi_layanans'; // Nama tabel
+    protected $primaryKey = 'id_transaksi_layanan'; // Nama primary key
 
     protected $fillable = [
         'user_id',
@@ -30,12 +32,12 @@ class TransaksiLayanan extends Model
     // Relasi ke Layanan
     public function layanan()
     {
-        return $this->belongsTo(Layanan::class);
-    }
+    return $this->belongsTo(Layanan::class, 'layanan_id', 'id_layanan');
+}
 
     // Relasi ke Alamat
     public function alamat()
     {
-        return $this->belongsTo(Alamat::class);
+        return $this->belongsTo(Alamat::class, 'alamat_id', 'id_alamat');
     }
 }

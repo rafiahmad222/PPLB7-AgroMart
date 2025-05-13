@@ -31,14 +31,14 @@ class TransaksiLayananController extends Controller
         ]);
 
         $layanan = Layanan::find($data['layanan_id']);
-        $total = $layanan->harga * $data['jumlah'];
+        $total = $layanan->harga_layanan * $data['jumlah'];
 
         $bukti = null;
         if ($data['pembayaran'] == 'transfer' && $request->hasFile('bukti_transfer')) {
             $bukti = $request->file('bukti_transfer')->store('bukti_transfer', 'public');
         }
 
-        TransaksiLayanan::create([
+        $transaksi = TransaksiLayanan::create([
             'user_id' => Auth::id(),
             'layanan_id' => $data['layanan_id'],
             'alamat_id' => $data['alamat_id'],
@@ -50,6 +50,32 @@ class TransaksiLayananController extends Controller
             'status' => 'pending',
         ]);
 
-        return redirect()->route('layanan.show', $data['layanan_id'])->with('success', 'Transaksi berhasil!');
+        return redirect()->route('transaksi-layanan.invoice', ['id' => $transaksi->id_transaksi_layanan])->with('success', 'Transaksi berhasil!');
+    }
+    public function invoice($id)
+    {
+        $transaksi = TransaksiLayanan::with(['layanan', 'alamat', 'user'])->findOrFail($id);
+
+        // Pastikan hanya user yang punya transaksi bisa lihat invoicenya
+        if ($transaksi->user_id !== Auth::id()) {
+            return redirect()->route('layanan.index')->with('error', 'Anda tidak memiliki akses ke invoice ini.');
+        }
+
+        // Nomor WhatsApp owner
+        $ownerPhone = '6281216237388'; // Ganti dengan nomor WhatsApp owner
+
+        // Pesan WhatsApp
+        $waMessage = "Halo, berikut adalah detail transaksi layanan:\n\n" .
+            "Nama Customer: {$transaksi->user->name}\n" .
+            "Email: {$transaksi->user->email}\n" .
+            "Tanggal Transaksi: {$transaksi->created_at->format('d M Y H:i')}\n" .
+            "Layanan: {$transaksi->layanan->nama_layanan}\n" .
+            "Jumlah: {$transaksi->jumlah}\n" .
+            "Total: Rp" . number_format($transaksi->total, 0, ',', '.') . "\n" .
+            "Metode Pembayaran: " . ucfirst($transaksi->pembayaran) . "\n" .
+            "Jadwal Booking: " . \Carbon\Carbon::parse($transaksi->jadwal_booking)->format('d M Y H:i') . "\n" .
+            "Alamat Instalasi: {$transaksi->alamat->detail_alamat}";
+
+        return view('transaksi-layanan.invoice', compact('transaksi', 'ownerPhone', 'waMessage'));
     }
 }

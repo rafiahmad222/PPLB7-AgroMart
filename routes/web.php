@@ -75,7 +75,8 @@ Route::put('/alamat/update', [AlamatController::class, 'update'])->name('alamat.
 Route::resource('layanan', LayananController::class);
 Route::middleware('auth')->group(function () {
     Route::get('/layanan/{id}', [App\Http\Controllers\LayananController::class, 'show'])->name('layanan.show');
-
+    Route::get('/transaksi-layanan/{id}/invoice', [TransaksiLayananController::class, 'invoice'])
+    ->name('transaksi-layanan.invoice');
     Route::get('/transaksi-layanan/create', [TransaksiLayananController::class, 'create'])->name('transaksi-layanan.create');
     Route::post('/transaksi-layanan/store', [TransaksiLayananController::class, 'store'])->name('transaksi-layanan.store');
 });

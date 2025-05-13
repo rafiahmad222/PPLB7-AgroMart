@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('transaksi_layanans', function (Blueprint $table) {
             $table->id('id_transaksi_layanan');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('produk_id')->constrained('produks', 'id_produk')->onDelete('cascade');
+            $table->foreignId('layanan_id')->constrained('layanans', 'id_layanan')->onDelete('cascade');
             $table->foreignId('alamat_id')->constrained('alamat', 'id_alamat')->onDelete('cascade');
             $table->integer('jumlah')->default(1);
             $table->enum('pembayaran', ['transfer', 'cod']);
