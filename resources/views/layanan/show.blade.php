@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
+<body class="bg-gray-100">
     <div class="container px-4 py-8 mx-auto">
         <div class="max-w-xl mx-auto overflow-hidden bg-white rounded-lg shadow-md">
             <img src="{{ asset('storage/' . $layanan->gambar_layanan) }}" alt="{{ $layanan->nama_layanan }}"
