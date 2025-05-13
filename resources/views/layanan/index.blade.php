@@ -73,25 +73,24 @@
         </div>
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             @foreach ($layanans as $layanan)
-            <a href="{{ route('layanan.show', $layanan->id_layanan) }}">
-                <div class="overflow-hidden bg-white rounded-lg shadow-md">
-                    <img src="{{ asset('storage/' . $layanan->gambar_layanan) }}" alt="{{ $layanan->nama_layanan }}"
-                        class="object-contain w-full h-48">
-                    <div class="p-4">
-                        <h2 class="text-lg font-semibold text-gray-800">{{ $layanan->nama_layanan }}</h2>
-                        <p class="font-bold text-emerald-600">Rp
-                            {{ number_format($layanan->harga_layanan, 0, ',', '.') }}</p>
-                        <p class="mt-2 text-gray-600">{{ $layanan->deskripsi_layanan }}</p>
+                <a href="{{ route('layanan.show', $layanan->id_layanan) }}">
+                    <div class="overflow-hidden bg-white rounded-lg shadow-md">
+                        <img src="{{ asset('storage/' . $layanan->gambar_layanan) }}"
+                            alt="{{ $layanan->nama_layanan }}" class="object-contain w-full h-48">
+                        <div class="p-4">
+                            <h2 class="text-lg font-semibold text-gray-800">{{ $layanan->nama_layanan }}</h2>
+                            <p class="font-bold text-emerald-600">Rp
+                                {{ number_format($layanan->harga_layanan, 0, ',', '.') }}</p>
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
             @endforeach
         </div>
     </main>
 
 
     <div id="modalTambahLayanan"
-        class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+        class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50 rounded-sm">
         <div class="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
             <h2 class="mb-4 text-xl font-bold text-gray-800">Tambah Layanan</h2>
             <form action="{{ route('layanan.store') }}" method="POST" enctype="multipart/form-data">
@@ -99,7 +98,7 @@
                 <div class="mb-4">
                     <label for="nama_layanan" class="block text-sm font-medium text-gray-700">Nama Layanan</label>
                     <input type="text" name="nama_layanan" id="nama_layanan"
-                        class="w-full px-3 py-2 border-2 rounded border-emerald-600" required>
+                        class="w-full px-3 py-2 border-2 rounded border-emerald-600 focus:border-emerald-400">
                 </div>
                 <div class="mb-4">
                     <label for="gambar_layanan" class="block text-sm font-medium text-gray-700">Gambar Layanan</label>
@@ -115,13 +114,13 @@
                 <div class="mb-4">
                     <label for="harga_layanan" class="block text-sm font-medium text-gray-700">Harga Layanan</label>
                     <input type="text" name="harga_layanan" id="harga_layanan"
-                        class="w-32 px-3 py-2 border-2 rounded shadow-md border-emerald-600 required">
+                        class="w-32 px-3 py-2 border-2 rounded shadow-md border-emerald-600">
                 </div>
                 <div class="mb-4">
                     <label for="deskripsi_layanan" class="block text-sm font-medium text-gray-700">Deskripsi
                         Layanan</label>
                     <textarea name="deskripsi_layanan" id="deskripsi_layanan" rows="4"
-                        class="w-full px-3 py-2 border-2 rounded shadow-md border-emerald-600 required"></textarea>
+                        class="w-full px-3 py-2 border-2 rounded shadow-md border-emerald-600"></textarea>
                 </div>
                 <div class="flex justify-end space-x-4">
                     <button type="button" id="closeModalButton"
@@ -130,6 +129,28 @@
                         class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">Simpan</button>
                 </div>
             </form>
+        </div>
+    </div>
+    <div id="successModal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+        <div class="w-full max-w-sm p-6 bg-white rounded-lg shadow-lg">
+            <h2 class="mb-4 text-xl font-bold text-gray-800">Layanan Berhasil Ditambahkan</h2>
+            <div class="flex justify-center">
+                <button id="closeSuccessModalButton"
+                    class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
+                    Oke
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="errorModal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+        <div class="w-full max-w-sm p-6 bg-white rounded-lg shadow-lg">
+            <h2 class="mb-4 text-xl font-bold text-red-600">Data Tidak Sesuai</h2>
+            <p class="mb-4 text-gray-800">Pastikan semua data wajib diisi dengan benar.</p>
+            <div class="flex justify-center">
+                <button id="closeErrorModalButton" class="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700">
+                    Oke
+                </button>
+            </div>
         </div>
     </div>
     <!-- Footer -->
@@ -156,6 +177,32 @@
     </footer>
 
     <script>
+        // Modal notifikasi error
+        const errorModal = document.getElementById('errorModal');
+        const closeErrorModalButton = document.getElementById('closeErrorModalButton');
+
+        // Tampilkan modal jika ada pesan error dari server
+        @if ($errors->any())
+            errorModal.classList.remove('hidden');
+        @endif
+
+        // Tutup modal ketika tombol "Oke" diklik
+        closeErrorModalButton.addEventListener('click', () => {
+            errorModal.classList.add('hidden');
+        });
+        // Modal notifikasi sukses
+        const successModal = document.getElementById('successModal');
+        const closeSuccessModalButton = document.getElementById('closeSuccessModalButton');
+
+        // Tampilkan modal jika ada pesan sukses dari server
+        @if (session('success'))
+            successModal.classList.remove('hidden');
+        @endif
+
+        // Tutup modal ketika tombol "Oke" diklik
+        closeSuccessModalButton.addEventListener('click', () => {
+            successModal.classList.add('hidden');
+        });
         // Preview gambar saat diupload
         const inputGambar = document.getElementById('gambar_layanan');
         const previewGambar = document.getElementById('previewGambar');
