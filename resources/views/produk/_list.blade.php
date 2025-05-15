@@ -1,35 +1,42 @@
+{{-- filepath: d:\PPL-AgroMart\resources\views\produk\_list.blade.php --}}
 @forelse ($produks as $produk)
-    <div class="product-card" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; margin-bottom: 16px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-        <a href="{{ route('produk.show', $produk->id_produk) }}" style="text-decoration: none; color: inherit;">
+    <div
+        class="overflow-hidden transition duration-300 transform bg-white rounded-lg shadow-md hover:shadow-lg hover:-translate-y-1">
+        <a href="{{ route('produk.show', $produk->id_produk) }}" class="block">
             @if ($produk->gambar_produk)
-            <img src="{{ asset('storage/' . $produk->gambar_produk) }}" alt="{{ $produk->nama_produk }}"
-                style="width: 100%; height: 200px; object-fit: contain; border-radius: 12px;">
+                <div class="h-48 overflow-hidden bg-gray-100">
+                    <img src="{{ asset('storage/' . $produk->gambar_produk) }}" alt="{{ $produk->nama_produk }}"
+                        class="object-contain w-full h-full">
+                </div>
             @else
-                <div style="height: 200px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af; border-radius: 12px;">
-                    Tidak ada gambar
+                <div class="flex items-center justify-center h-48 bg-gray-100">
+                    <span class="text-gray-400">Tidak ada gambar</span>
                 </div>
             @endif
 
-            <div style="padding: 16px; display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <h3 style="margin: 0; font-size: 18px; font-weight: bold;">{{ $produk->nama_produk }}</h3>
-                    <p style="margin: 4px 0; color: #10b981; font-weight: 600;">Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</p>
-                </div>
-                <div>
-                    <p style="margin: 0; color: #6b7280;">Stok: {{ $produk->jumlah_stok }}</p>
-                </div>
+            <div class="p-4">
+                <h3 class="mb-1 text-lg font-bold text-gray-800">{{ $produk->nama_produk }}</h3>
+                <p class="mb-2 text-lg font-semibold text-emerald-600">Rp
+                    {{ number_format($produk->harga_produk, 0, ',', '.') }}</p>
+                <p class="text-sm text-gray-500">Stok: {{ $produk->jumlah_stok }}</p>
+
                 @if (Auth::user()->hasRole('admin'))
-                    <div class="actions" style="">
-                        <a href="{{ route('produk.edit', $produk->id_produk) }}" class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 decoration-none" style="text-decoration: none; color: white; border-radius: 8px; background-color: #3b82f6; padding: 8px 16px;">
+                    <div class="flex mt-3">
+                        <a href="{{ route('produk.edit', $produk->id_produk) }}"
+                            class="px-4 py-1 text-sm text-white transition bg-blue-600 rounded hover:bg-blue-700">
                             Edit
                         </a>
                     </div>
                 @endif
             </div>
-
         </a>
-
     </div>
 @empty
-    <p style="color: #6b7280;">Produk tidak ditemukan.</p>
+    <div class="py-16 text-center col-span-full">
+        <svg class="w-16 h-16 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <p class="mt-4 text-lg text-gray-500">Produk tidak ditemukan</p>
+    </div>
 @endforelse

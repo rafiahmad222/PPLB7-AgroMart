@@ -42,190 +42,10 @@
         .animate-fadeOut {
             animation: fadeOut 0.3s ease-out forwards;
         }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .search-bar {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-        }
-
-        .search-bar input {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            width: 250px;
-        }
-
-        .search-bar button,
-        .search-bar a {
-            background-color: #10b981;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 8px;
-            text-decoration: none;
-            border: none;
-        }
-
-        .search-bar button:hover,
-        .search-bar a:hover {
-            background-color: #059669;
-        }
-
-        .content {
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .sidebar {
-            position: sticky;
-            top: 100px;
-            height: fit-content;
-            min-width: 250px;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .sidebar a {
-            display: block;
-            padding: 8px 0;
-            color: #374151;
-            text-decoration: none;
-        }
-
-        .sidebar a:hover {
-            color: #10b981;
-        }
-
-        .product-grid {
-            width: 70%;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .product-grid.fade-out {
-            opacity: 0;
-            transform: scale(0.98);
-            transition: all 0.3s ease;
-        }
-
-        .product-grid.fade-in {
-            opacity: 1;
-            transform: scale(1);
-            transition: all 0.3s ease;
-        }
-
-        .product-card {
-            background-color: rgb(255, 251, 251);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            transition: 0.3s ease;
-        }
-
-        .product-card:hover {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-card img {
-            width: 100%;
-            height: 200px;
-            margin-top: 1rem;
-            object-fit: contain;
-        }
-
-        .product-card img:hover {
-            transform: scale(1.10);
-            transition: transform 0.8s;
-        }
-
-        .product-card .content {
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .info-kiri h3 {
-            margin: 0;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #111827;
-        }
-
-        .info-kiri .harga {
-            margin-top: 4px;
-            color: #10b981;
-            font-weight: bold;
-            font-size: 0.95rem;
-        }
-
-        .stok-kanan {
-            text-align: right;
-            margin: 0;
-            font-size: 0.9rem;
-            color: #6b7280;
-            white-space: nowrap;
-        }
-
-        .footer {
-            background-color: #1f2937;
-            color: white;
-            padding: 40px 20px;
-            margin-top: 60px;
-        }
-
-        .footer .section {
-            margin-bottom: 20px;
-        }
-
-        .footer h4 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-        .footer a {
-            color: #d1d5db;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            color: #10b981;
-        }
-
-        @media (max-width: 768px) {
-            .content {
-                flex-direction: column;
-            }
-
-            .sidebar,
-            .product-grid {
-                width: 100%;
-            }
-        }
     </style>
 </head>
 
-<body>
+<body class="font-sans bg-gray-100">
     <header class="sticky top-0 z-50 bg-white shadow-md">
         <nav class="flex items-center justify-between max-w-screen-xl px-4 py-3 mx-auto">
             <div class="flex items-center space-x-6">
@@ -244,9 +64,9 @@
                             @endforeach
                         </div>
                     </div>
-                    <a href="#edukasi" class="hover:text-emerald-400">EDUKASI</a>
+                    <a href="{#edukasi}" class="hover:text-emerald-400">EDUKASI</a>
                     <a href="#galeri" class="hover:text-emerald-400">GALERI</a>
-                    <a href="#layanan" class="hover:text-emerald-400">LAYANAN</a>
+                    <a href="{{ route('layanan.index') }}" class="hover:text-emerald-400">LAYANAN</a>
                     <a href="#contact" class="hover:text-emerald-400">CONTACT US</a>
                 </div>
             </div>
@@ -257,7 +77,8 @@
                     class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
                 <div id="menuButton" class="relative">
                     <div class="flex items-center gap-2 cursor-pointer">
-                        <img src="{{ Auth::user()->avatar_url }}" alt="Avatar" class="w-12 h-12 rounded-full">
+                        <img src="{{ Auth::user()->avatar_url }}" alt="Avatar"
+                            class="w-12 h-12 border-2 rounded-full border-emerald-500">
                         <div class="hidden text-left md:block">
                             <span class="block font-bold">{{ Auth::user()->name }}</span>
                             <small class="text-gray-500">{{ Auth::user()->email }}</small>
@@ -287,125 +108,163 @@
         </nav>
     </header>
 
-    <div class="container">
-        <div class="search-bar">
-            <form action="{{ route('produk.index') }}" method="GET">
-                <input type="text" name="search" placeholder="Cari produk..." value="{{ request('search') }}">
-                <button type="submit">Cari</button>
+    <main class="px-4 py-8 mx-auto max-w-7xl">
+        <div class="flex flex-col gap-4 mb-6 md:flex-row md:items-center md:justify-between">
+            <form action="{{ route('produk.index') }}" method="GET" class="flex w-full gap-2 md:w-auto">
+                <input type="text" name="search" placeholder="Cari produk..." value="{{ request('search') }}"
+                    class="w-full px-4 py-2 border rounded-lg border-emerald-400 focus:outline-none focus:border-emerald-600 md:w-64">
+                <button type="submit"
+                    class="px-4 py-2 text-white rounded-lg bg-emerald-600 hover:bg-emerald-700">Cari</button>
             </form>
             @if (Auth::user()->hasRole('admin'))
-                <a href="{{ route('produk.create') }}">+ Tambah Produk</a>
+                <a href="{{ route('produk.create') }}"
+                    class="px-4 py-2 text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700">+ Tambah
+                    Produk</a>
             @endif
         </div>
 
-        <div class="content">
-            <div class="sidebar">
-                <h3>Kategori</h3>
+        <div class="flex flex-col gap-6 md:flex-row">
+            <!-- Sidebar Kategori -->
+            <aside class="w-full p-4 mb-4 bg-white rounded-lg shadow md:w-64 md:mb-0">
+                <h3 class="mb-3 text-lg font-bold text-emerald-700">Kategori</h3>
                 <ul>
+                    <li>
+                        <a href="#"
+                            class="block px-2 py-1 rounded text-emerald-600 kategori-link hover:bg-emerald-50"
+                            data-id="">Semua Kategori</a>
+                    </li>
                     @foreach ($kategoris as $kategori)
-                        <li><a href="#" class="kategori-link"
-                                data-id="{{ $kategori->id_kategori }}">{{ $kategori->nama_kategori }}</a></li>
+                        <li>
+                            <a href="#"
+                                class="block px-2 py-1 rounded text-emerald-600 kategori-link hover:bg-emerald-50"
+                                data-id="{{ $kategori->id_kategori }}">{{ $kategori->nama_kategori }}</a>
+                        </li>
                     @endforeach
                 </ul>
-            </div>
+            </aside>
 
-            <div class="product-grid" id="product-grid">
-                @include('produk._list', ['produks' => $produks])
-            </div>
+            <!-- Produk Grid -->
+            <section class="flex-1">
+                <div id="product-grid"
+                    class="grid grid-cols-1 gap-6 transition-opacity duration-500 opacity-100 sm:grid-cols-2 lg:grid-cols-3">
+                    @include('produk._list', ['produks' => $produks])
+                </div>
+            </section>
         </div>
+    </main>
 
-        <footer class="footer">
-            <div class="container" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-                <div class="section">
-                    <h4>Hidroponik Jember</h4>
-                    <p>Website sistem pemasaran produk hidroponik.</p>
-                </div>
-                <div class="section">
-                    <h4>Explore</h4>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Produk</a></li>
-                        <li><a href="#">Edukasi</a></li>
-                    </ul>
-                </div>
-                <div class="section">
-                    <h4>Contact</h4>
-                    <p>Email: hidroponik@gmail.com</p>
-                    <p>Telepon: 0821-xxxx-xxxx</p>
-                </div>
-            </div>
-        </footer>
+    <!-- Footer -->
+    <x-footer></x-footer>
 
-        <script>
-            const menuButton = document.getElementById('menuButton');
-            const dropdownUser = document.getElementById('dropdownUser');
+    <script>
+        // Dropdown user
+        const menuButton = document.getElementById('menuButton');
+        const dropdownUser = document.getElementById('dropdownUser');
 
-            let isDropdownVisible = false;
+        let isDropdownVisible = false;
 
-            menuButton.addEventListener('click', function(e) {
-                e.stopPropagation();
-                if (!isDropdownVisible) {
-                    dropdownUser.classList.remove('hidden');
-                    dropdownUser.classList.remove('animate-fadeOut');
-                    dropdownUser.classList.add('animate-fadeIn');
-                    isDropdownVisible = true;
-                } else {
-                    dropdownUser.classList.remove('animate-fadeIn');
-                    dropdownUser.classList.add('animate-fadeOut');
-                    setTimeout(() => {
-                        dropdownUser.classList.add('hidden');
-                        isDropdownVisible = false;
-                    }, 300);
-                }
-            });
+        menuButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (!isDropdownVisible) {
+                dropdownUser.classList.remove('hidden');
+                dropdownUser.classList.remove('animate-fadeOut');
+                dropdownUser.classList.add('animate-fadeIn');
+                isDropdownVisible = true;
+            } else {
+                dropdownUser.classList.remove('animate-fadeIn');
+                dropdownUser.classList.add('animate-fadeOut');
+                setTimeout(() => {
+                    dropdownUser.classList.add('hidden');
+                    isDropdownVisible = false;
+                }, 300);
+            }
+        });
 
-            document.addEventListener('click', function() {
-                if (isDropdownVisible) {
-                    dropdownUser.classList.remove('animate-fadeIn');
-                    dropdownUser.classList.add('animate-fadeOut');
-                    setTimeout(() => {
-                        dropdownUser.classList.add('hidden');
-                        isDropdownVisible = false;
-                    }, 300);
-                }
-            });
+        document.addEventListener('click', function() {
+            if (isDropdownVisible) {
+                dropdownUser.classList.remove('animate-fadeIn');
+                dropdownUser.classList.add('animate-fadeOut');
+                setTimeout(() => {
+                    dropdownUser.classList.add('hidden');
+                    isDropdownVisible = false;
+                }, 300);
+            }
+        });
 
-            dropdownUser.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
+        dropdownUser.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
 
-            // Filter produk berdasarkan kategori
-            document.querySelectorAll('.kategori-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const kategoriId = this.getAttribute('data-id');
+        // Filter produk berdasarkan kategori (AJAX)
+        document.querySelectorAll('.kategori-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const kategoriId = this.getAttribute('data-id');
+                const url = kategoriId ? `{{ url('/produk/filter') }}?kategori=${kategoriId}` :
+                    `{{ url('/produk/filter') }}`;
+                const productGrid = document.getElementById('product-grid');
 
-                    const scrollY = window.scrollY;
-                    // ➤ Fade out sebelum load
-                    productGrid.classList.add('fade-out');
+                // Fade out
+                productGrid.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                setTimeout(() => {
+                    productGrid.innerHTML =
+                        '<div class="py-10 text-center col-span-full text-emerald-600 animate-pulse">Loading...</div>';
 
-                    fetch(`/produk/filter?kategori=${kategoriId}`)
+                    fetch(url)
                         .then(response => response.text())
                         .then(html => {
-                            setTimeout(() => {
-                                productGrid.innerHTML = html;
-
-                                // ➤ Fade in setelah diganti
-                                productGrid.classList.remove('fade-out');
-                                productGrid.classList.add('fade-in');
-
-                                // ➤ Hapus class fade-in setelah selesai
-                                setTimeout(() => {
-                                    productGrid.classList.remove('fade-in');
-                                }, 300);
-                            }, 300); // waktu fade-out
+                            productGrid.innerHTML = html;
+                            // Fade in
+                            productGrid.classList.remove('opacity-0');
+                            productGrid.classList.add('opacity-100');
                         })
                         .catch(error => {
-                            console.error('Gagal load produk:', error);
+                            productGrid.innerHTML =
+                                '<div class="py-10 text-center text-red-600 col-span-full">Gagal memuat produk.</div>';
+                            productGrid.classList.remove('opacity-0');
+                            productGrid.classList.add('opacity-100');
                         });
-                });
+                }, 400); // waktu fade out
             });
-        </script>
+        });
+        const searchForm = document.querySelector('form[action="{{ route('produk.index') }}"]');
+        if (searchForm) {
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const productGrid = document.getElementById('product-grid');
+                const formData = new FormData(searchForm);
+                const params = new URLSearchParams(formData).toString();
+                const url = `{{ route('produk.index') }}?${params}`;
+
+                // Fade out
+                productGrid.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                setTimeout(() => {
+                    productGrid.innerHTML =
+                        '<div class="py-10 text-center col-span-full text-emerald-600 animate-pulse">Loading...</div>';
+
+                    fetch(url, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                        .then(response => response.text())
+                        .then(html => {
+                            // Ambil hanya isi grid produk dari response (jika response full HTML)
+                            // Jika response partial (hanya grid), langsung tampilkan
+                            productGrid.innerHTML = html;
+                            productGrid.classList.remove('opacity-0');
+                            productGrid.classList.add('opacity-100');
+                        })
+                        .catch(error => {
+                            productGrid.innerHTML =
+                                '<div class="py-10 text-center text-red-600 col-span-full">Gagal memuat produk.</div>';
+                            productGrid.classList.remove('opacity-0');
+                            productGrid.classList.add('opacity-100');
+                        });
+                }, 400);
+            });
+        }
+    </script>
 </body>
 
 </html>

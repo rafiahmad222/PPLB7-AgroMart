@@ -56,11 +56,9 @@
                     <a href="{{ route('home') }}" class="hover:text-emerald-600">HOME</a>
                     <div class="relative group">
                         <a href="{{ route('produk.index') }}" class="flex items-center gap-1">PRODUK</a>
-                        <div
-                            class="absolute hidden w-40 bg-white rounded-md shadow-lg z-5 group-hover:block animate-fadeIn">
-                            @foreach ($kategoris as $kategori)
-                                <a href="{{ route('produk.index', $kategori->id_kategori) }}"
-                                    class="block px-4 py-2 text-xs text-gray-800 rounded-md hover:bg-gray-100">{{ $kategori->nama_kategori }}</a>
+                        <div class="absolute hidden w-40 bg-white rounded-md shadow-lg z-5 group-hover:block animate-fadeIn text-emerald-600">
+                            @foreach($kategoris as $kategori)
+                            <a href="{{ route('produk.index', $kategori->id_kategori) }}" class="block px-4 py-2 text-sm rounded-md text-emerald-700 hover:bg-gray-100 hover:text-emerald-400">{{ $kategori->nama_kategori }}</a>
                             @endforeach
                         </div>
                     </div>

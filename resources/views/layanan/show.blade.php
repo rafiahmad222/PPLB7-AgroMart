@@ -1,3 +1,4 @@
+<!-- filepath: d:\PPL-AgroMart\resources\views\layanan\show.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,39 +6,142 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>{{ $layanan->nama_layanan }} - AgroMart</title>
+    <link rel="icon" type="image/png" sizes="45x45" href="{{ asset('images/icon-40x40.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Poppins:wght@100..900&family=Signika:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .bg-gradient-radial {
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+        }
+    </style>
 </head>
 
-<body class="bg-gray-100">
-    <div class="container px-4 py-8 mx-auto">
-        <div class="max-w-xl mx-auto overflow-hidden bg-white rounded-lg shadow-md">
-            <img src="{{ asset('storage/' . $layanan->gambar_layanan) }}" alt="{{ $layanan->nama_layanan }}"
-                class="object-contain w-full h-64">
-            <div class="p-6">
-                <!-- Nama Layanan dan Tombol Edit -->
-                @if (Auth::user()->hasRole('admin'))
+<body class="bg-gray-50 font-[Poppins]">
+
+    <main class="container px-4 py-20 mx-auto">
+        <div class="max-w-6xl mx-auto">
+            <!-- Breadcrumb -->
+            <nav class="flex mb-6 text-sm text-gray-500" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="{{ route('home') }}" class="hover:text-emerald-600">Home</a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mx-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <a href="{{ route('layanan.index') }}" class="hover:text-emerald-600">Layanan</a>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mx-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="font-medium text-gray-500">{{ $layanan->nama_layanan }}</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Product Detail -->
+            <div class="grid grid-cols-1 gap-12 lg:grid-cols-2">
+                <!-- Left: Product Images -->
+                <div class="relative overflow-hidden bg-white shadow-lg rounded-xl">
+                    <div class="absolute inset-0 bg-gradient-radial opacity-30"></div>
+                    <img src="{{ asset('storage/' . $layanan->gambar_layanan) }}" alt="{{ $layanan->nama_layanan }}"
+                        class="object-contain w-full p-4 h-96 animate-fade-in">
+                </div>
+
+                <!-- Right: Product Info -->
+                <div class="flex flex-col">
                     <div class="flex items-center justify-between">
-                        <h1 class="text-2xl font-bold text-gray-800">{{ $layanan->nama_layanan }}</h1>
-                        <a href="{{ route('layanan.edit', $layanan->id_layanan) }}"
-                            class="px-4 py-2 text-white bg-yellow-500 rounded hover:bg-yellow-600">Edit</a>
+                        <h1 class="text-3xl font-bold text-gray-800">{{ $layanan->nama_layanan }}</h1>
+                        @if (Auth::user()->hasRole('admin'))
+                            <div class="flex space-x-2">
+                                <a href="{{ route('layanan.edit', $layanan->id_layanan) }}"
+                                    class="flex items-center px-4 py-2 text-white transition bg-yellow-500 rounded-lg hover:bg-yellow-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                    </svg>
+                                    Edit
+                                </a>
+                                <form action="{{ route('layanan.destroy', $layanan->id_layanan) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus layanan ini?')"
+                                        class="flex items-center px-4 py-2 text-white transition bg-red-500 rounded-lg hover:bg-red-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                        Hapus
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
                     </div>
-                @endif
-                <p class="mt-2 text-lg font-bold text-emerald-600">Rp
-                    {{ number_format($layanan->harga_layanan, 0, ',', '.') }}</p>
-                <p class="mt-4 text-gray-600">{{ $layanan->deskripsi_layanan }}</p>
-                <!-- Tombol Beli -->
-                <div class="flex mt-6">
-                    <form action="{{ route('transaksi-layanan.create') }}" method="GET" class="w-full">
-                        @csrf
-                        <input type="hidden" name="layanan_id" value="{{ $layanan->id }}">
-                        <button type="submit"
-                            class="w-full px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">Beli</button>
-                    </form>
+
+                    <p class="mt-4 text-3xl font-bold text-emerald-600">
+                        Rp {{ number_format($layanan->harga_layanan, 0, ',', '.') }}
+                    </p>
+
+                    <div class="p-6 mt-4 border border-gray-200 rounded-lg bg-gray-50">
+                        <h2 class="mb-3 text-lg font-semibold text-gray-800">Deskripsi Layanan</h2>
+                        <p class="text-gray-600 whitespace-pre-line">{{ $layanan->deskripsi_layanan }}</p>
+
+                        <div class="grid grid-cols-2 gap-4 mt-6">
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                                <span>Garansi Kualitas</span>
+                            </div>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>Layanan Cepat</span>
+                            </div>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                <span>Tim Profesional</span>
+                            </div>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>Hasil Terjamin</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col gap-3 mt-8 sm:flex-row">
+                        <form action="{{ route('transaksi-layanan.create') }}" method="GET" class="flex-1">
+                            @csrf
+                            <input type="hidden" name="layanan_id" value="{{ $layanan->id_layanan }}">
+                            <button type="submit"
+                                class="w-full px-6 py-3 text-white transition transform bg-green-600 rounded-lg shadow-md hover:bg-green-700 active:scale-95 hover:shadow-lg">
+                                Beli
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+    </main>
 </body>
 
 </html>

@@ -43,8 +43,7 @@ class ProdukController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        {
+    { {
             $request->validate([
                 'nama_produk' => 'required|string|max:255',
                 'gambar_produk' => 'image|mimes:jpeg,png,jpg|max:2048',
@@ -78,7 +77,7 @@ class ProdukController extends Controller
     {
         $kategoris = Kategori::all();
         $produk = Produk::findOrFail($id);
-        return view('produk.show', compact('kategoris','produk'));
+        return view('produk.show', compact('kategoris', 'produk'));
     }
 
     /**
@@ -124,8 +123,12 @@ class ProdukController extends Controller
     }
     public function filter(Request $request)
     {
-        $produks = Produk::where('id_kategori', $request->kategori)->paginate(9);
-
-        return view('produk._list', compact('produks'))->render();
+        $kategoriId = $request->get('kategori');
+        if ($kategoriId) {
+            $produks = Produk::where('id_kategori', $kategoriId)->get();
+        } else {
+            $produks = Produk::all(); // Semua produk
+        }
+        return view('produk._list', compact('produks'));
     }
 }

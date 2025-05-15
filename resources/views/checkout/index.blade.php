@@ -56,7 +56,7 @@
                     <div class="space-y-2">
                         <label class="flex items-center gap-2">
                             <input type="radio" name="pengiriman" value="wa_jek" onclick="toggleOngkir()" class="pengiriman-radio">
-                            WA Jek
+                            Paxel (Via Jasa Kurir)
                         </label>
                         <label class="flex items-center gap-2">
                             <input type="radio" name="pengiriman" value="ambil_ditempat" onclick="toggleOngkir()" class="pengiriman-radio">

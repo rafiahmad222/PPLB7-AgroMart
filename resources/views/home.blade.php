@@ -89,6 +89,8 @@
         </div>
     </div>
 
+    <!-- Footer -->
+        <x-footer></x-footer>
     <script>
         const menuButton = document.getElementById('menuButton');
         const dropdownUser = document.getElementById('dropdownUser');

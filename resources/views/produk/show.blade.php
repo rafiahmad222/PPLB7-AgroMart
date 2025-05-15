@@ -35,6 +35,7 @@
         input[type="number"] {
             -moz-appearance: textfield; /* Firefox */
             appearance: none; /* Modern browsers */
+            }
     </style>
 </head>
 
@@ -90,8 +91,8 @@
         </nav>
     </header>
 
-    <div class="container px-4 py-6 mx-auto">
-        <a href="{{ route('produk.index') }}" class="inline-block mb-4 font-bold text-emerald-600">← Kembali ke Daftar Produk</a>
+    <div class="container px-4 py-2 mx-auto">
+        <a href="{{ route('produk.index') }}" class="inline-block mb-2 font-bold text-emerald-600">← Kembali ke Daftar Produk</a>
         <div class="flex flex-wrap gap-8">
             <img src="{{ asset('storage/' . $produk->gambar_produk) }}" alt="{{ $produk->nama_produk }}"
                 class="w-full max-w-md rounded-lg shadow-md">
