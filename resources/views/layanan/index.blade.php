@@ -7,6 +7,49 @@
     <title>Layanan - AgroMart</title>
     <link rel="icon" type="image/png" sizes="45x45" href="images/icon-40x40.png">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-slide-in {
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .pulse-button {
+            transition: all 0.3s ease;
+        }
+
+        .pulse-button:hover {
+            transform: scale(1.05);
+        }
+
+        .pulse-button:active {
+            transform: scale(0.95);
+        }
+    </style>
 </head>
 
 <body class="font-sans bg-gray-100">
@@ -105,7 +148,7 @@
                     <div class="flex items-center space-x-4">
                         <!-- Gambar Preview -->
                         <img id="previewGambar" src="{{ asset('images/UploadFoto.png') }}" alt="Preview Gambar"
-                            class="object-cover w-32 h-32 border border-gray-300 rounded-md">
+                            class="object-contain w-32 h-32 border border-gray-300 rounded-md">
                         <!-- Input File -->
                         <input type="file" name="gambar_layanan" id="gambar_layanan" class="block w-full mt-1"
                             accept="image/*">
@@ -131,24 +174,50 @@
             </form>
         </div>
     </div>
-    <div id="successModal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
-        <div class="w-full max-w-sm p-6 bg-white rounded-lg shadow-lg">
-            <h2 class="mb-4 text-xl font-bold text-gray-800">Layanan Berhasil Ditambahkan</h2>
-            <div class="flex justify-center">
+    <div id="successModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black modal-fade-in bg-opacity-60">
+        <div class="w-full max-w-md p-6 bg-white border-l-4 border-green-500 shadow-2xl modal-slide-in rounded-xl">
+            <div class="flex items-center mb-4">
+                <div class="flex-shrink-0 p-2 bg-green-100 rounded-full">
+                    <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                        </path>
+                    </svg>
+                </div>
+                <h2 class="ml-3 text-xl font-bold text-gray-800">Layanan Berhasil Ditambahkan</h2>
+            </div>
+            <p class="mb-5 text-gray-600">Layanan baru telah berhasil ditambahkan ke dalam sistem. Data telah disimpan
+                dengan aman.</p>
+            <div class="flex justify-end">
                 <button id="closeSuccessModalButton"
-                    class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
-                    Oke
+                    class="px-4 py-2 text-white rounded-lg shadow-md bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 pulse-button">
+                    Tutup
                 </button>
             </div>
         </div>
     </div>
-    <div id="errorModal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
-        <div class="w-full max-w-sm p-6 bg-white rounded-lg shadow-lg">
-            <h2 class="mb-4 text-xl font-bold text-red-600">Data Tidak Sesuai</h2>
-            <p class="mb-4 text-gray-800">Pastikan semua data wajib diisi dengan benar.</p>
-            <div class="flex justify-center">
-                <button id="closeErrorModalButton" class="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700">
-                    Oke
+
+    <!-- Error Modal -->
+    <<div id="errorModal"
+        class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black modal-fade-in bg-opacity-60">
+        <div class="w-full max-w-md p-6 bg-white border-l-4 border-red-500 shadow-2xl modal-slide-in rounded-xl">
+            <div class="flex items-center mb-4">
+                <div class="flex-shrink-0 p-2 bg-red-100 rounded-full">
+                    <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h2 class="ml-3 text-xl font-bold text-gray-800">Data Tidak Sesuai</h2>
+            </div>
+            <p class="mb-5 text-gray-600">Pastikan semua data wajib diisi dengan benar. Mohon periksa kembali formulir
+                Anda.</p>
+            <div class="flex justify-end">
+                <button id="closeErrorModalButton"
+                    class="px-4 py-2 text-white rounded-lg shadow-md bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 pulse-button">
+                    Tutup
                 </button>
             </div>
         </div>
@@ -177,29 +246,33 @@
     </footer>
 
     <script>
-        // Modal notifikasi error
         const errorModal = document.getElementById('errorModal');
         const closeErrorModalButton = document.getElementById('closeErrorModalButton');
 
-        // Tampilkan modal jika ada pesan error dari server
-        @if ($errors->any())
-            errorModal.classList.remove('hidden');
-        @endif
-
-        // Tutup modal ketika tombol "Oke" diklik
-        closeErrorModalButton.addEventListener('click', () => {
-            errorModal.classList.add('hidden');
-        });
         // Modal notifikasi sukses
         const successModal = document.getElementById('successModal');
         const closeSuccessModalButton = document.getElementById('closeSuccessModalButton');
 
-        // Tampilkan modal jika ada pesan sukses dari server
-        @if (session('success'))
+        // Secara default kedua modal disembunyikan
+        errorModal.classList.add('hidden');
+        successModal.classList.add('hidden');
+
+        // Tampilkan hanya modal error jika ada pesan error dari server
+        @if ($errors->any())
+            errorModal.classList.remove('hidden');
+            successModal.classList.add('hidden'); // Pastikan modal success tetap tersembunyi
+        @elseif (session('success'))
+            // Tampilkan hanya modal sukses jika ada session success
             successModal.classList.remove('hidden');
+            errorModal.classList.add('hidden'); // Pastikan modal error tetap tersembunyi
         @endif
 
-        // Tutup modal ketika tombol "Oke" diklik
+        // Tutup modal error ketika tombol "Tutup" diklik
+        closeErrorModalButton.addEventListener('click', () => {
+            errorModal.classList.add('hidden');
+        });
+
+        // Tutup modal sukses ketika tombol "Tutup" diklik
         closeSuccessModalButton.addEventListener('click', () => {
             successModal.classList.add('hidden');
         });

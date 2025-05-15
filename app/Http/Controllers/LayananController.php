@@ -81,6 +81,6 @@ class LayananController extends Controller
 
         $layanan->save();
 
-        return redirect()->route('layanan.index')->with('success', 'Layanan berhasil diperbarui.');
+        return redirect()->route('layanan.edit', $layanan->id_layanan)->with('success', 'Informasi layanan berhasil diperbarui.');
     }
 }
