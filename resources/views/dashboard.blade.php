@@ -49,23 +49,25 @@
     <header class="sticky top-0 z-50 bg-white shadow-md">
         <nav class="flex items-center justify-between max-w-screen-xl px-4 py-3 mx-auto">
             <div class="flex items-center space-x-6">
-                <a href="{{ route('dashboard') }}">
+                <a href="{{ route('home') }}">
                     <img src="{{ asset('images/Logo_AgroMart.png') }}" alt="Logo AgroMart" class="h-12">
                 </a>
                 <div class="items-center hidden gap-4 text-base font-semibold md:flex text-emerald-700 font-[signika]">
-                    <a href="{{ route('home') }}" class="hover:text-emerald-600">HOME</a>
+                    <a href="{{ route('home') }}" class=x`">HOME</a>
                     <div class="relative group">
                         <a href="{{ route('produk.index') }}" class="flex items-center gap-1">PRODUK</a>
-                        <div class="absolute hidden w-40 bg-white rounded-md shadow-lg z-5 group-hover:block animate-fadeIn text-emerald-600">
-                            @foreach($kategoris as $kategori)
-                            <a href="{{ route('produk.index', $kategori->id_kategori) }}" class="block px-4 py-2 text-sm rounded-md text-emerald-700 hover:bg-gray-100 hover:text-emerald-400">{{ $kategori->nama_kategori }}</a>
+                        <div
+                            class="absolute hidden w-40 bg-white rounded-md shadow-lg z-5 group-hover:block animate-fadeIn text-emerald-600">
+                            @foreach ($kategoris as $kategori)
+                                <a href="{{ route('produk.index', $kategori->id_kategori) }}"
+                                    class="block px-4 py-2 text-sm rounded-md text-emerald-700 hover:bg-gray-100 hover:text-emerald-400">{{ $kategori->nama_kategori }}</a>
                             @endforeach
                         </div>
                     </div>
-                    <a href="#edukasi" class="hover:text-emerald-600">EDUKASI</a>
-                    <a href="#galeri" class="hover:text-emerald-600">GALERI</a>
-                    <a href="#layanan" class="hover:text-emerald-600">LAYANAN</a>
-                    <a href="#contact" class="hover:text-emerald-600">CONTACT US</a>
+                    <a href="{#edukasi}" class="hover:text-emerald-400">EDUKASI</a>
+                    <a href="#galeri" class="hover:text-emerald-400">GALERI</a>
+                    <a href="{{ route('layanan.index') }}" class="hover:text-emerald-400">LAYANAN</a>
+                    <a href="#contact" class="hover:text-emerald-400">CONTACT US</a>
                 </div>
             </div>
             <div class="flex items-center space-x-4">
@@ -75,7 +77,8 @@
                     class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
                 <div id="menuButton" class="relative">
                     <div class="flex items-center gap-2 cursor-pointer">
-                        <img src="{{ asset('images/avatar.png') }}" alt="Avatar" class="w-12 h-12 rounded-full">
+                        <img src="{{ Auth::user()->avatar_url }}" alt="Avatar"
+                            class="w-12 h-12 border-2 rounded-full border-emerald-500">
                         <div class="hidden text-left md:block">
                             <span class="block font-bold">{{ Auth::user()->name }}</span>
                             <small class="text-gray-500">{{ Auth::user()->email }}</small>
@@ -197,7 +200,8 @@
                                     {{ $pesanan->pengiriman ?? '-' }}
                                 @endif
                             </p>
-                            <p><span class="font-medium">Tanggal Pesan</span>: {{ $pesanan->created_at->format('d M Y') }}
+                            <p><span class="font-medium">Tanggal Pesan</span>:
+                                {{ $pesanan->created_at->format('d M Y') }}
                             </p>
                             <p><span class="font-medium">ID Pesanan</span>: {{ $pesanan->id_pesanan }}</p>
                         </div>
