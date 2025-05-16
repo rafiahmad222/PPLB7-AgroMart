@@ -313,7 +313,7 @@
                                 </button>
                             </div>
                             <p class="mt-1 text-xs text-gray-500">*Maksimum pembelian
-                                {{ ($produk->jumlah_stok-2) }} item</p>
+                                {{ $produk->jumlah_stok - 2 }} item</p>
                         </div>
 
                         <!-- Total Price -->
@@ -326,19 +326,32 @@
 
                         <!-- Action Buttons -->
                         <div class="space-y-3">
-                            <form action="{{ route('checkout.index') }}" method="GET">
-                                <input type="hidden" id="jumlahCheckout" name="jumlah" value="1">
-                                <input type="hidden" name="produk_id" value="{{ $produk->id_produk }}">
-                                <button type="submit"
-                                    class="flex items-center justify-center w-full py-3 font-medium text-white transition-colors rounded-lg bg-emerald-600 hover:bg-emerald-700">
+                            @if (Auth::user()->hasRole('admin'))
+                                <a href="{{ route('produk.edit', $produk->id_produk) }}"
+                                    class="flex items-center justify-center w-full py-3 font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7"></path>
+                                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+                                        </path>
                                     </svg>
-                                    Beli Sekarang
-                                </button>
-                            </form>
+                                    Edit Produk
+                                </a>
+                            @else
+                                <form action="{{ route('checkout.index') }}" method="GET">
+                                    <input type="hidden" id="jumlahCheckout" name="jumlah" value="1">
+                                    <input type="hidden" name="produk_id" value="{{ $produk->id_produk }}">
+                                    <button type="submit"
+                                        class="flex items-center justify-center w-full py-3 font-medium text-white transition-colors rounded-lg bg-emerald-600 hover:bg-emerald-700">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        Beli Sekarang
+                                    </button>
+                                </form>
+                            @endif
                         </div>
 
                         <!-- Shipping Info -->

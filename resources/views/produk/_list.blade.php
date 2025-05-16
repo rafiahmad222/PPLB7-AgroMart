@@ -19,15 +19,6 @@
                 <p class="mb-2 text-lg font-semibold text-emerald-600">Rp
                     {{ number_format($produk->harga_produk, 0, ',', '.') }}</p>
                 <p class="text-sm text-gray-500">Stok: {{ $produk->jumlah_stok }}</p>
-
-                @if (Auth::user()->hasRole('admin'))
-                    <div class="flex mt-3">
-                        <a href="{{ route('produk.edit', $produk->id_produk) }}"
-                            class="px-4 py-1 text-sm text-white transition bg-blue-600 rounded hover:bg-blue-700">
-                            Edit
-                        </a>
-                    </div>
-                @endif
             </div>
         </a>
     </div>
