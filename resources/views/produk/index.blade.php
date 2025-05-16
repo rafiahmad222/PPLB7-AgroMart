@@ -56,51 +56,40 @@
                     <a href="{{ route('home') }}" class=x`">HOME</a>
                     <div class="relative group">
                         <a href="{{ route('produk.index') }}" class="flex items-center gap-1">PRODUK</a>
-                        <div
-                            class="absolute hidden w-40 bg-white rounded-md shadow-lg z-5 group-hover:block animate-fadeIn text-emerald-600">
-                            @foreach ($kategoris as $kategori)
-                                <a href="{{ route('produk.index', $kategori->id_kategori) }}"
-                                    class="block px-4 py-2 text-sm rounded-md text-emerald-700 hover:bg-gray-100 hover:text-emerald-400">{{ $kategori->nama_kategori }}</a>
+                        <div class="absolute hidden w-40 bg-white rounded-md shadow-lg z-5 group-hover:block animate-fadeIn text-emerald-600">
+                            @foreach($kategoris as $kategori)
+                            <a href="{{ route('produk.index', $kategori->id_kategori) }}" class="block px-4 py-2 text-sm rounded-md text-emerald-700 hover:bg-gray-100 hover:text-emerald-400">{{ $kategori->nama_kategori }}</a>
                             @endforeach
                         </div>
                     </div>
                     <a href="{#edukasi}" class="hover:text-emerald-400">EDUKASI</a>
                     <a href="#galeri" class="hover:text-emerald-400">GALERI</a>
                     <a href="{{ route('layanan.index') }}" class="hover:text-emerald-400">LAYANAN</a>
-                    <a href="#contact" class="hover:text-emerald-400">CONTACT US</a>
+                    @if (Auth::user()->role === 'admin')
+                        <a href="{{ route('dashboard') }}" class="hover:text-emerald-400">TRANSAKSI</a>
+                    @else
+                        <a href="{{ route('pesananku') }}" class="hover:text-emerald-400">TRANSAKSI</a>
+                    @endif
                 </div>
             </div>
             <div class="flex items-center space-x-4">
-                <img src="{{ asset('images/keranjangIcon.png') }}" alt="Keranjang"
-                    class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
-                <img src="{{ asset('images/notifIcon.png') }}" alt="Notifikasi"
-                    class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
+                <img src="{{ asset('images/notifIcon.png') }}" alt="Notifikasi" class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
                 <div id="menuButton" class="relative">
                     <div class="flex items-center gap-2 cursor-pointer">
-                        <img src="{{ Auth::user()->avatar_url }}" alt="Avatar"
-                            class="w-12 h-12 border-2 rounded-full border-emerald-500">
+                        <img src="{{ Auth::user()->avatar_url }}" alt="Avatar" class="w-12 h-12 border-2 rounded-full border-emerald-500">
                         <div class="hidden text-left md:block">
                             <span class="block font-bold">{{ Auth::user()->name }}</span>
                             <small class="text-gray-500">{{ Auth::user()->email }}</small>
                         </div>
                     </div>
-                    <div id="dropdownUser"
-                        class="absolute right-0 z-30 flex-col hidden w-48 mt-4 bg-white rounded-md shadow-2xl">
-                        <a href="{{ route('profile.edit') }}"
-                            class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun</a>
+                    <div id="dropdownUser" class="absolute right-0 z-30 flex-col hidden w-48 mt-4 bg-white rounded-md shadow-2xl">
+                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun</a>
                         @if (Auth::user()->role === 'admin')
-                            <a href="{{ route('dashboard') }}"
-                                class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Transaksi</a>
-                            <a href="{{ route('profile.adminshowuser') }}"
-                                class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun Customer</a>
-                        @else
-                            <a href="{{ route('pesananku') }}"
-                                class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Transaksi</a>
+                        <a href="{{ route('profile.adminshowuser') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun Customer</a>
                         @endif
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit"
-                                class="w-full px-4 py-2 text-sm text-left rounded-md hover:bg-gray-100">Logout</button>
+                            <button type="submit" class="w-full px-4 py-2 text-sm text-left rounded-md hover:bg-gray-100">Logout</button>
                         </form>
                     </div>
                 </div>
