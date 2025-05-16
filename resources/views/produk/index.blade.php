@@ -11,6 +11,29 @@
         rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        .sidebar-transition {
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+
+        .sidebar-hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Hover effect untuk kategori links */
+        .kategori-link {
+            transition: all 0.2s ease-out;
+        }
+
+        .kategori-link:hover {
+            transform: translateX(8px);
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -56,9 +79,11 @@
                     <a href="{{ route('home') }}" class=x`">HOME</a>
                     <div class="relative group">
                         <a href="{{ route('produk.index') }}" class="flex items-center gap-1">PRODUK</a>
-                        <div class="absolute hidden w-40 bg-white rounded-md shadow-lg z-5 group-hover:block animate-fadeIn text-emerald-600">
-                            @foreach($kategoris as $kategori)
-                            <a href="{{ route('produk.index', $kategori->id_kategori) }}" class="block px-4 py-2 text-sm rounded-md text-emerald-700 hover:bg-gray-100 hover:text-emerald-400">{{ $kategori->nama_kategori }}</a>
+                        <div
+                            class="absolute hidden w-40 bg-white rounded-md shadow-lg z-5 group-hover:block animate-fadeIn text-emerald-600">
+                            @foreach ($kategoris as $kategori)
+                                <a href="{{ route('produk.index', $kategori->id_kategori) }}"
+                                    class="block px-4 py-2 text-sm rounded-md text-emerald-700 hover:bg-gray-100 hover:text-emerald-400">{{ $kategori->nama_kategori }}</a>
                             @endforeach
                         </div>
                     </div>
@@ -73,23 +98,29 @@
                 </div>
             </div>
             <div class="flex items-center space-x-4">
-                <img src="{{ asset('images/notifIcon.png') }}" alt="Notifikasi" class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
+                <img src="{{ asset('images/notifIcon.png') }}" alt="Notifikasi"
+                    class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
                 <div id="menuButton" class="relative">
                     <div class="flex items-center gap-2 cursor-pointer">
-                        <img src="{{ Auth::user()->avatar_url }}" alt="Avatar" class="w-12 h-12 border-2 rounded-full border-emerald-500">
+                        <img src="{{ Auth::user()->avatar_url }}" alt="Avatar"
+                            class="w-12 h-12 border-2 rounded-full border-emerald-500">
                         <div class="hidden text-left md:block">
                             <span class="block font-bold">{{ Auth::user()->name }}</span>
                             <small class="text-gray-500">{{ Auth::user()->email }}</small>
                         </div>
                     </div>
-                    <div id="dropdownUser" class="absolute right-0 z-30 flex-col hidden w-48 mt-4 bg-white rounded-md shadow-2xl">
-                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun</a>
+                    <div id="dropdownUser"
+                        class="absolute right-0 z-30 flex-col hidden w-48 mt-4 bg-white rounded-md shadow-2xl">
+                        <a href="{{ route('profile.edit') }}"
+                            class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun</a>
                         @if (Auth::user()->role === 'admin')
-                        <a href="{{ route('profile.adminshowuser') }}" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun Customer</a>
+                            <a href="{{ route('profile.adminshowuser') }}"
+                                class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun Customer</a>
                         @endif
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="w-full px-4 py-2 text-sm text-left rounded-md hover:bg-gray-100">Logout</button>
+                            <button type="submit"
+                                class="w-full px-4 py-2 text-sm text-left rounded-md hover:bg-gray-100">Logout</button>
                         </form>
                     </div>
                 </div>
@@ -114,18 +145,19 @@
 
         <div class="flex flex-col gap-6 md:flex-row">
             <!-- Sidebar Kategori -->
-            <aside class="w-full p-4 mb-4 bg-white rounded-lg shadow md:w-64 md:mb-0">
+            <aside
+                class="sticky top-24 w-full p-4 mb-4 bg-white rounded-lg shadow md:w-64 md:mb-0 h-fit max-h-[calc(100vh-8rem)] overflow-y-auto sidebar-transition">
                 <h3 class="mb-3 text-lg font-bold text-emerald-700">Kategori</h3>
                 <ul>
                     <li>
                         <a href="#"
-                            class="block px-2 py-1 rounded text-emerald-600 kategori-link hover:bg-emerald-50"
+                            class="block px-2 py-2 transition-all duration-200 rounded text-emerald-600 kategori-link hover:bg-emerald-50"
                             data-id="">Semua Kategori</a>
                     </li>
                     @foreach ($kategoris as $kategori)
                         <li>
                             <a href="#"
-                                class="block px-2 py-1 rounded text-emerald-600 kategori-link hover:bg-emerald-50"
+                                class="block px-2 py-2 transition-all duration-200 rounded text-emerald-600 kategori-link hover:bg-emerald-50"
                                 data-id="{{ $kategori->id_kategori }}">{{ $kategori->nama_kategori }}</a>
                         </li>
                     @endforeach
@@ -253,6 +285,35 @@
                 }, 400);
             });
         }
+        // Animasi sidebar saat scroll
+        const sidebar = document.querySelector('aside');
+        let lastScrollTop = 0;
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // Tambahkan class hover effect saat scroll naik
+            if (scrollTop < lastScrollTop) {
+                sidebar.classList.add('sidebar-hover');
+            } else {
+                sidebar.classList.remove('sidebar-hover');
+            }
+
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+
+        // Tambahkan efek klik untuk kategori
+        document.querySelectorAll('.kategori-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Remove active state dari semua link
+                document.querySelectorAll('.kategori-link').forEach(l => {
+                    l.classList.remove('bg-emerald-50', 'font-medium');
+                });
+
+                // Add active state ke link yang diklik
+                this.classList.add('bg-emerald-50', 'font-medium');
+            });
+        });
     </script>
 </body>
 

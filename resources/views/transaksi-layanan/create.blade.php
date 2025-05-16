@@ -63,23 +63,6 @@
 </head>
 
 <body class="min-h-screen bg-gray-50">
-    <!-- Header -->
-    <header class="bg-white shadow-sm">
-        <nav class="container px-4 py-3 mx-auto">
-            <div class="flex items-center justify-between">
-                <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('images/Logo_AgroMart.png') }}" alt="Logo AgroMart" class="h-12">
-                </a>
-                <a href="{{ route('layanan.index') }}" class="flex items-center px-4 py-2 text-sm font-medium transition border rounded-lg text-emerald-600 border-emerald-600 hover:bg-emerald-600 hover:text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                    Kembali ke Layanan
-                </a>
-            </div>
-        </nav>
-    </header>
-
     <main class="container px-4 py-10 mx-auto">
         <!-- Breadcrumbs -->
         <nav class="flex mb-8 text-sm" aria-label="Breadcrumb">
