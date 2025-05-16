@@ -311,7 +311,7 @@
 
         closeSuccessModalButton.addEventListener('click', () => {
             successModal.classList.add('hidden');
-            window.location.href = "{{ route('layanan.index') }}";
+            window.location.href = "{{ route('layanan.show', $layanan->id_layanan) }}";
         });
     </script>
 </body>
