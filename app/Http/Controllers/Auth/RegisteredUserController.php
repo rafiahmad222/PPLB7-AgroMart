@@ -38,7 +38,7 @@ class RegisteredUserController extends Controller
             'phone.regex' => 'Nomor telepon hanya boleh mengandung angka',
             'address.min' => 'Alamat minimal 10 karakter',
             'phone.min' => 'Nomor telepon minimal 10 karakter',
-            'email.unique' => 'Email and sudah terdaftar',
+            'email.unique' => 'Email anda sudah terdaftar',
         ]);
 
         $user = User::create([

@@ -24,11 +24,15 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        try {
+            $request->authenticate();
 
-        $request->session()->regenerate();
+            $request->session()->regenerate();
 
-        return redirect()->intended(route('home', absolute: false));
+            return redirect()->intended(route('home', absolute: false));
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return back()->with('error', 'Email/Password salah!');
+        }
     }
 
     /**

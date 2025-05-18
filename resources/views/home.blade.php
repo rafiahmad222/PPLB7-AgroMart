@@ -29,7 +29,7 @@
     </style>
 </head>
 
-<body>
+<body class="bg-gray-100">
     <header class="sticky top-0 z-50 bg-white shadow-md">
         <nav class="flex items-center justify-between max-w-screen-xl px-4 py-3 mx-auto">
             <div class="flex items-center space-x-6">

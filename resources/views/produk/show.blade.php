@@ -327,16 +327,29 @@
                         <!-- Action Buttons -->
                         <div class="space-y-3">
                             @if (Auth::user()->hasRole('admin'))
-                                <a href="{{ route('produk.edit', $produk->id_produk) }}"
-                                    class="flex items-center justify-center w-full py-3 font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
-                                        </path>
-                                    </svg>
-                                    Edit Produk
-                                </a>
+                                <div class="flex space-x-2">
+                                    <a href="{{ route('produk.edit', $produk->id_produk) }}"
+                                        class="flex items-center justify-center flex-1 py-3 font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+                                            </path>
+                                        </svg>
+                                        Edit Produk
+                                    </a>
+
+                                    <button type="button" onclick="showDeleteModal()"
+                                        class="flex items-center justify-center flex-1 py-3 font-medium text-white transition-colors bg-red-600 rounded-lg hover:bg-red-700">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                            </path>
+                                        </svg>
+                                        Nonaktifkan
+                                    </button>
+                                </div>
                             @else
                                 <form action="{{ route('checkout.index') }}" method="GET">
                                     <input type="hidden" id="jumlahCheckout" name="jumlah" value="1">
@@ -353,7 +366,6 @@
                                 </form>
                             @endif
                         </div>
-
                         <!-- Shipping Info -->
                         <div class="mt-6">
                             <div class="flex items-start p-4 space-x-3 bg-blue-50 rounded-xl">
@@ -372,9 +384,55 @@
                 </div>
             </div>
         </div>
+        <div id="deleteModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+            <div class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
+            <div class="relative w-full max-w-md p-6 mx-4 bg-white shadow-xl rounded-xl">
+                <div class="flex items-start mb-4">
+                    <div
+                        class="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full">
+                        <svg class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="mb-4 text-xl font-medium text-center text-gray-900">Nonaktifkan Produk</h3>
+                <p class="mb-6 text-sm text-center text-gray-500">
+                    Apakah Anda yakin ingin menonaktifkan produk ini? Produk yang dinonaktifkan tidak
+                    akan ditampilkan kepada pengguna tetapi masih dapat dipulihkan nanti.
+                </p>
+                <div class="flex justify-center space-x-3">
+                    <button type="button" onclick="hideDeleteModal()"
+                        class="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Batal
+                    </button>
+                    <form action="{{ route('produk.destroy', $produk->id_produk) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700">
+                            Ya, Nonaktifkan
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
+        function showDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('hidden');
+        }
+
+        function hideDeleteModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
+        }
+
+        // Close modal when clicking on backdrop
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideDeleteModal();
+            }
+        });
         // Inisialisasi elemen DOM
         const decrementButton = document.getElementById('decrement');
         const incrementButton = document.getElementById('increment');
