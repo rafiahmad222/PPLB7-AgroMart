@@ -1,6 +1,7 @@
 <!-- filepath: d:\PPL-AgroMart\resources\views\edukasi\edit-video.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,63 @@
         href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Poppins:wght@100..900&family=Signika:wght@300..700&family=Volkhov:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1050;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .fade-enter {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .fade-exit {
+            animation: fadeOut 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+    </style>
 </head>
+
 <body>
     <!-- Header -->
     <header class="sticky top-0 z-50 bg-white shadow-md">
@@ -56,41 +113,34 @@
                 <div class="mb-4">
                     <label for="judul" class="block mb-2 text-sm font-medium text-gray-700">Judul Video</label>
                     <input type="text" name="judul" id="judul" value="{{ old('judul', $video->judul) }}"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 @error('judul') border-red-500 @enderror"
-                        required>
-                    @error('judul')
-                        <div class="mt-1 text-sm text-red-500">{{ $message }}</div>
-                    @enderror
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
 
                 <div class="mb-4">
                     <label for="deskripsi" class="block mb-2 text-sm font-medium text-gray-700">Deskripsi Video</label>
                     <textarea name="deskripsi" id="deskripsi" rows="4"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 @error('deskripsi') border-red-500 @enderror"
-                        required>{{ old('deskripsi', $video->deskripsi) }}</textarea>
-                    @error('deskripsi')
-                        <div class="mt-1 text-sm text-red-500">{{ $message }}</div>
-                    @enderror
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        >{{ old('deskripsi', $video->deskripsi) }}</textarea>
                 </div>
 
                 <div class="mb-6">
-                    <label for="youtube_id" class="block mb-2 text-sm font-medium text-gray-700">ID atau URL YouTube</label>
-                    <input type="text" name="youtube_id" id="youtube_id" value="{{ old('youtube_id', $video->youtube_id) }}"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 @error('youtube_id') border-red-500 @enderror"
-                        required>
+                    <label for="youtube_id" class="block mb-2 text-sm font-medium text-gray-700">ID atau URL
+                        YouTube</label>
+                    <input type="text" name="youtube_id" id="youtube_id"
+                        value="{{ old('youtube_id', $video->youtube_id) }}"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
                     <div class="mt-1 text-xs text-gray-500">
-                        Masukkan ID YouTube (misal: dQw4w9WgXcQ) atau URL lengkap (misal: https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+                        Masukkan ID YouTube (misal: dQw4w9WgXcQ) atau URL lengkap (misal:
+                        https://www.youtube.com/watch?v=dQw4w9WgXcQ)
                     </div>
-                    @error('youtube_id')
-                        <div class="mt-1 text-sm text-red-500">{{ $message }}</div>
-                    @enderror
                 </div>
 
                 <div class="mt-6">
                     <div class="mb-4">
                         <h3 class="mb-2 text-lg font-semibold text-gray-700">Preview Video</h3>
                         <div class="overflow-hidden rounded-lg shadow-md aspect-w-16 aspect-h-9">
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ $video->youtube_id }}"
+                            <iframe width="560" height="315"
+                                src="https://www.youtube.com/embed/{{ $video->youtube_id }}"
                                 title="YouTube video player" frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen class="w-full h-64 rounded-md"></iframe>
@@ -107,8 +157,76 @@
         </div>
     </div>
 
+    <!-- Success Modal -->
+    @if (session('success'))
+        <div id="successModal" class="modal-backdrop fade-enter">
+            <div class="modal-content">
+                <div class="text-center">
+                    <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-100">
+                        <i class="text-3xl text-emerald-500 fas fa-check"></i>
+                    </div>
+                    <h4 class="mb-4 text-xl font-bold text-gray-800">Berhasil!</h4>
+                    <p class="mb-6 text-gray-600">{{ session('success') }}</p>
+                    <button onclick="closeSuccessModal()"
+                        class="px-6 py-2 text-white transition-colors rounded-lg bg-emerald-600 hover:bg-emerald-700">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Error Modal -->
+    @if ($errors->any())
+        <div id="errorModal" class="modal-backdrop fade-enter">
+            <div class="modal-content">
+                <div class="text-center">
+                    <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full">
+                        <i class="text-3xl text-red-500 fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h4 class="mb-4 text-xl font-bold text-gray-800">Peringatan!</h4>
+                    <ul class="mb-6 space-y-1 text-sm text-red-500">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button onclick="closeErrorModal()"
+                        class="px-6 py-2 text-white transition-colors bg-red-500 rounded-lg hover:bg-red-600">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        function closeSuccessModal() {
+            const modal = document.getElementById('successModal');
+            if (modal) {
+                modal.classList.replace('fade-enter', 'fade-exit');
+                setTimeout(() => {
+                    window.location.href = "{{ route('edukasi.index', ['tab' => 'video']) }}";
+                }, 300);
+            }
+        }
+
+        function closeErrorModal() {
+            const modal = document.getElementById('errorModal');
+            if (modal) {
+                modal.classList.replace('fade-enter', 'fade-exit');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const successModal = document.getElementById('successModal');
+            const errorModal = document.getElementById('errorModal');
+
+            if (successModal) successModal.classList.add('fade-enter');
+            if (errorModal) errorModal.classList.add('fade-enter');
+        });
         // Live preview untuk YouTube ID
         $(document).ready(function() {
             $('#youtube_id').on('change keyup paste', function() {
@@ -128,4 +246,5 @@
         });
     </script>
 </body>
+
 </html>

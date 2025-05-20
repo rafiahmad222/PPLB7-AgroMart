@@ -142,34 +142,46 @@ class EdukasiController extends Controller
 
     public function update(Request $request, $id)
     {
-        $artikel = Artikel::findOrFail($id);
+        try {
+            $artikel = Artikel::findOrFail($id);
 
-        $this->authorize('update', $artikel);
+            $request->validate([
+                'judul' => 'required|string|max:255',
+                'ringkasan' => 'required|string|max:500',
+                'konten' => 'required|string',
+                'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ], [
+                'required' => ':attribute wajib diisi',
+                'string' => ':attribute harus berupa teks',
+                'max' => ':attribute tidak boleh lebih dari :max karakter',
+                'image' => 'File harus berupa gambar',
+                'mimes' => 'Format gambar harus jpeg, png, jpg, atau gif',
+                'max' => 'Ukuran gambar tidak boleh lebih dari 2MB',
+            ]);
 
-        $request->validate([
-            'judul' => 'required|string|max:255',
-            'ringkasan' => 'required|string|max:500',
-            'konten' => 'required|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+            $artikel->judul = $request->judul;
+            $artikel->ringkasan = $request->ringkasan;
+            $artikel->konten = $request->konten;
 
-        $artikel->judul = $request->judul;
-        $artikel->ringkasan = $request->ringkasan;
-        $artikel->konten = $request->konten;
+            if ($request->hasFile('gambar')) {
+                // Delete old image if exists
+                if ($artikel->gambar) {
+                    Storage::disk('public')->delete($artikel->gambar);
+                }
 
-        if ($request->hasFile('gambar')) {
-            // Delete old image if exists
-            if ($artikel->gambar) {
-                Storage::disk('public')->delete($artikel->gambar);
+                $path = $request->file('gambar')->store('artikels', 'public');
+                $artikel->gambar = $path;
             }
 
-            $path = $request->file('gambar')->store('artikels', 'public');
-            $artikel->gambar = $path;
+            $artikel->save();
+
+            return redirect()->route('edukasi.edit', $artikel->id_artikel)
+                ->with('success', 'Artikel berhasil diubah');
+        } catch (\Exception $e) {
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Data tidak sesuai/ Data wajib diisi']);
         }
-
-        $artikel->save();
-
-        return redirect()->route('edukasi.show', $artikel->id_artikel)->with('success', 'Artikel berhasil diperbarui!');
     }
 
     public function destroy($id_artikel)
@@ -200,29 +212,33 @@ class EdukasiController extends Controller
 
         return view('edukasi.edit-video', compact('video'));
     }
-    public function updateVideo(Request $request, $id_video)
+    public function updateVideo(Request $request, $id)
     {
-        $video = Video::findOrFail($id_video);
+        try {
+            $video = Video::findOrFail($id);
 
-        // Hanya pemilik video yang dapat mengupdate
-        if (Auth::id() != $video->user_id) {
-            return redirect()->route('edukasi.index', ['tab' => 'video'])
-                ->with('error', 'Anda tidak memiliki izin untuk mengupdate video ini!');
+            $request->validate([
+                'judul' => 'required|string|max:255',
+                'deskripsi' => 'required|string',
+                'youtube_id' => 'required|string'
+            ], [
+                'required' => ':attribute wajib diisi',
+                'string' => ':attribute harus berupa teks',
+                'max' => ':attribute tidak boleh lebih dari :max karakter'
+            ]);
+
+            $video->judul = $request->judul;
+            $video->deskripsi = $request->deskripsi;
+            $video->youtube_id = $this->extractYoutubeId($request->youtube_id);
+            $video->save();
+
+            return redirect()->route('edukasi.video.edit', $video->id_video)
+                ->with('success', 'Video berhasil diubah');
+        } catch (\Exception $e) {
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Data tidak sesuai/ Data wajib diisi']);
         }
-
-        $request->validate([
-            'judul' => 'required|string|max:255',
-            'deskripsi' => 'required|string|max:500',
-            'youtube_id' => 'required|string|max:255',
-        ]);
-
-        $video->judul = $request->judul;
-        $video->deskripsi = $request->deskripsi;
-        $video->youtube_id = $this->extractYoutubeId($request->youtube_id);
-        $video->save();
-
-        return redirect()->route('edukasi.index', ['tab' => 'video'])
-            ->with('success', 'Video berhasil diperbarui!');
     }
     public function destroyVideo($id_video)
     {
