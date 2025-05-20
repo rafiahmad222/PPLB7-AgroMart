@@ -106,6 +106,8 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/galeri', [GaleriController::class, 'index'])->name('galeri.index');
+Route::get('/galeri/{id}/edit', [GaleriController::class, 'edit'])->name('galeri.edit');
+Route::put('/galeri/{id}', [GaleriController::class, 'update'])->name('galeri.update');
 Route::get('/edukasi', [App\Http\Controllers\EdukasiController::class, 'index'])->name('edukasi.index');
 Route::get('/edukasi/{artikel}', [App\Http\Controllers\EdukasiController::class, 'show'])->name('edukasi.show');
 require __DIR__ . '/auth.php';

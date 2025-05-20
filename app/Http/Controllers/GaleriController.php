@@ -47,11 +47,44 @@ class GaleriController extends Controller
 
             return redirect()->route('galeri.create')
                 ->with('success', 'Data galeri berhasil ditambahkan');
-
         } catch (\Exception $e) {
             return back()->withInput()
                 ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data']);
         }
+    }
+    public function edit($id)
+    {
+        $galeri = Galeri::findOrFail($id);
+        return view('galeri.edit', compact('galeri'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $galeri = Galeri::findOrFail($id);
+
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+        ]);
+
+        $data = [
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi
+        ];
+
+        if ($request->hasFile('gambar')) {
+            // Delete old image
+            Storage::disk('public')->delete($galeri->gambar);
+
+            // Store new image
+            $data['gambar'] = $request->file('gambar')->store('galeri', 'public');
+        }
+
+        $galeri->update($data);
+
+        return redirect()->route('galeri.edit', $galeri->id_galeri)
+            ->with('success', 'Data galeri berhasil diperbarui');
     }
     public function destroy($id_galeri)
     {

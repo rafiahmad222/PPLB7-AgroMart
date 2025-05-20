@@ -43,46 +43,72 @@ class EdukasiController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'tipe' => 'required|in:artikel,video',
-            'judul' => 'required|string|max:255',
-        ]);
-
-        if ($request->tipe == 'artikel') {
+        try {
+            // Validate common fields
             $request->validate([
-                'ringkasan' => 'required|string|max:500',
-                'konten' => 'required|string',
-                'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'tipe' => 'required|in:artikel,video',
+                'judul' => 'required|string|max:255',
+            ], [
+                'required' => ':attribute wajib diisi',
+                'in' => ':attribute tidak valid',
+                'max' => ':attribute tidak boleh lebih dari :max karakter',
             ]);
 
-            $artikel = new Artikel();
-            $artikel->judul = $request->judul;
-            $artikel->ringkasan = $request->ringkasan;
-            $artikel->konten = $request->konten;
-            $artikel->user_id = Auth::id();
+            if ($request->tipe == 'artikel') {
+                // Validate artikel fields
+                $request->validate([
+                    'ringkasan' => 'required|string|max:500',
+                    'konten' => 'required|string',
+                    'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                ], [
+                    'required' => ':attribute wajib diisi',
+                    'string' => ':attribute harus berupa teks',
+                    'max' => ':attribute tidak boleh lebih dari :max karakter',
+                    'image' => 'File harus berupa gambar',
+                    'mimes' => 'Format gambar harus jpeg, png, jpg, atau gif',
+                    'max' => 'Ukuran gambar tidak boleh lebih dari 2MB',
+                ]);
 
-            if ($request->hasFile('gambar')) {
-                $path = $request->file('gambar')->store('artikels', 'public');
-                $artikel->gambar = $path;
+                $artikel = new Artikel();
+                $artikel->judul = $request->judul;
+                $artikel->ringkasan = $request->ringkasan;
+                $artikel->konten = $request->konten;
+                $artikel->user_id = Auth::id();
+
+                if ($request->hasFile('gambar')) {
+                    $path = $request->file('gambar')->store('artikels', 'public');
+                    $artikel->gambar = $path;
+                }
+
+                $artikel->save();
+
+                return redirect()->route('edukasi.create')
+                    ->with('success', 'Artikel berhasil ditambahkan');
+            } else {
+                // Validate video fields
+                $request->validate([
+                    'deskripsi' => 'required|string|max:500',
+                    'youtube_id' => 'required|string|max:255',
+                ], [
+                    'required' => ':attribute wajib diisi',
+                    'string' => ':attribute harus berupa teks',
+                    'max' => ':attribute tidak boleh lebih dari :max karakter',
+                ]);
+
+                $video = new Video();
+                $video->judul = $request->judul;
+                $video->deskripsi = $request->deskripsi;
+                $video->youtube_id = $this->extractYoutubeId($request->youtube_id);
+                $video->user_id = Auth::id();
+                $video->save();
+
+                return redirect()->route('edukasi.create')
+                    ->with('success', 'Video berhasil ditambahkan');
             }
-
-            $artikel->save();
-
-            return redirect()->route('edukasi.show', $artikel->id_artikel)->with('success', 'Artikel berhasil ditambahkan!');
-        } else {
-            $request->validate([
-                'deskripsi' => 'required|string|max:500',
-                'youtube_id' => 'required|string|max:255',
-            ]);
-
-            $video = new Video();
-            $video->judul = $request->judul;
-            $video->deskripsi = $request->deskripsi;
-            $video->youtube_id = $this->extractYoutubeId($request->youtube_id);
-            $video->user_id = Auth::id();
-            $video->save();
-
-            return redirect()->route('edukasi.index', ['tab' => 'video'])->with('success', 'Video berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Data tidak sesuai/ Data wajib diisi']);
         }
     }
 

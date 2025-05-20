@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Poppins:wght@100..900&display=swap"
         rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Poppins:wght@100..900&family=Signika:wght@300..700&family=Volkhov:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Poppins:wght@100..900&family=Signika:wght@300..700&family=Volkhov:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .masonry-item {
@@ -221,8 +223,12 @@
                                 @auth
                                     @if (Auth::id() === $galeri->user_id)
                                         <div class="flex items-center space-x-2">
-                                            <form action="{{ route('galeri.destroy', $galeri->id_galeri) }}" method="POST"
-                                                class="inline-flex">
+                                            <a href="{{ route('galeri.edit', $galeri->id_galeri) }}"
+                                                class="p-2 text-blue-500 transition-colors duration-200 rounded-full hover:text-blue-700 hover:bg-blue-50">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="{{ route('galeri.destroy', $galeri->id_galeri) }}"
+                                                method="POST" class="inline-flex">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
