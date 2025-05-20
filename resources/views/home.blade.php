@@ -37,16 +37,16 @@
                     <img src="{{ asset('images/Logo_AgroMart.png') }}" alt="Logo AgroMart" class="h-12">
                 </a>
                 <div class="items-center hidden gap-4 text-base font-semibold md:flex text-emerald-700 font-[signika]">
-                    <a href="{{ route('home') }}" class=x`">HOME</a>
+                    <a href="{{ route('home') }}" class="hover:text-emerald-400">HOME</a>
                     <div class="relative group">
-                        <a href="{{ route('produk.index') }}" class="flex items-center gap-1">PRODUK</a>
+                        <a href="{{ route('produk.index') }}" class="flex items-center gap-1 hover:text-emerald-400">PRODUK</a>
                         <div class="absolute hidden w-40 bg-white rounded-md shadow-lg z-5 group-hover:block animate-fadeIn text-emerald-600">
                             @foreach($kategoris as $kategori)
                             <a href="{{ route('produk.index', $kategori->id_kategori) }}" class="block px-4 py-2 text-sm rounded-md text-emerald-700 hover:bg-gray-100 hover:text-emerald-400">{{ $kategori->nama_kategori }}</a>
                             @endforeach
                         </div>
                     </div>
-                    <a href="{#edukasi}" class="hover:text-emerald-400">EDUKASI</a>
+                    <a href="{{ route('edukasi.index') }}" class="hover:text-emerald-400">EDUKASI</a>
                     <a href="#galeri" class="hover:text-emerald-400">GALERI</a>
                     <a href="{{ route('layanan.index') }}" class="hover:text-emerald-400">LAYANAN</a>
                     @if (Auth::user()->role === 'admin')

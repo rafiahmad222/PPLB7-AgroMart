@@ -39,6 +39,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(TransaksiLayanan::class);
     }
+    public function artikels()
+    {
+        return $this->hasMany(Artikel::class);
+    }
+
+    public function videos()
+    {
+        return $this->hasMany(Video::class);
+    }
+
+    public function komentars()
+    {
+        return $this->hasMany(Komentar::class);
+    }
     /**
      * The attributes that should be hidden for arrays.
      */

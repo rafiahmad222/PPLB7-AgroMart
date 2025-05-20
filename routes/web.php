@@ -76,7 +76,7 @@ Route::resource('layanan', LayananController::class);
 Route::middleware('auth')->group(function () {
     Route::get('/layanan/{id}', [App\Http\Controllers\LayananController::class, 'show'])->name('layanan.show');
     Route::get('/transaksi-layanan/{id}/invoice', [TransaksiLayananController::class, 'invoice'])
-    ->name('transaksi-layanan.invoice');
+        ->name('transaksi-layanan.invoice');
     Route::get('/transaksi-layanan/create', [TransaksiLayananController::class, 'create'])->name('transaksi-layanan.create');
     Route::post('/transaksi-layanan/store', [TransaksiLayananController::class, 'store'])->name('transaksi-layanan.store');
 });
@@ -85,4 +85,19 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'can:admin'])->group(function () {
     Route::get('/layanan/{id}/edit', [LayananController::class, 'edit'])->name('layanan.edit');
 });
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/edukasi/create', [App\Http\Controllers\EdukasiController::class, 'create'])->name('edukasi.create');
+    Route::post('/edukasi', [App\Http\Controllers\EdukasiController::class, 'store'])->name('edukasi.store');
+    Route::get('/edukasi/{artikel}/edit', [App\Http\Controllers\EdukasiController::class, 'edit'])->name('edukasi.edit');
+    Route::put('/edukasi/{artikel}', [App\Http\Controllers\EdukasiController::class, 'update'])->name('edukasi.update');
+    Route::delete('/edukasi/{artikel}', [App\Http\Controllers\EdukasiController::class, 'destroy'])->name('edukasi.destroy');
+    Route::delete('/edukasi/video/{video}', [App\Http\Controllers\EdukasiController::class, 'destroyVideo'])->name('edukasi.destroy-video');
+    Route::get('/edukasi/video/{video}/edit', [App\Http\Controllers\EdukasiController::class, 'editVideo'])->name('edukasi.video.edit');
+    Route::put('/edukasi/video/{video}', [App\Http\Controllers\EdukasiController::class, 'updateVideo'])->name('edukasi.video.update');
+    Route::post('/edukasi/{artikel}/komentar', [App\Http\Controllers\EdukasiController::class, 'storeKomentar'])->name('edukasi.komentar.store');
+    Route::delete('/edukasi/{artikel}/komentar/{komentar}', [App\Http\Controllers\EdukasiController::class, 'destroyKomentar'])->name('edukasi.komentar.destroy');
+});
+
+Route::get('/edukasi', [App\Http\Controllers\EdukasiController::class, 'index'])->name('edukasi.index');
+Route::get('/edukasi/{artikel}', [App\Http\Controllers\EdukasiController::class, 'show'])->name('edukasi.show');
 require __DIR__ . '/auth.php';
