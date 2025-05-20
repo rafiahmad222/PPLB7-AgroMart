@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <a href="{{ route('edukasi.index') }}" class="hover:text-emerald-400">EDUKASI</a>
-                    <a href="#galeri" class="hover:text-emerald-400">GALERI</a>
+                    <a href="{{ route('galeri.index') }}" class="hover:text-emerald-400">GALERI</a>
                     <a href="{{ route('layanan.index') }}" class="hover:text-emerald-400">LAYANAN</a>
                     @if (Auth::user()->role === 'admin')
                         <a href="{{ route('dashboard') }}" class="hover:text-emerald-400">TRANSAKSI</a>

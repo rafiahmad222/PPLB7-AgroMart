@@ -18,6 +18,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\TransaksiLayananController;
+use App\Http\Controllers\GaleriController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -98,6 +99,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/edukasi/{artikel}/komentar/{komentar}', [App\Http\Controllers\EdukasiController::class, 'destroyKomentar'])->name('edukasi.komentar.destroy');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/galeri/create', [GaleriController::class, 'create'])->name('galeri.create');
+    Route::post('/galeri', [GaleriController::class, 'store'])->name('galeri.store');
+    Route::delete('/galeri/{galeri}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
+});
+
+Route::get('/galeri', [GaleriController::class, 'index'])->name('galeri.index');
 Route::get('/edukasi', [App\Http\Controllers\EdukasiController::class, 'index'])->name('edukasi.index');
 Route::get('/edukasi/{artikel}', [App\Http\Controllers\EdukasiController::class, 'show'])->name('edukasi.show');
 require __DIR__ . '/auth.php';
