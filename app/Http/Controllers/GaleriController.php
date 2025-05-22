@@ -29,7 +29,6 @@ class GaleriController extends Controller
             'deskripsi' => 'required|string',
             'gambar' => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ], [
-            'required' => ':attribute wajib diisi',
             'image' => 'File harus berupa gambar',
             'mimes' => 'Format gambar harus jpeg, png, atau jpg',
             'max' => 'Ukuran gambar maksimal 2MB'

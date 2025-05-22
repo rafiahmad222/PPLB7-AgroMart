@@ -111,7 +111,7 @@
                             <div>
                                 <label for="judul" class="block mb-2 text-sm font-medium text-gray-700">Judul
                                     Foto</label>
-                                <input type="text" name="judul" id="judul" required
+                                <input type="text" name="judul" id="judul"
                                     class="w-full px-4 py-3 transition-colors border-gray-300 rounded-lg shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
                                     value="{{ old('judul') }}" placeholder="Masukkan judul foto yang menarik">
                             </div>
@@ -119,7 +119,7 @@
                             <div>
                                 <label for="deskripsi"
                                     class="block mb-2 text-sm font-medium text-gray-700">Deskripsi</label>
-                                <textarea name="deskripsi" id="deskripsi" rows="4" required
+                                <textarea name="deskripsi" id="deskripsi" rows="4"
                                     class="w-full px-4 py-3 transition-colors border-gray-300 rounded-lg shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
                                     placeholder="Ceritakan tentang foto ini...">{{ old('deskripsi') }}</textarea>
                             </div>
