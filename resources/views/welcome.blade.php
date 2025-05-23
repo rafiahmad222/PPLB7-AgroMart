@@ -1,125 +1,119 @@
-{{-- filepath: d:\PPL-AgroMart\resources\views\welcome.blade.php --}}
+<!-- filepath: d:\PPL-AgroMart\resources\views\welcome.blade.php -->
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgroMart</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Landing Page - AgroMart</title>
     <link rel="icon" type="image/png" sizes="45x45" href="images/icon-40x40.png">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Poppins:wght@100..900&family=Signika:wght@300..700&family=Volkhov:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-image: url('{{ asset('images/Landing Page.png')}}'); /* Gambar latar belakang */
-            background-size: cover; /* Menyesuaikan ukuran gambar */
-            background-position: center; /* Memusatkan gambar */
-            background-repeat: no-repeat;
-            color: #1b5e20; /* Hijau gelap */
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            text-align: center;
-            background-color: #ffffff; /* Putih */
-            border: 2px solid #5ed362; /* Hijau */
-            border-radius: 10px;
-            padding: 1rem;
-            margin: 0 28rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            font-size: 2rem;
-            margin-top: 1rem;
-            text-align: center;
-            margin-bottom: 0.3rem;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
 
-        }
-        p {
-            font-size: 0.9rem;
-            margin-top: 0;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            line-height: 1.2;
-
-        }
-        .button {
-            display: inline-block;
-            marrgin-right: 0.5rem;
-            margin-left: 0.5rem;
-            margin-top: 0.5rem;
-            margin-bottom: 1rem;
-            padding: 0.75rem 2.3rem;
-            font-size: 1rem;
-            color: #ffffff;
-            background-color: #3A5B22; /* Hijau */
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            cursor: pointer;
-
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.4s ease-out, background-color 0.3s ease;
-        }
-        .button:hover {
-            transform: scale(1.10);
-            background-color: #45a049; /* Hijau lebih gelap */
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .google-button {
-            display: inline-block;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.8rem;
-            color: black;
-            background-color: white;
-            border: 1px solid grey; /* Warna biru Google */
-            border-radius: 15px;
-            text-decoration: none;
-            cursor: pointer;
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
 
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            transition: transform 0.4s ease-out, background-color 0.3s ease;
+            to {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
         }
 
-        .google-button:hover {
-            transform: scale(1.05);
-            background-color: #d6d2d2; /* Warna latar belakang saat hover */
-        }
-        .google-button img{
-            width: 30px;
-            height: 30px;
-            vertical-align: middle;
+        .animate-fadeIn {
+            animation: fadeIn 0.8s ease-out forwards;
         }
 
-        .google-button span {
-            margin-left: 0.2rem;
-            font-size: 0.8rem;
+        .animate-fadeOut {
+            animation: fadeOut 0.3s ease-out forwards;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <img src="{{ asset('images/Logo_AgroMart.png') }}" alt="Logo AgroMart" style="width: 150px; height: auto; ">
-        <h1>Selamat Datang!</h1>
-        <p>AgroMart adalah sistem berbasis website yang dirancang untuk mendigitalisasi proses pemesanan, mengoptimalkan pengantaran produk melalui kurir lokal, serta memudahkan manajemen bisnis hidroponik pada CV. Hidroponik Jember.</p>
-        @if (Route::has('login'))
-            @auth
-                @if (Auth::user()->hasRole('admin'))
-                    <a href="{{ url('/dashboard') }}" class="button">Admin Dashboard</a>
-                @elseif (Auth::user()->hasRole('user'))
-                    <a href="{{ url('/home') }}" class="button">Back To Home</a>
-                @endif
-            @else
-                <a href="{{ route('login') }}" class="button">Log in</a>
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="button">Register</a>
-                @endif
-            @endauth
-        @endif
+
+<body class="bg-gray-100">
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <nav class="flex items-center justify-between max-w-screen-xl px-4 py-3 mx-auto">
+            <div class="flex items-center space-x-6">
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('images/Logo_AgroMart.png') }}" alt="Logo AgroMart" class="h-12">
+                </a>
+                <div class="items-center hidden gap-4 text-base font-semibold md:flex text-emerald-700 font-[signika]">
+                    <a href="{{ route('home') }}" class="hover:text-emerald-400">HOME</a>
+                    <a href="#produk" class="hover:text-emerald-400">PRODUK</a>
+                    <a href="#edukasi" class="hover:text-emerald-400">EDUKASI</a>
+                    <a href="#galeri" class="hover:text-emerald-400">GALERI</a>
+                    <a href="#layanan" class="hover:text-emerald-400">LAYANAN</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="{{ route('login') }}"
+                    class="px-4 py-2 text-sm font-medium text-white rounded-md bg-emerald-500 hover:bg-emerald-600">Login</a>
+                <a href="{{ route('register') }}"
+                    class="px-4 py-2 text-sm font-medium border rounded-md text-emerald-500 border-emerald-500 hover:bg-emerald-50">Registrasi</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="h-[400px] bg-cover bg-center mt-3 mx-4 rounded-3xl overflow-hidden relative"
+        style="background-image: url('{{ asset('images/Landing Page.png') }}');">
+        <div
+            class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-white bg-black bg-opacity-50">
+            <h1 class="mb-2 text-4xl font-bold">CV. Hidroponik Jember</h1>
+            <p class="mb-4 text-lg">We all need a little space to grow. Give yourself the space you need to grow your
+                inner you.</p>
+            <a href="#kontak" class="px-4 py-2 text-white rounded-md bg-emerald-500 hover:bg-emerald-600">Hubungi
+                Kami</a>
+        </div>
     </div>
+
+    <section id="produk" class="py-12 bg-white">
+        <div class="max-w-screen-xl px-4 mx-auto">
+            <h2 class="mb-6 text-2xl font-bold text-center text-emerald-800">Produk Kami</h2>
+            <p class="mb-8 text-center text-gray-600">Temukan berbagai produk hidroponik berkualitas.</p>
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                @foreach ($produks as $produk)
+                    <div class="p-4 bg-gray-100 rounded-lg shadow-md">
+                        <h3 class="mb-2 text-lg font-semibold text-emerald-700">{{ $produk->nama_produk }}</h3>
+                        <p class="text-sm text-gray-600">{{ $produk->deskripsi }}</p>
+                        @if ($produk->gambar)
+                            <img src="{{ asset('storage/' . $produk->gambar) }}" alt="{{ $produk->nama_produk }}"
+                                class="mt-4 rounded-lg">
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <section id="kontak" class="py-12 bg-gray-100">
+        <div class="max-w-screen-xl px-4 mx-auto">
+            <h2 class="mb-6 text-2xl font-bold text-center text-emerald-800">Hubungi Kami</h2>
+            <p class="mb-8 text-center text-gray-600">Kami siap membantu Anda. Jangan ragu untuk menghubungi kami.</p>
+            <div class="flex justify-center">
+                <a href="mailto:info@agromart.com"
+                    class="px-6 py-3 text-white rounded-md bg-emerald-500 hover:bg-emerald-600">Email Kami</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <x-footer></x-footer>
 </body>
+
 </html>

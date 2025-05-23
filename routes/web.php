@@ -19,10 +19,12 @@ use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\TransaksiLayananController;
 use App\Http\Controllers\GaleriController;
+use App\Models\Produk;
 
 Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+    $produks = Produk::all(); // Ambil semua data produk
+    return view('welcome', compact('produks')); // Kirim data ke view
+})->name('home');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['admin'])->name('dashboard');
 Route::put('/dashboard/pesanan/{id}/update-status', [DashboardController::class, 'updateStatus'])

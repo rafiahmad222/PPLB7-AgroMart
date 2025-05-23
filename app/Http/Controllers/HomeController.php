@@ -12,8 +12,9 @@ class HomeController extends Controller
     public function index()
 {
     $user = Auth::user();
+    $produks = Produk::all();
     $kategoris = Kategori::all();
-    return view('home', compact('kategoris', 'user'));
+    return view('home', compact('kategoris', 'user', 'produks'));
 }
 
 }
