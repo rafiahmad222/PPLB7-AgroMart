@@ -17,10 +17,12 @@ return new class extends Migration
             $table->unsignedBigInteger('id_kabupaten_kota');
             $table->unsignedBigInteger('id_kecamatan');
             $table->unsignedBigInteger('id_kode_pos');
+            $table->string('nama_jalan')->nullable();
             $table->text('detail_alamat');
             $table->string('label_alamat');
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
             $table->timestamps();
-
             $table->foreign('id_kabupaten_kota')->references('id_kabupaten_kota')->on('kabupaten_kota')->onDelete('restrict');
             $table->foreign('id_kecamatan')->references('id_kecamatan')->on('kecamatan')->onDelete('restrict');
             $table->foreign('id_kode_pos')->references('id_kode_pos')->on('kode_pos')->onDelete('restrict');

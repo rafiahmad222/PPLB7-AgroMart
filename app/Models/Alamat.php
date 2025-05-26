@@ -19,8 +19,11 @@ class Alamat extends Model
         'id_kabupaten_kota',
         'id_kecamatan',
         'id_kode_pos',
+        'nama_jalan',
         'detail_alamat',
         'label_alamat',
+        'latitude',
+        'longitude',
     ];
 
     // ====================

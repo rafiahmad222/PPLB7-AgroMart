@@ -32,6 +32,7 @@
                         <p><span class="font-medium">No. Telepon:</span> {{ $user->phone }}</p>
                         <p><span class="font-semibold">Alamat:</span>
                             @if ($user->alamat)
+                                {{ $user->alamat->nama_jalan ?? '-' }},
                                 {{ $user->alamat->detail_alamat }},
                                 {{ $user->alamat->kecamatan->nama_kecamatan ?? '-' }},
                                 {{ $user->alamat->kabupatenKota->nama_kabupaten_kota ?? '-' }},
