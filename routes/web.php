@@ -19,6 +19,7 @@ use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\TransaksiLayananController;
 use App\Http\Controllers\GaleriController;
+use App\Http\Controllers\StatusController;
 use App\Models\Produk;
 
 Route::get('/', function () {
@@ -26,10 +27,10 @@ Route::get('/', function () {
     return view('welcome', compact('produks')); // Kirim data ke view
 })->name('home');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['admin'])->name('dashboard');
-Route::put('/dashboard/pesanan/{id}/update-status', [DashboardController::class, 'updateStatus'])
+Route::get('/status',[StatusController::class, 'index'])->name('status.index');
+Route::put('/dashboard/pesanan/{id}/update-status', [StatusController::class, 'updateStatus'])
     ->name('dashboard.pesanan.updateStatus');
-Route::get('/api/chart-data', [App\Http\Controllers\DashboardController::class, 'chartData'])->name('api.chartData');
+Route::get('/api/chart-data', [App\Http\Controllers\StatusController::class, 'chartData'])->name('api.chartData');
 
 Route::middleware(['auth'])->get('/profile/adminshowuser', [UserShowController::class, 'showUser'])->name('profile.adminshowuser');
 

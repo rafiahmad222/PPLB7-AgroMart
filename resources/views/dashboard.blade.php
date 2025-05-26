@@ -66,7 +66,7 @@
                     <a href="#galeri" class="hover:text-emerald-400">GALERI</a>
                     <a href="{{ route('layanan.index') }}" class="hover:text-emerald-400">LAYANAN</a>
                     @if (Auth::user()->role === 'admin')
-                        <a href="{{ route('dashboard') }}" class="hover:text-emerald-400">TRANSAKSI</a>
+                        <a href="{{ route('status.index') }}" class="hover:text-emerald-400">TRANSAKSI</a>
                     @else
                         <a href="{{ route('pesananku') }}" class="hover:text-emerald-400">TRANSAKSI</a>
                     @endif
@@ -111,14 +111,14 @@
                     $currentStatus = request('status');
                 @endphp
 
-                <a href="{{ route('dashboard') }}"
+                <a href="{{ route('status.index') }}"
                     class="px-4 py-2 rounded-full text-sm font-semibold
                         {{ !$currentStatus ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-emerald-100' }}">
                     Semua
                 </a>
 
                 @foreach ($statuses as $status)
-                    <a href="{{ route('dashboard', ['status' => $status]) }}"
+                    <a href="{{ route('status.index', ['status' => $status]) }}"
                         class="px-4 py-2 rounded-full text-sm font-semibold
                             {{ $currentStatus === $status ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-emerald-100' }}">
                         {{ $status }}

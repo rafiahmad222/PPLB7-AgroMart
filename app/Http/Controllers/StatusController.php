@@ -7,7 +7,7 @@ use App\Models\Pesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class DashboardController extends Controller
+class StatusController extends Controller
 {
     public function index(Request $request)
     {

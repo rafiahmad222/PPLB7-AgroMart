@@ -36,6 +36,9 @@ class PasswordResetLinkController extends Controller
             $request->only('email')
         );
 
+        if ($status === Password::INVALID_USER) {
+        return back()->withErrors(['email' => 'Email yang Anda masukkan tidak terdaftar dalam sistem kami.']);
+    }
         return $status == Password::RESET_LINK_SENT
                     ? back()->with('status', __($status))
                     : back()->withInput($request->only('email'))
