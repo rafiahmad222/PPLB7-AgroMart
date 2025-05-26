@@ -28,7 +28,7 @@ class RegisteredUserController extends Controller
             'name'     => ['required', 'string', 'max:255'],
             'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'min:8'],
-            'phone'    => ['required', 'string', 'max:13','min:10', 'regex:/^[0-9]+$/'],
+            'phone'    => ['required', 'string', 'max:13','min:13', 'regex:/^[0-9]+$/'],
         ],[
             'name.required' => 'Nama tidak boleh kosong',
             'email.required' => 'Email tidak boleh kosong',
