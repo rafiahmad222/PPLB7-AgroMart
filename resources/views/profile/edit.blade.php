@@ -654,6 +654,28 @@
             </div>
         </div>
     </div>
+    <!-- Success Notification Component -->
+    <div id="success-notification"
+        class="fixed z-50 flex items-center p-4 mb-4 transition-all duration-300 transform translate-y-20 bg-green-100 rounded-lg shadow-lg opacity-0 bottom-5 right-5">
+        <div
+            class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-600 bg-green-200 rounded-lg">
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                viewBox="0 0 20 20">
+                <path
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+            </svg>
+        </div>
+        <div id="notification-message" class="ml-3 text-sm font-medium text-green-800">Perubahan berhasil disimpan!
+        </div>
+        <button type="button"
+            class="ml-auto -mx-1.5 -my-1.5 bg-green-100 text-green-500 rounded-lg p-1.5 hover:bg-green-200 inline-flex h-8 w-8 items-center justify-center">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+        </button>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <script>
@@ -792,7 +814,7 @@
                     // Geocode lokasi yang dipilih untuk mendapatkan koordinat
                     fetch(
                             `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationName)},Indonesia&format=json&limit=1`
-                            )
+                        )
                         .then(response => response.json())
                         .then(data => {
                             if (data && data.length > 0) {
@@ -969,6 +991,90 @@
             avatarInput.value = '';
             if (cropper) cropper.destroy();
         });
+        // Notification handling
+    function showNotification(message) {
+        const notification = document.getElementById('success-notification');
+        const notificationMessage = document.getElementById('notification-message');
+
+        // Set message
+        notificationMessage.textContent = message;
+
+        // Show notification
+        notification.classList.remove('translate-y-20', 'opacity-0');
+        notification.classList.add('translate-y-0', 'opacity-100');
+
+        // Hide notification after 5 seconds
+        setTimeout(() => {
+            notification.classList.remove('translate-y-0', 'opacity-100');
+            notification.classList.add('translate-y-20', 'opacity-0');
+        }, 5000);
+
+        // Close button functionality
+        notification.querySelector('button').addEventListener('click', () => {
+            notification.classList.remove('translate-y-0', 'opacity-100');
+            notification.classList.add('translate-y-20', 'opacity-0');
+        });
+    }
+
+    // Check for success messages from server and show notifications
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check URL parameters for success messages
+        const urlParams = new URLSearchParams(window.location.search);
+
+        if (urlParams.get('profile_updated') === 'true') {
+            showNotification('Profil berhasil diperbarui!');
+        }
+
+        if (urlParams.get('password_updated') === 'true') {
+            showNotification('Password berhasil diperbarui!');
+        }
+
+        if (urlParams.get('address_created') === 'true') {
+            showNotification('Alamat baru berhasil ditambahkan!');
+        }
+
+        // Handle form submissions
+        const profileForm = document.querySelector('form[action="{{ route(\'profile.update\') }}"]');
+        const passwordForm = document.querySelector('form[action="{{ route(\'password.update\') }}"]');
+        const addressForm = document.querySelector('form[action="{{ route(\'alamat.store\') }}"]');
+
+        // Profile form submission
+        if (profileForm) {
+            profileForm.addEventListener('submit', function(e) {
+                localStorage.setItem('show_profile_success', 'true');
+            });
+        }
+
+        // Password form submission
+        if (passwordForm) {
+            passwordForm.addEventListener('submit', function(e) {
+                localStorage.setItem('show_password_success', 'true');
+            });
+        }
+
+        // Address form submission
+        if (addressForm) {
+            addressForm.addEventListener('submit', function(e) {
+                localStorage.setItem('show_address_success', 'true');
+            });
+        }
+
+        // Check localStorage for pending notifications
+        if (localStorage.getItem('show_profile_success') === 'true') {
+            showNotification('Profil berhasil diperbarui!');
+            localStorage.removeItem('show_profile_success');
+        }
+
+        if (localStorage.getItem('show_password_success') === 'true') {
+            showNotification('Password berhasil diperbarui!');
+            localStorage.removeItem('show_password_success');
+        }
+
+        if (localStorage.getItem('show_address_success') === 'true') {
+            showNotification('Alamat baru berhasil ditambahkan!');
+            localStorage.removeItem('show_address_success');
+        }
+    });
     </script>
 
 </body>

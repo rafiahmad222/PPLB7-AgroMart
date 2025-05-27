@@ -29,6 +29,6 @@ class PasswordController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
 
-        return redirect()->route('profile.edit')->with('status', 'Password berhasil diperbarui.');
+        return redirect()->route('profile.edit')->with('success', 'password_updated');;
     }
 }

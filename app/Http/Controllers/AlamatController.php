@@ -35,7 +35,7 @@ class AlamatController extends Controller
             'longitude' => $request->longitude,
         ]);
 
-        return redirect()->route('profile.edit')->with('status', 'Alamat berhasil ditambahkan!');
+        return redirect()->route('profile.edit')->with('success', 'address_created');;
     }
 
     public function update(Request $request)
