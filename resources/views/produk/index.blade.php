@@ -91,7 +91,7 @@
                     <a href="#galeri" class="hover:text-emerald-400">GALERI</a>
                     <a href="{{ route('layanan.index') }}" class="hover:text-emerald-400">LAYANAN</a>
                     @if (Auth::user()->role === 'admin')
-                        <a href="{{ route('dashboard') }}" class="hover:text-emerald-400">TRANSAKSI</a>
+                        <a href="{{ route('status.index') }}" class="hover:text-emerald-400">TRANSAKSI</a>
                     @else
                         <a href="{{ route('pesananku') }}" class="hover:text-emerald-400">TRANSAKSI</a>
                     @endif

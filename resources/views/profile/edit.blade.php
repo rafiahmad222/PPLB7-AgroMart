@@ -143,7 +143,7 @@
                         <a href="{{ route('profile.edit') }}"
                             class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun</a>
                         @if (Auth::user()->role === 'admin')
-                            <a href="{{ route('dashboard') }}"
+                            <a href="{{ route('status.index') }}"
                                 class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Transaksi</a>
                             <a href="{{ route('profile.adminshowuser') }}"
                                 class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun Customer</a>
