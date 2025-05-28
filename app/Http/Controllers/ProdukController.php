@@ -13,18 +13,26 @@ class ProdukController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Produk::with('kategori');
+        $search = $request->input('search');
+        $kategoriId = $request->route('kategori');
 
-        if ($request->has('search')) {
-            $query->where('nama_produk', 'like', '%' . $request->search . '%');
+        $query = Produk::query();
+
+        if ($search) {
+            $query->where('nama_produk', 'like', "%{$search}%")
+                ->orWhere('deskripsi_produk', 'like', "%{$search}%");
         }
 
-        if ($request->has('kategori')) {
-            $query->where('id_kategori', $request->kategori);
+        if ($kategoriId) {
+            $query->where('id_kategori', $kategoriId);
         }
 
-        $produks = $query->latest()->paginate(9);
+        $produks = $query->paginate(9);
         $kategoris = Kategori::all();
+
+        if ($request->ajax()) {
+            return view('produk._list', compact('produks'))->render();
+        }
 
         return view('produk.index', compact('produks', 'kategoris'));
     }

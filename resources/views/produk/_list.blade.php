@@ -1,4 +1,3 @@
-{{-- filepath: d:\PPL-AgroMart\resources\views\produk\_list.blade.php --}}
 @forelse ($produks as $produk)
     <div
         class="overflow-hidden transition duration-300 transform bg-white rounded-lg shadow-md hover:shadow-lg hover:-translate-y-1">

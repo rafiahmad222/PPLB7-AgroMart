@@ -9,6 +9,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Poppins:wght@100..900&family=Signika:wght@300..700&family=Volkhov:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes fadeInn {
@@ -89,33 +90,36 @@
 
 <body class="font-sans bg-gray-100">
     <!-- Header -->
-    <header class="sticky top-0 z-50 bg-white shadow-md">
+    <header class="sticky top-0 z-50 shadow-lg backdrop-blur-md bg-white/70">
         <nav class="flex items-center justify-between max-w-screen-xl px-4 py-3 mx-auto">
             <div class="flex items-center space-x-6">
                 <a href="{{ route('home') }}">
                     <img src="{{ asset('images/Logo_AgroMart.png') }}" alt="Logo AgroMart" class="h-12">
                 </a>
                 <div class="items-center hidden gap-4 text-base font-semibold md:flex text-emerald-700 font-[signika]">
-                    <a href="{{ route('home') }}" class=x`">HOME</a>
+                    <a href="{{ route('home') }}" class="hover:text-emerald-400">HOME</a>
                     <div class="relative group">
-                        <a href="{{ route('produk.index') }}" class="flex items-center gap-1">PRODUK</a>
+                        <a href="{{ route('produk.index') }}"
+                            class="flex items-center gap-1 hover:text-emerald-400">PRODUK</a>
                         <div
-                            class="absolute hidden w-40 bg-white rounded-md shadow-lg z-5 group-hover:block animate-fadeIn text-emerald-600">
+                            class="absolute hidden w-40 border rounded-md shadow-lg backdrop-blur-md bg-white/80 z-5 group-hover:block animate-fadeIn text-emerald-600 border-white/20">
                             @foreach ($kategoris as $kategori)
                                 <a href="{{ route('produk.index', $kategori->id_kategori) }}"
-                                    class="block px-4 py-2 text-sm rounded-md text-emerald-700 hover:bg-gray-100 hover:text-emerald-400">{{ $kategori->nama_kategori }}</a>
+                                    class="block px-4 py-2 text-sm rounded-md text-emerald-700 hover:bg-emerald-50/50 hover:text-emerald-400">{{ $kategori->nama_kategori }}</a>
                             @endforeach
                         </div>
                     </div>
-                    <a href="{#edukasi}" class="hover:text-emerald-400">EDUKASI</a>
-                    <a href="#galeri" class="hover:text-emerald-400">GALERI</a>
+                    <a href="{{ route('edukasi.index') }}" class="hover:text-emerald-400">EDUKASI</a>
+                    <a href="{{ route('galeri.index') }}" class="hover:text-emerald-400">GALERI</a>
                     <a href="{{ route('layanan.index') }}" class="hover:text-emerald-400">LAYANAN</a>
-                    <a href="#contact" class="hover:text-emerald-400">CONTACT US</a>
+                    @if (Auth::user()->role === 'admin')
+                        <a href="{{ route('status.index') }}" class="hover:text-emerald-400">TRANSAKSI</a>
+                    @else
+                        <a href="{{ route('pesananku') }}" class="hover:text-emerald-400">TRANSAKSI</a>
+                    @endif
                 </div>
             </div>
             <div class="flex items-center space-x-4">
-                <img src="{{ asset('images/keranjangIcon.png') }}" alt="Keranjang"
-                    class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
                 <img src="{{ asset('images/notifIcon.png') }}" alt="Notifikasi"
                     class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
                 <div id="menuButton" class="relative">
@@ -128,22 +132,17 @@
                         </div>
                     </div>
                     <div id="dropdownUser"
-                        class="absolute right-0 z-30 flex-col hidden w-48 mt-4 bg-white rounded-md shadow-2xl">
+                        class="absolute right-0 z-30 flex-col hidden w-48 mt-4 border rounded-md shadow-2xl backdrop-blur-md bg-white/80 border-white/20 font-[signika]">
                         <a href="{{ route('profile.edit') }}"
-                            class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun</a>
+                            class="block px-4 py-2 text-sm rounded-md hover:bg-emerald-50/50">Akun</a>
                         @if (Auth::user()->role === 'admin')
-                            <a href="{{ route('dashboard') }}"
-                                class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Transaksi</a>
                             <a href="{{ route('profile.adminshowuser') }}"
-                                class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun Customer</a>
-                        @else
-                            <a href="{{ route('pesananku') }}"
-                                class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Transaksi</a>
+                                class="block px-4 py-2 text-sm rounded-md hover:bg-emerald-50/50">Akun Customer</a>
                         @endif
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit"
-                                class="w-full px-4 py-2 text-sm text-left rounded-md hover:bg-gray-100">Logout</button>
+                                class="w-full px-4 py-2 text-sm text-left rounded-md hover:bg-emerald-50/50">Logout</button>
                         </form>
                     </div>
                 </div>
@@ -249,44 +248,121 @@
 
     <div id="modalTambahLayanan"
         class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50 rounded-sm">
-        <div class="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
-            <h2 class="mb-4 text-xl font-bold text-gray-800">Tambah Layanan</h2>
-            <form action="{{ route('layanan.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="mb-4">
-                    <label for="nama_layanan" class="block text-sm font-medium text-gray-700">Nama Layanan</label>
-                    <input type="text" name="nama_layanan" id="nama_layanan"
-                        class="w-full px-3 py-2 border-2 rounded border-emerald-600 focus:border-emerald-400">
-                </div>
-                <div class="mb-4">
-                    <label for="gambar_layanan" class="block text-sm font-medium text-gray-700">Gambar Layanan</label>
-                    <div class="flex items-center space-x-4">
-                        <!-- Gambar Preview -->
-                        <img id="previewGambar" src="{{ asset('images/UploadFoto.png') }}" alt="Preview Gambar"
-                            class="object-contain w-32 h-32 border border-gray-300 rounded-md">
-                        <!-- Input File -->
-                        <input type="file" name="gambar_layanan" id="gambar_layanan" class="block w-full mt-1"
-                            accept="image/*">
+        <div class="w-full max-w-5xl p-0 overflow-hidden bg-white shadow-2xl rounded-xl">
+            <div class="flex flex-col md:flex-row">
+                <!-- Left Column - Image Upload & Crop -->
+                <div class="flex flex-col w-full p-6 md:w-2/5 bg-gradient-to-br from-emerald-500 to-emerald-700">
+                    <h3 class="mb-4 text-xl font-bold text-white">Gambar Layanan</h3>
+                    <div class="flex flex-col items-center justify-center flex-grow space-y-4">
+                        <!-- Image Preview Container -->
+                        <div class="relative w-full overflow-hidden bg-white rounded-lg shadow-inner aspect-square">
+                            <img id="previewGambar" src="{{ asset('images/UploadFoto.png') }}" alt="Preview Gambar"
+                                class="object-contain w-full h-full">
+                            <!-- Crop Overlay (initially hidden) -->
+                            <div id="cropOverlay" class="absolute inset-0 hidden bg-black bg-opacity-50">
+                                <div id="cropBox" class="absolute border-2 border-white border-dashed cursor-move">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Image Controls -->
+                        <div class="flex flex-col w-full space-y-3">
+                            <label class="w-full">
+                                <div
+                                    class="flex items-center justify-center px-4 py-2 font-medium text-center transition duration-200 bg-white rounded-lg shadow cursor-pointer text-emerald-700 hover:bg-emerald-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    Pilih Gambar
+                                </div>
+                                <input type="file" name="gambar_layanan" id="gambar_layanan" class="hidden"
+                                    accept="image/*">
+                            </label>
+
+                            <!-- Crop Controls (initially hidden) -->
+                            <div id="cropControls" class="hidden space-y-3">
+                                <div class="flex space-x-2">
+                                    <button type="button" id="rotateLeftBtn"
+                                        class="flex-1 py-2 transition bg-white rounded shadow text-emerald-700 hover:bg-emerald-50">
+                                        <i class="fas fa-undo"></i> Rotate Left
+                                    </button>
+                                    <button type="button" id="rotateRightBtn"
+                                        class="flex-1 py-2 transition bg-white rounded shadow text-emerald-700 hover:bg-emerald-50">
+                                        <i class="fas fa-redo"></i> Rotate Right
+                                    </button>
+                                </div>
+                                <button type="button" id="applyCropBtn"
+                                    class="w-full px-4 py-2 font-medium transition bg-white rounded-lg shadow text-emerald-700 hover:bg-emerald-50">
+                                    Terapkan Crop
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="mb-4">
-                    <label for="harga_layanan" class="block text-sm font-medium text-gray-700">Harga Layanan</label>
-                    <input type="text" name="harga_layanan" id="harga_layanan"
-                        class="w-32 px-3 py-2 border-2 rounded shadow-md border-emerald-600">
+
+                <!-- Right Column - Form Inputs -->
+                <div class="w-full p-6 md:w-3/5">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Tambah Layanan</h2>
+                        <button type="button" id="closeModalButton" class="text-gray-500 hover:text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <form action="{{ route('layanan.store') }}" method="POST" enctype="multipart/form-data"
+                        id="layananForm">
+                        @csrf
+                        <!-- Hidden field for cropped image data -->
+                        <input type="hidden" name="cropped_image" id="croppedImageData">
+
+                        <div class="space-y-5">
+                            <div class="form-group">
+                                <label for="nama_layanan" class="block mb-1 text-sm font-medium text-gray-700">Nama
+                                    Layanan</label>
+                                <input type="text" name="nama_layanan" id="nama_layanan" required
+                                    class="w-full px-4 py-3 transition-colors border-2 rounded-lg border-emerald-600 focus:border-emerald-400 focus:ring focus:ring-emerald-200">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="harga_layanan" class="block mb-1 text-sm font-medium text-gray-700">Harga
+                                    Layanan</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                                        <span class="font-medium text-gray-500">Rp</span>
+                                    </div>
+                                    <input type="text" name="harga_layanan" id="harga_layanan" required
+                                        class="w-full px-4 py-3 pl-10 transition-colors border-2 rounded-lg border-emerald-600 focus:border-emerald-400 focus:ring focus:ring-emerald-200"
+                                        placeholder="0">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="deskripsi_layanan"
+                                    class="block mb-1 text-sm font-medium text-gray-700">Deskripsi Layanan</label>
+                                <textarea name="deskripsi_layanan" id="deskripsi_layanan" rows="6" required
+                                    class="w-full px-4 py-3 transition-colors border-2 rounded-lg border-emerald-600 focus:border-emerald-400 focus:ring focus:ring-emerald-200"></textarea>
+                            </div>
+
+                            <div class="flex justify-end pt-4 space-x-3">
+                                <button type="button" id="cancelModalButton"
+                                    class="px-6 py-3 text-gray-800 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300">
+                                    Batal
+                                </button>
+                                <button type="submit"
+                                    class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white rounded-lg shadow-md transition-all transform hover:-translate-y-0.5">
+                                    Simpan Layanan
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="mb-4">
-                    <label for="deskripsi_layanan" class="block text-sm font-medium text-gray-700">Deskripsi
-                        Layanan</label>
-                    <textarea name="deskripsi_layanan" id="deskripsi_layanan" rows="4"
-                        class="w-full px-3 py-2 border-2 rounded shadow-md border-emerald-600"></textarea>
-                </div>
-                <div class="flex justify-end space-x-4">
-                    <button type="button" id="closeModalButton"
-                        class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
-                    <button type="submit"
-                        class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">Simpan</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
     <div id="successModal"
@@ -438,6 +514,254 @@
 
             dropdownUser.addEventListener('click', function(e) {
                 e.stopPropagation();
+            });
+            // Image cropping functionality
+            document.addEventListener('DOMContentLoaded', function() {
+                const inputImage = document.getElementById('gambar_layanan');
+                const previewImage = document.getElementById('previewGambar');
+                const cropOverlay = document.getElementById('cropOverlay');
+                const cropBox = document.getElementById('cropBox');
+                const cropControls = document.getElementById('cropControls');
+                const applyCropBtn = document.getElementById('applyCropBtn');
+                const rotateLeftBtn = document.getElementById('rotateLeftBtn');
+                const rotateRightBtn = document.getElementById('rotateRightBtn');
+                const croppedImageData = document.getElementById('croppedImageData');
+                const cancelModalButton = document.getElementById('cancelModalButton');
+
+                let originalImage = null;
+                let rotation = 0;
+
+                // Make the cancelModalButton close the modal too
+                cancelModalButton.addEventListener('click', () => {
+                    modalTambahLayanan.classList.add('hidden');
+                });
+
+                // Handle file input change
+                inputImage.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        // Store original image for rotations
+                        originalImage = new Image();
+                        originalImage.src = event.target.result;
+
+                        originalImage.onload = function() {
+                            // Reset rotation
+                            rotation = 0;
+
+                            // Show image in preview
+                            previewImage.src = originalImage.src;
+
+                            // Show crop controls and overlay
+                            cropControls.classList.remove('hidden');
+                            cropOverlay.classList.remove('hidden');
+
+                            // Set initial crop box size (centered 80% of image)
+                            setTimeout(() => initCropBox(), 100);
+                        };
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                // Initialize the crop box
+                function initCropBox() {
+                    const container = previewImage.parentElement;
+                    const containerWidth = container.offsetWidth;
+                    const containerHeight = container.offsetHeight;
+
+                    const cropSize = Math.min(containerWidth, containerHeight) * 0.8;
+
+                    cropBox.style.width = cropSize + 'px';
+                    cropBox.style.height = cropSize + 'px';
+                    cropBox.style.left = (containerWidth - cropSize) / 2 + 'px';
+                    cropBox.style.top = (containerHeight - cropSize) / 2 + 'px';
+
+                    // Make cropBox draggable
+                    makeDraggable(cropBox);
+                }
+
+                // Make an element draggable
+                function makeDraggable(element) {
+                    let pos1 = 0,
+                        pos2 = 0,
+                        pos3 = 0,
+                        pos4 = 0;
+
+                    element.onmousedown = dragMouseDown;
+
+                    function dragMouseDown(e) {
+                        e.preventDefault();
+                        // Get mouse position at startup
+                        pos3 = e.clientX;
+                        pos4 = e.clientY;
+                        document.onmouseup = closeDragElement;
+                        document.onmousemove = elementDrag;
+                    }
+
+                    function elementDrag(e) {
+                        e.preventDefault();
+                        const container = element.parentElement;
+                        const containerRect = container.getBoundingClientRect();
+                        const elementRect = element.getBoundingClientRect();
+
+                        // Calculate new position
+                        pos1 = pos3 - e.clientX;
+                        pos2 = pos4 - e.clientY;
+                        pos3 = e.clientX;
+                        pos4 = e.clientY;
+
+                        // Calculate new top and left positions
+                        let newTop = element.offsetTop - pos2;
+                        let newLeft = element.offsetLeft - pos1;
+
+                        // Apply bounds
+                        if (newLeft < 0) newLeft = 0;
+                        if (newTop < 0) newTop = 0;
+                        if (newLeft + elementRect.width > containerRect.width)
+                            newLeft = containerRect.width - elementRect.width;
+                        if (newTop + elementRect.height > containerRect.height)
+                            newTop = containerRect.height - elementRect.height;
+
+                        // Set element's new position
+                        element.style.top = newTop + "px";
+                        element.style.left = newLeft + "px";
+                    }
+
+                    function closeDragElement() {
+                        // Stop moving when mouse button is released
+                        document.onmouseup = null;
+                        document.onmousemove = null;
+                    }
+                }
+
+                // Apply crop when button is clicked
+                applyCropBtn.addEventListener('click', function() {
+                    if (!originalImage) return;
+
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+
+                    // Get container and crop box dimensions
+                    const container = previewImage.parentElement;
+                    const containerWidth = container.offsetWidth;
+                    const containerHeight = container.offsetHeight;
+
+                    // Calculate the scale between original image and displayed image
+                    const scale = originalImage.naturalWidth / containerWidth;
+
+                    // Get crop box position and size
+                    const cropLeft = parseInt(cropBox.style.left || '0');
+                    const cropTop = parseInt(cropBox.style.top || '0');
+                    const cropWidth = cropBox.offsetWidth;
+                    const cropHeight = cropBox.offsetHeight;
+
+                    // Set canvas dimensions to crop size
+                    canvas.width = cropWidth * scale;
+                    canvas.height = cropHeight * scale;
+
+                    // Translate and rotate context if needed
+                    if (rotation !== 0) {
+                        ctx.save();
+                        ctx.translate(canvas.width / 2, canvas.height / 2);
+                        ctx.rotate(rotation * Math.PI / 180);
+                        ctx.drawImage(
+                            originalImage,
+                            -originalImage.width / 2,
+                            -originalImage.height / 2
+                        );
+                        ctx.restore();
+
+                        // Now draw the cropped portion
+                        const tempCanvas = document.createElement('canvas');
+                        tempCanvas.width = canvas.width;
+                        tempCanvas.height = canvas.height;
+                        const tempCtx = tempCanvas.getContext('2d');
+
+                        tempCtx.drawImage(
+                            canvas,
+                            cropLeft * scale, cropTop * scale,
+                            cropWidth * scale, cropHeight * scale,
+                            0, 0,
+                            cropWidth * scale, cropHeight * scale
+                        );
+
+                        // Reset and draw the final image
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(tempCanvas, 0, 0);
+                    } else {
+                        // Draw the cropped image directly
+                        ctx.drawImage(
+                            originalImage,
+                            cropLeft * scale, cropTop * scale,
+                            cropWidth * scale, cropHeight * scale,
+                            0, 0,
+                            cropWidth * scale, cropHeight * scale
+                        );
+                    }
+
+                    // Convert canvas to data URL
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+
+                    // Update the preview image and hidden input
+                    previewImage.src = dataUrl;
+                    croppedImageData.value = dataUrl;
+
+                    // Hide crop interface
+                    cropOverlay.classList.add('hidden');
+                });
+
+                // Rotate left
+                rotateLeftBtn.addEventListener('click', function() {
+                    rotation = (rotation - 90) % 360;
+                    applyRotation();
+                });
+
+                // Rotate right
+                rotateRightBtn.addEventListener('click', function() {
+                    rotation = (rotation + 90) % 360;
+                    applyRotation();
+                });
+
+                // Apply rotation to preview image
+                function applyRotation() {
+                    if (!originalImage) return;
+
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+
+                    // Swap width and height if needed
+                    if (Math.abs(rotation) % 180 === 90) {
+                        canvas.width = originalImage.height;
+                        canvas.height = originalImage.width;
+                    } else {
+                        canvas.width = originalImage.width;
+                        canvas.height = originalImage.height;
+                    }
+
+                    // Translate and rotate
+                    ctx.translate(canvas.width / 2, canvas.height / 2);
+                    ctx.rotate(rotation * Math.PI / 180);
+                    ctx.drawImage(originalImage, -originalImage.width / 2, -originalImage.height / 2);
+
+                    // Update preview
+                    previewImage.src = canvas.toDataURL('image/jpeg', 0.9);
+                }
+
+                // Format currency input for harga_layanan
+                const hargaInput = document.getElementById('harga_layanan');
+                hargaInput.addEventListener('input', function(e) {
+                    // Remove non-digits
+                    let value = this.value.replace(/\D/g, '');
+
+                    // Format with thousand separators
+                    if (value) {
+                        value = parseInt(value, 10).toLocaleString('id-ID');
+                    }
+
+                    this.value = value;
+                });
             });
         </script>
 </body>

@@ -376,7 +376,7 @@
                                     </div>
 
                                     <div class="pl-10 mt-1 text-sm text-gray-600">
-                                        <p>{{ $alamats->detail_alamat }}</p>
+                                        <p><span class="font-semibold">{{ $alamats->nama_jalan }}</span>, {{ $alamats->detail_alamat }}</p>
                                         <p class="mt-1">{{ $alamats->kecamatan->nama_kecamatan }},
                                             {{ $alamats->kabupatenKota->nama_kabupaten_kota }}</p>
                                         <p>{{ $alamats->kodePos->kode_pos }}</p>
@@ -1034,9 +1034,9 @@
         }
 
         // Handle form submissions
-        const profileForm = document.querySelector('form[action="{{ route(\'profile.update\') }}"]');
-        const passwordForm = document.querySelector('form[action="{{ route(\'password.update\') }}"]');
-        const addressForm = document.querySelector('form[action="{{ route(\'alamat.store\') }}"]');
+        const profileForm = document.querySelector('form[action="{{ route('profile.update') }}"]');
+        const passwordForm = document.querySelector('form[action="{{ route('password.update') }}"]');
+        const addressForm = document.querySelector('form[action="{{ route('alamat.store') }}"]');
 
         // Profile form submission
         if (profileForm) {

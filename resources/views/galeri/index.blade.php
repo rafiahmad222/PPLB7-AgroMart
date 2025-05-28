@@ -78,7 +78,7 @@
 </head>
 
 <body class="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
-    <header class="sticky top-0 z-50 bg-white shadow-md">
+    <header class="sticky top-0 z-50 shadow-lg backdrop-blur-md bg-white/70">
         <nav class="flex items-center justify-between max-w-screen-xl px-4 py-3 mx-auto">
             <div class="flex items-center space-x-6">
                 <a href="{{ route('home') }}">
@@ -90,10 +90,10 @@
                         <a href="{{ route('produk.index') }}"
                             class="flex items-center gap-1 hover:text-emerald-400">PRODUK</a>
                         <div
-                            class="absolute hidden w-40 bg-white rounded-md shadow-lg z-5 group-hover:block animate-fadeIn text-emerald-600">
+                            class="absolute hidden w-40 border rounded-md shadow-lg backdrop-blur-md bg-white/80 z-5 group-hover:block animate-fadeIn text-emerald-600 border-white/20">
                             @foreach ($kategoris as $kategori)
                                 <a href="{{ route('produk.index', $kategori->id_kategori) }}"
-                                    class="block px-4 py-2 text-sm rounded-md text-emerald-700 hover:bg-gray-100 hover:text-emerald-400">{{ $kategori->nama_kategori }}</a>
+                                    class="block px-4 py-2 text-sm rounded-md text-emerald-700 hover:bg-emerald-50/50 hover:text-emerald-400">{{ $kategori->nama_kategori }}</a>
                             @endforeach
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                     <a href="{{ route('galeri.index') }}" class="hover:text-emerald-400">GALERI</a>
                     <a href="{{ route('layanan.index') }}" class="hover:text-emerald-400">LAYANAN</a>
                     @if (Auth::user()->role === 'admin')
-                        <a href="{{ route('dashboard') }}" class="hover:text-emerald-400">TRANSAKSI</a>
+                        <a href="{{ route('status.index') }}" class="hover:text-emerald-400">TRANSAKSI</a>
                     @else
                         <a href="{{ route('pesananku') }}" class="hover:text-emerald-400">TRANSAKSI</a>
                     @endif
@@ -120,17 +120,17 @@
                         </div>
                     </div>
                     <div id="dropdownUser"
-                        class="absolute right-0 z-30 flex-col hidden w-48 mt-4 bg-white rounded-md shadow-2xl">
+                        class="absolute right-0 z-30 flex-col hidden w-48 mt-4 border rounded-md shadow-2xl backdrop-blur-md bg-white/80 border-white/20 font-[signika]">
                         <a href="{{ route('profile.edit') }}"
-                            class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun</a>
+                            class="block px-4 py-2 text-sm rounded-md hover:bg-emerald-50/50">Akun</a>
                         @if (Auth::user()->role === 'admin')
                             <a href="{{ route('profile.adminshowuser') }}"
-                                class="block px-4 py-2 text-sm rounded-md hover:bg-gray-100">Akun Customer</a>
+                                class="block px-4 py-2 text-sm rounded-md hover:bg-emerald-50/50">Akun Customer</a>
                         @endif
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit"
-                                class="w-full px-4 py-2 text-sm text-left rounded-md hover:bg-gray-100">Logout</button>
+                                class="w-full px-4 py-2 text-sm text-left rounded-md hover:bg-emerald-50/50">Logout</button>
                         </form>
                     </div>
                 </div>
