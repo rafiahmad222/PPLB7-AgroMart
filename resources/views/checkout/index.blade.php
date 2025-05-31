@@ -65,6 +65,19 @@
             opacity: 0;
         }
 
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 1s ease-in-out;
+        }
+
         /* Custom radio styles */
         .custom-radio input[type="radio"] {
             display: none;
@@ -177,7 +190,8 @@
                                     </svg>
                                     Alamat Pengiriman
                                 </h2>
-                                <a href="#" class="text-sm text-emerald-600 hover:text-emerald-700">+ Tambah
+                                <a href="{{ route('profile.edit') }}"
+                                    class="text-sm text-emerald-600 hover:text-emerald-700">+ Tambah
                                     Alamat</a>
                             </div>
 
@@ -189,8 +203,14 @@
                                             required>
                                             <option value="" disabled selected>Pilih alamat pengiriman</option>
                                             @foreach ($alamat as $item)
-                                                <option value="{{ $item->id_alamat }}">
-                                                    {{ $item->label_alamat }} - {{ $item->detail_alamat }}
+                                                <option value="{{ $item->id_alamat }}"
+                                                    data-latitude="{{ $item->latitude }}"
+                                                    data-longitude="{{ $item->longitude }}">
+                                                    {{ $item->label_alamat }} - {{ $item->nama_jalan }}
+                                                    {{ $item->detail_alamat }},
+                                                    {{ $item->kecamatan->nama_kecamatan }},
+                                                    {{ $item->kabupatenKota->nama_kabupaten_kota }},
+                                                    {{ $item->kodePos->kode_pos }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -270,7 +290,7 @@
                                             <div class="font-medium">Paxel (Via Jasa Kurir)</div>
                                             <div class="mt-1 text-sm text-gray-500">Estimasi tiba 2-3 hari</div>
                                         </div>
-                                        <img src="https://www.paxel.co/assets/paxel-logo-new-green.png" alt="Paxel"
+                                        <img src="{{ asset('images/paxelLogo.png') }}" alt="Paxel"
                                             class="h-8 ml-auto">
                                     </label>
                                 </div>
@@ -287,19 +307,28 @@
                                         </div>
                                     </label>
                                 </div>
-                            </div>
 
-                            <div id="ongkirField"
-                                class="hidden p-4 mt-4 border border-gray-200 rounded-lg bg-gray-50">
-                                <label class="block text-sm font-medium text-gray-700">Perkiraan Jarak (KM)</label>
-                                <div class="flex items-center mt-2">
-                                    <input type="number" name="jarak" min="1" placeholder="Contoh: 3"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
-                                        onchange="hitungTotal()">
-                                    <span class="ml-3 text-sm text-gray-500">Kilometer</span>
+                                <!-- Tambahkan div info jarak pengiriman yang akan muncul ketika Paxel dipilih -->
+                                <div id="ongkirField" class="hidden p-4 mt-4 border rounded-lg bg-gray-50">
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-emerald-500"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <p class="text-sm text-gray-700">Ongkir dihitung berdasarkan jarak</p>
+                                    </div>
+                                    <div id="jarak-info" class="mt-2 font-medium text-emerald-600"></div>
+                                    <div class="mt-2 text-xs text-gray-500">
+                                        <ul class="space-y-1">
+                                            <li>• 0-10 km: Rp 5.000</li>
+                                            <li>• 11-15 km: Rp 8.000</li>
+                                            <li>• 16-25 km: Rp 15.000</li>
+                                            <li>• 26-40 km: Rp 20.000</li>
+                                            <li>• >40 km: Rp 30.000</li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <p class="mt-2 text-sm text-gray-500">Ongkir akan dihitung otomatis berdasarkan jarak
-                                    (Rp 5.000/km)</p>
                             </div>
                         </div>
                 </div>
@@ -427,6 +456,18 @@
     </footer>
 
     <script>
+        const TOKO_LATITUDE = -8.157610;
+        const TOKO_LONGITUDE = 113.746971;
+
+        // Tabel tarif ongkir berdasarkan tier jarak
+        const ONGKIR_TIERS = [
+            { maxDistance: 10, price: 5000 },    // 0-10 km: Rp 5.000
+            { maxDistance: 15, price: 8000 },    // 11-15 km: Rp 8.000
+            { maxDistance: 25, price: 15000 },   // 16-25 km: Rp 15.000
+            { maxDistance: 40, price: 20000 },   // 26-40 km: Rp 20.000
+            { maxDistance: Infinity, price: 30000 } // >40 km: Rp 30.000
+        ];
+
         function toggleOngkir() {
             const pengirimanRadios = document.querySelectorAll('input[name="pengiriman"]');
             let selectedPengiriman = '';
@@ -442,13 +483,104 @@
                 ongkirField.classList.add('animate-fade-in');
                 codOption.disabled = true;
                 codOption.checked = false;
-                toggleRekening(); // to hide rekeningField if needed
+
+                // Hitung ongkir saat opsi pengiriman dipilih
+                hitungOngkirOtomatis();
+                toggleRekening();
             } else {
                 ongkirField.classList.add('hidden');
                 codOption.disabled = false;
                 document.getElementById('ongkirInput').value = 0;
                 document.getElementById('ongkirDisplay').innerText = 'Rp 0';
-                hitungTotal();
+                hitungTotal(0);
+            }
+        }
+
+        // Fungsi untuk menghitung jarak antara dua titik koordinat (Haversine formula)
+        function hitungJarakHaversine(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius bumi dalam kilometer
+            const dLat = toRad(lat2 - lat1);
+            const dLon = toRad(lon2 - lon1);
+
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distance = R * c; // Jarak dalam kilometer
+
+            return distance;
+        }
+
+        // Fungsi untuk mengkonversi derajat ke radian
+        function toRad(degrees) {
+            return degrees * (Math.PI / 180);
+        }
+
+        // Fungsi untuk mendapatkan tarif ongkir berdasarkan jarak
+        function hitungTarifOngkir(jarak) {
+            // Tambahkan faktor koreksi untuk menyesuaikan dengan jalan nyata (1.3x)
+            const koreksiJarak = jarak * 1.3;
+
+            // Cari tier yang sesuai dengan jarak
+            for (const tier of ONGKIR_TIERS) {
+                if (koreksiJarak <= tier.maxDistance) {
+                    return tier.price;
+                }
+            }
+
+            // Default untuk jarak sangat jauh
+            return ONGKIR_TIERS[ONGKIR_TIERS.length - 1].price;
+        }
+
+        // Fungsi untuk menghitung ongkir otomatis berdasarkan alamat yang dipilih
+        function hitungOngkirOtomatis() {
+            const addressSelect = document.querySelector('select[name="alamat_id"]');
+
+            if (!addressSelect || addressSelect.selectedIndex <= 0) {
+                if (document.getElementById('jarak-info')) {
+                    document.getElementById('jarak-info').textContent = "Pilih alamat untuk melihat biaya pengiriman";
+                }
+                return;
+            }
+
+            const selectedOption = addressSelect.options[addressSelect.selectedIndex];
+            const latitude = parseFloat(selectedOption.dataset.latitude);
+            const longitude = parseFloat(selectedOption.dataset.longitude);
+
+            if (latitude && longitude) {
+                // Hitung jarak
+                const jarak = hitungJarakHaversine(
+                    TOKO_LATITUDE,
+                    TOKO_LONGITUDE,
+                    latitude,
+                    longitude
+                );
+
+                // Bulatkan jarak ke 1 desimal
+                const jarakBulat = Math.ceil(jarak * 10) / 10;
+
+                // Hitung ongkir berdasarkan tier jarak
+                const ongkir = hitungTarifOngkir(jarakBulat);
+
+                // Tampilkan info jarak
+                if (document.getElementById('jarak-info')) {
+                    document.getElementById('jarak-info').textContent =
+                        `Jarak pengiriman: ${jarakBulat.toFixed(1)} km`;
+                }
+
+                // Update ongkir
+                document.getElementById('ongkirInput').value = ongkir;
+                document.getElementById('ongkirDisplay').innerText = 'Rp ' + ongkir.toLocaleString('id-ID');
+
+                // Hitung total
+                hitungTotal(ongkir);
+            } else {
+                if (document.getElementById('jarak-info')) {
+                    document.getElementById('jarak-info').textContent =
+                        "Tidak dapat menemukan koordinat alamat";
+                }
             }
         }
 
@@ -468,23 +600,28 @@
             }
         }
 
-        function hitungTotal() {
-            const jarak = document.querySelector('input[name="jarak"]')?.value || 0;
+        function hitungTotal(ongkir) {
             const hargaProduk = parseInt(document.getElementById('harga_produk').value);
             const jumlah = parseInt(document.querySelector('input[name="jumlah"]').value);
-            const ongkir = jarak * 5000;
+
+            // Gunakan parameter ongkir atau ambil dari input jika tidak diberikan
+            const ongkirValue = ongkir !== undefined ? ongkir :
+                parseInt(document.getElementById('ongkirInput').value) || 0;
 
             const totalHarga = hargaProduk * jumlah;
-            const totalPembayaran = totalHarga + ongkir;
+            const totalPembayaran = totalHarga + ongkirValue;
 
-            document.getElementById('ongkirInput').value = ongkir;
-            document.getElementById('ongkirDisplay').innerText = 'Rp ' + ongkir.toLocaleString();
+            // Update hidden input for total
+            document.querySelector('input[name="total"]').value = totalPembayaran;
 
             // Animate total change
             const totalDisplay = document.getElementById('totalDisplay');
+            if (totalDisplay.classList.contains('animate-pulse-slow')) {
+                totalDisplay.classList.remove('animate-pulse-slow');
+            }
             totalDisplay.classList.add('animate-pulse-slow');
             setTimeout(() => {
-                totalDisplay.innerText = 'Rp ' + totalPembayaran.toLocaleString();
+                totalDisplay.innerText = 'Rp ' + totalPembayaran.toLocaleString('id-ID');
                 totalDisplay.classList.remove('animate-pulse-slow');
             }, 200);
         }
@@ -507,6 +644,12 @@
                         selectedDetail.textContent = detail;
                         selectedAddressDetails.classList.remove('hidden');
                         selectedAddressDetails.classList.add('animate-fade-in');
+
+                        // Hitung ongkir jika metode pengiriman adalah wa_jek
+                        const isPaxelSelected = document.getElementById('paxel').checked;
+                        if (isPaxelSelected) {
+                            hitungOngkirOtomatis();
+                        }
                     } else {
                         selectedAddressDetails.classList.add('hidden');
                     }

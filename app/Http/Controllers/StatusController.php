@@ -28,7 +28,7 @@ class StatusController extends Controller
         $pesanans = $query->get();
         $kategoris = Kategori::all();
 
-        return view('dashboard', compact('kategoris', 'pesanans', 'listTahun'));
+        return view('status', compact('kategoris', 'pesanans', 'listTahun'));
         }
 
     public function updateStatus(Request $request, $id)

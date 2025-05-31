@@ -11,12 +11,20 @@ use App\Models\Produk;
 
 class PesananController extends Controller
 {
-    public function pesananku()
+    public function pesananku(Request $request)
     {
         $kategoris = Kategori::all();
         $user = Auth::user();
-        $pesanans = Pesanan::where('user_id', $user->id)->get();
+        $query = Pesanan::with(['produk', 'alamat.kecamatan', 'alamat.kabupatenKota', 'alamat.kodePos'])
+            ->where('user_id', $user->id);
 
+        // Menerapkan filter status jika parameter status diberikan
+        if ($request->has('status')) {
+            $status = $request->get('status');
+            $query->where('status', $status);
+        }
+
+        $pesanans = $query->orderBy('created_at', 'desc')->paginate(9);
         return view('pesanan.pesananku', compact('kategoris', 'pesanans'));
     }
 
@@ -31,5 +39,4 @@ class PesananController extends Controller
             return redirect()->route('pesananku')->with('error', 'Pesanan tidak dapat dikonfirmasi.');
         }
     }
-
 }
