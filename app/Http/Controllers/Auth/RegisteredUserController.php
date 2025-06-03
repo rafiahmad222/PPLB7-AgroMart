@@ -37,7 +37,7 @@ class RegisteredUserController extends Controller
             'password.min' => 'Password minimal 8 karakter',
             'phone.regex' => 'Nomor telepon hanya boleh mengandung angka',
             'address.min' => 'Alamat minimal 10 karakter',
-            'phone.min' => 'Nomor telepon minimal 10 karakter',
+            'phone.min' => 'Nomor telepon minimal 12 karakter',
             'email.unique' => 'Email anda sudah terdaftar',
         ]);
 
