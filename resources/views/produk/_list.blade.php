@@ -5,7 +5,7 @@
             @if ($produk->gambar_produk)
                 <div class="h-48 overflow-hidden bg-gray-100">
                     <img src="{{ asset('storage/' . $produk->gambar_produk) }}" alt="{{ $produk->nama_produk }}"
-                        class="object-contain w-full h-full">
+                        class="object-cover w-full h-full">
                 </div>
             @else
                 <div class="flex items-center justify-center h-48 bg-gray-100">

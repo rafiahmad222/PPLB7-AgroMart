@@ -82,7 +82,7 @@
                 <div class="relative overflow-hidden bg-white shadow-lg rounded-xl">
                     <div class="absolute inset-0 bg-gradient-radial opacity-30"></div>
                     <img src="{{ asset('storage/' . $layanan->gambar_layanan) }}" alt="{{ $layanan->nama_layanan }}"
-                        class="object-contain w-full p-4 h-96 animate-fade-in">
+                        class="object-cover w-full p-4 h-96 animate-fade-in">
                 </div>
 
                 <!-- Right: Product Info -->

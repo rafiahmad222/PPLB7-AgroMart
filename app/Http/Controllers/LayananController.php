@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Layanan;
 use App\Models\Kategori;
+use Illuminate\Support\Facades\Storage;
 
 class LayananController extends Controller
 {
@@ -22,26 +23,51 @@ class LayananController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_layanan' => 'required|string|max:255',
-            'gambar_layanan' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'harga_layanan' => 'required|numeric|min:0',
-            'deskripsi_layanan' => 'nullable|string',
-        ]);
+        try {
+            $request->validate([
+                'nama_layanan' => 'required|string|max:255',
+                'harga_layanan' => 'required|numeric',
+                'deskripsi_layanan' => 'required|string',
+            ]);
 
-        $gambarPath = null;
-        if ($request->hasFile('gambar_layanan')) {
-            $gambarPath = $request->file('gambar_layanan')->store('layanan_images', 'public');
+            // Cek apakah ada data gambar yang dikirim
+            if ($request->has('cropped_image') && $request->cropped_image) {
+                // Ekstrak data image dari base64
+                $image_parts = explode(";base64,", $request->cropped_image);
+
+                // Jika format data benar
+                if (count($image_parts) == 2) {
+                    $image_base64 = base64_decode($image_parts[1]);
+
+                    // Buat nama file unik
+                    $fileName = 'layanan_' . time() . '.png';
+                    $filePath = 'layanan/' . $fileName;
+
+                    // Simpan file ke storage
+                    Storage::disk('public')->put($filePath, $image_base64);
+
+                    // Buat record layanan dengan path file
+                    Layanan::create([
+                        'nama_layanan' => $request->nama_layanan,
+                        'harga_layanan' => $request->harga_layanan,
+                        'deskripsi_layanan' => $request->deskripsi_layanan,
+                        'gambar_layanan' => $filePath,
+                    ]);
+
+                    return redirect()->route('layanan.index')->with('success', 'Layanan berhasil ditambahkan!');
+                }
+            }
+
+            // Jika tidak ada gambar atau format tidak sesuai
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['gambar_layanan' => 'Gambar layanan wajib diisi dengan format yang sesuai.']);
+        } catch (\Exception $e) {
+
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
         }
-
-        Layanan::create([
-            'nama_layanan' => $request->nama_layanan,
-            'gambar_layanan' => $gambarPath,
-            'harga_layanan' => $request->harga_layanan,
-            'deskripsi_layanan' => $request->deskripsi_layanan,
-        ]);
-
-        return redirect()->route('layanan.index')->with('success', 'Layanan berhasil ditambahkan.');
     }
 
     public function edit($id)

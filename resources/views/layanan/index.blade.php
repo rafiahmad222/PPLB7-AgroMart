@@ -11,6 +11,8 @@
         rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tambahkan link CSS untuk Cropper.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
     <style>
         @keyframes fadeInn {
             from {
@@ -202,7 +204,7 @@
                             </div>
                             <img src="{{ asset('storage/' . $layanan->gambar_layanan) }}"
                                 alt="{{ $layanan->nama_layanan }}"
-                                class="object-contain w-full h-56 transition-transform duration-500 group-hover:scale-105">
+                                class="object-cover w-full h-56 transition-transform duration-500 group-hover:scale-105">
                             <div
                                 class="absolute bottom-0 left-0 right-0 z-20 p-4 text-white transition-transform duration-300 transform translate-y-full group-hover:translate-y-0">
                                 <span class="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-600">Layanan
@@ -258,11 +260,6 @@
                         <div class="relative w-full overflow-hidden bg-white rounded-lg shadow-inner aspect-square">
                             <img id="previewGambar" src="{{ asset('images/UploadFoto.png') }}" alt="Preview Gambar"
                                 class="object-contain w-full h-full">
-                            <!-- Crop Overlay (initially hidden) -->
-                            <div id="cropOverlay" class="absolute inset-0 hidden bg-black bg-opacity-50">
-                                <div id="cropBox" class="absolute border-2 border-white border-dashed cursor-move">
-                                </div>
-                            </div>
                         </div>
 
                         <!-- Image Controls -->
@@ -280,24 +277,6 @@
                                 <input type="file" name="gambar_layanan" id="gambar_layanan" class="hidden"
                                     accept="image/*">
                             </label>
-
-                            <!-- Crop Controls (initially hidden) -->
-                            <div id="cropControls" class="hidden space-y-3">
-                                <div class="flex space-x-2">
-                                    <button type="button" id="rotateLeftBtn"
-                                        class="flex-1 py-2 transition bg-white rounded shadow text-emerald-700 hover:bg-emerald-50">
-                                        <i class="fas fa-undo"></i> Rotate Left
-                                    </button>
-                                    <button type="button" id="rotateRightBtn"
-                                        class="flex-1 py-2 transition bg-white rounded shadow text-emerald-700 hover:bg-emerald-50">
-                                        <i class="fas fa-redo"></i> Rotate Right
-                                    </button>
-                                </div>
-                                <button type="button" id="applyCropBtn"
-                                    class="w-full px-4 py-2 font-medium transition bg-white rounded-lg shadow text-emerald-700 hover:bg-emerald-50">
-                                    Terapkan Crop
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -366,7 +345,7 @@
         </div>
     </div>
     <div id="successModal"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black modal-fade-in bg-opacity-60">
+        class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black modal-fade-in bg-opacity-60">
         <div class="w-full max-w-md p-6 bg-white border-l-4 border-green-500 shadow-2xl modal-slide-in rounded-xl">
             <div class="flex items-center mb-4">
                 <div class="flex-shrink-0 p-2 bg-green-100 rounded-full">
@@ -390,7 +369,7 @@
     </div>
 
     <!-- Error Modal -->
-    <<div id="errorModal"
+    <div id="errorModal"
         class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black modal-fade-in bg-opacity-60">
         <div class="w-full max-w-md p-6 bg-white border-l-4 border-red-500 shadow-2xl modal-slide-in rounded-xl">
             <div class="flex items-center mb-4">
@@ -412,11 +391,75 @@
                 </button>
             </div>
         </div>
-        </div>
-        <!-- Footer -->
-        <x-footer></x-footer>
+    </div>
 
-        <script>
+    <!-- Modal Cropper -->
+    <div id="cropperModal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-75">
+        <div class="w-full max-w-3xl p-6 bg-white rounded-lg">
+            <div class="flex justify-between mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Sesuaikan Gambar</h3>
+                <button onclick="closeCropperModal()" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="relative mb-4 bg-gray-100 h-96">
+                <img id="cropperImage" src="" alt="Image to crop" class="block max-w-full max-h-full">
+            </div>
+
+            <div class="flex flex-wrap gap-2 mt-4">
+                <button onclick="rotateLeft()"
+                    class="px-4 py-2 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-200">
+                    <i class="fas fa-undo"></i> Rotate Left
+                </button>
+                <button onclick="rotateRight()"
+                    class="px-4 py-2 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-200">
+                    <i class="fas fa-redo"></i> Rotate Right
+                </button>
+                <button onclick="flipHorizontal()"
+                    class="px-4 py-2 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-200">
+                    <i class="fas fa-arrows-alt-h"></i> Flip Horizontal
+                </button>
+                <button onclick="zoomIn()"
+                    class="px-4 py-2 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-200">
+                    <i class="fas fa-search-plus"></i> Zoom In
+                </button>
+                <button onclick="zoomOut()"
+                    class="px-4 py-2 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-200">
+                    <i class="fas fa-search-minus"></i> Zoom Out
+                </button>
+            </div>
+
+            <div class="flex justify-between gap-2 mt-4">
+                <button onclick="useOriginalImage()"
+                    class="px-4 py-2 bg-white border rounded-lg text-emerald-700 border-emerald-300 hover:bg-emerald-50">
+                    Gunakan Gambar Asli
+                </button>
+
+                <div class="flex gap-2">
+                    <button onclick="cancelCrop()"
+                        class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                        Batal
+                    </button>
+                    <button onclick="cropImage()"
+                        class="px-4 py-2 text-white rounded-lg bg-emerald-600 hover:bg-emerald-700">
+                        Terapkan Crop
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <x-footer></x-footer>
+
+    <!-- Script Cropper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             const errorModal = document.getElementById('errorModal');
             const closeErrorModalButton = document.getElementById('closeErrorModalButton');
 
@@ -447,24 +490,12 @@
             closeSuccessModalButton.addEventListener('click', () => {
                 successModal.classList.add('hidden');
             });
-            // Preview gambar saat diupload
-            const inputGambar = document.getElementById('gambar_layanan');
-            const previewGambar = document.getElementById('previewGambar');
 
-            inputGambar.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        previewGambar.src = e.target.result; // Ganti src gambar dengan file yang diunggah
-                    };
-                    reader.readAsDataURL(file); // Membaca file sebagai URL
-                }
-            });
             // modal tambah layanan
             const openModalButton = document.getElementById('openModalButton');
             const closeModalButton = document.getElementById('closeModalButton');
             const modalTambahLayanan = document.getElementById('modalTambahLayanan');
+            const cancelModalButton = document.getElementById('cancelModalButton');
 
             openModalButton.addEventListener('click', () => {
                 modalTambahLayanan.classList.remove('hidden');
@@ -474,11 +505,16 @@
                 modalTambahLayanan.classList.add('hidden');
             });
 
+            cancelModalButton.addEventListener('click', () => {
+                modalTambahLayanan.classList.add('hidden');
+            });
+
             window.addEventListener('click', (e) => {
                 if (e.target === modalTambahLayanan) {
                     modalTambahLayanan.classList.add('hidden');
                 }
             });
+
             const menuButton = document.getElementById('menuButton');
             const dropdownUser = document.getElementById('dropdownUser');
 
@@ -515,255 +551,172 @@
             dropdownUser.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
-            // Image cropping functionality
-            document.addEventListener('DOMContentLoaded', function() {
-                const inputImage = document.getElementById('gambar_layanan');
-                const previewImage = document.getElementById('previewGambar');
-                const cropOverlay = document.getElementById('cropOverlay');
-                const cropBox = document.getElementById('cropBox');
-                const cropControls = document.getElementById('cropControls');
-                const applyCropBtn = document.getElementById('applyCropBtn');
-                const rotateLeftBtn = document.getElementById('rotateLeftBtn');
-                const rotateRightBtn = document.getElementById('rotateRightBtn');
-                const croppedImageData = document.getElementById('croppedImageData');
-                const cancelModalButton = document.getElementById('cancelModalButton');
 
-                let originalImage = null;
-                let rotation = 0;
+            // Format currency input for harga_layanan
+            const hargaInput = document.getElementById('harga_layanan');
+            hargaInput.addEventListener('input', function(e) {
+                // Remove non-digits
+                let value = this.value.replace(/\D/g, '');
 
-                // Make the cancelModalButton close the modal too
-                cancelModalButton.addEventListener('click', () => {
-                    modalTambahLayanan.classList.add('hidden');
-                });
-
-                // Handle file input change
-                inputImage.addEventListener('change', function(e) {
-                    const file = e.target.files[0];
-                    if (!file) return;
-
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        // Store original image for rotations
-                        originalImage = new Image();
-                        originalImage.src = event.target.result;
-
-                        originalImage.onload = function() {
-                            // Reset rotation
-                            rotation = 0;
-
-                            // Show image in preview
-                            previewImage.src = originalImage.src;
-
-                            // Show crop controls and overlay
-                            cropControls.classList.remove('hidden');
-                            cropOverlay.classList.remove('hidden');
-
-                            // Set initial crop box size (centered 80% of image)
-                            setTimeout(() => initCropBox(), 100);
-                        };
-                    };
-                    reader.readAsDataURL(file);
-                });
-
-                // Initialize the crop box
-                function initCropBox() {
-                    const container = previewImage.parentElement;
-                    const containerWidth = container.offsetWidth;
-                    const containerHeight = container.offsetHeight;
-
-                    const cropSize = Math.min(containerWidth, containerHeight) * 0.8;
-
-                    cropBox.style.width = cropSize + 'px';
-                    cropBox.style.height = cropSize + 'px';
-                    cropBox.style.left = (containerWidth - cropSize) / 2 + 'px';
-                    cropBox.style.top = (containerHeight - cropSize) / 2 + 'px';
-
-                    // Make cropBox draggable
-                    makeDraggable(cropBox);
+                // Format with thousand separators
+                if (value) {
+                    value = parseInt(value, 10).toLocaleString('id-ID');
                 }
 
-                // Make an element draggable
-                function makeDraggable(element) {
-                    let pos1 = 0,
-                        pos2 = 0,
-                        pos3 = 0,
-                        pos4 = 0;
-
-                    element.onmousedown = dragMouseDown;
-
-                    function dragMouseDown(e) {
-                        e.preventDefault();
-                        // Get mouse position at startup
-                        pos3 = e.clientX;
-                        pos4 = e.clientY;
-                        document.onmouseup = closeDragElement;
-                        document.onmousemove = elementDrag;
-                    }
-
-                    function elementDrag(e) {
-                        e.preventDefault();
-                        const container = element.parentElement;
-                        const containerRect = container.getBoundingClientRect();
-                        const elementRect = element.getBoundingClientRect();
-
-                        // Calculate new position
-                        pos1 = pos3 - e.clientX;
-                        pos2 = pos4 - e.clientY;
-                        pos3 = e.clientX;
-                        pos4 = e.clientY;
-
-                        // Calculate new top and left positions
-                        let newTop = element.offsetTop - pos2;
-                        let newLeft = element.offsetLeft - pos1;
-
-                        // Apply bounds
-                        if (newLeft < 0) newLeft = 0;
-                        if (newTop < 0) newTop = 0;
-                        if (newLeft + elementRect.width > containerRect.width)
-                            newLeft = containerRect.width - elementRect.width;
-                        if (newTop + elementRect.height > containerRect.height)
-                            newTop = containerRect.height - elementRect.height;
-
-                        // Set element's new position
-                        element.style.top = newTop + "px";
-                        element.style.left = newLeft + "px";
-                    }
-
-                    function closeDragElement() {
-                        // Stop moving when mouse button is released
-                        document.onmouseup = null;
-                        document.onmousemove = null;
-                    }
-                }
-
-                // Apply crop when button is clicked
-                applyCropBtn.addEventListener('click', function() {
-                    if (!originalImage) return;
-
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-
-                    // Get container and crop box dimensions
-                    const container = previewImage.parentElement;
-                    const containerWidth = container.offsetWidth;
-                    const containerHeight = container.offsetHeight;
-
-                    // Calculate the scale between original image and displayed image
-                    const scale = originalImage.naturalWidth / containerWidth;
-
-                    // Get crop box position and size
-                    const cropLeft = parseInt(cropBox.style.left || '0');
-                    const cropTop = parseInt(cropBox.style.top || '0');
-                    const cropWidth = cropBox.offsetWidth;
-                    const cropHeight = cropBox.offsetHeight;
-
-                    // Set canvas dimensions to crop size
-                    canvas.width = cropWidth * scale;
-                    canvas.height = cropHeight * scale;
-
-                    // Translate and rotate context if needed
-                    if (rotation !== 0) {
-                        ctx.save();
-                        ctx.translate(canvas.width / 2, canvas.height / 2);
-                        ctx.rotate(rotation * Math.PI / 180);
-                        ctx.drawImage(
-                            originalImage,
-                            -originalImage.width / 2,
-                            -originalImage.height / 2
-                        );
-                        ctx.restore();
-
-                        // Now draw the cropped portion
-                        const tempCanvas = document.createElement('canvas');
-                        tempCanvas.width = canvas.width;
-                        tempCanvas.height = canvas.height;
-                        const tempCtx = tempCanvas.getContext('2d');
-
-                        tempCtx.drawImage(
-                            canvas,
-                            cropLeft * scale, cropTop * scale,
-                            cropWidth * scale, cropHeight * scale,
-                            0, 0,
-                            cropWidth * scale, cropHeight * scale
-                        );
-
-                        // Reset and draw the final image
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        ctx.drawImage(tempCanvas, 0, 0);
-                    } else {
-                        // Draw the cropped image directly
-                        ctx.drawImage(
-                            originalImage,
-                            cropLeft * scale, cropTop * scale,
-                            cropWidth * scale, cropHeight * scale,
-                            0, 0,
-                            cropWidth * scale, cropHeight * scale
-                        );
-                    }
-
-                    // Convert canvas to data URL
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
-
-                    // Update the preview image and hidden input
-                    previewImage.src = dataUrl;
-                    croppedImageData.value = dataUrl;
-
-                    // Hide crop interface
-                    cropOverlay.classList.add('hidden');
-                });
-
-                // Rotate left
-                rotateLeftBtn.addEventListener('click', function() {
-                    rotation = (rotation - 90) % 360;
-                    applyRotation();
-                });
-
-                // Rotate right
-                rotateRightBtn.addEventListener('click', function() {
-                    rotation = (rotation + 90) % 360;
-                    applyRotation();
-                });
-
-                // Apply rotation to preview image
-                function applyRotation() {
-                    if (!originalImage) return;
-
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-
-                    // Swap width and height if needed
-                    if (Math.abs(rotation) % 180 === 90) {
-                        canvas.width = originalImage.height;
-                        canvas.height = originalImage.width;
-                    } else {
-                        canvas.width = originalImage.width;
-                        canvas.height = originalImage.height;
-                    }
-
-                    // Translate and rotate
-                    ctx.translate(canvas.width / 2, canvas.height / 2);
-                    ctx.rotate(rotation * Math.PI / 180);
-                    ctx.drawImage(originalImage, -originalImage.width / 2, -originalImage.height / 2);
-
-                    // Update preview
-                    previewImage.src = canvas.toDataURL('image/jpeg', 0.9);
-                }
-
-                // Format currency input for harga_layanan
-                const hargaInput = document.getElementById('harga_layanan');
-                hargaInput.addEventListener('input', function(e) {
-                    // Remove non-digits
-                    let value = this.value.replace(/\D/g, '');
-
-                    // Format with thousand separators
-                    if (value) {
-                        value = parseInt(value, 10).toLocaleString('id-ID');
-                    }
-
-                    this.value = value;
-                });
+                this.value = value;
             });
-        </script>
+
+            // Tambahkan event listener untuk file input
+            const inputImage = document.getElementById('gambar_layanan');
+            inputImage.addEventListener('change', function() {
+                handleImageSelect(this);
+            });
+
+            // Tambahkan event listener saat form di-submit untuk validasi
+            document.getElementById('layananForm').addEventListener('submit', function(e) {
+                // Hapus pemisah ribuan dari harga
+                const hargaInput = document.getElementById('harga_layanan');
+                hargaInput.value = hargaInput.value.replace(/\D/g, '');
+
+                // Periksa apakah gambar sudah dipilih
+                if (!document.getElementById('croppedImageData').value) {
+                    e.preventDefault(); // Hentikan submit form
+                    alert('Silakan pilih dan sesuaikan gambar terlebih dahulu');
+                }
+            });
+        });
+
+        // CROPPER IMPLEMENTATION
+        let cropper = null;
+        let originalFile = null;
+
+        function handleImageSelect(input) {
+            if (input.files && input.files[0]) {
+                originalFile = input.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const cropperModal = document.getElementById('cropperModal');
+                    const cropperImage = document.getElementById('cropperImage');
+
+                    cropperImage.src = e.target.result;
+                    cropperModal.classList.remove('hidden');
+
+                    if (cropper) {
+                        cropper.destroy();
+                    }
+
+                    cropper = new Cropper(cropperImage, {
+                        aspectRatio: 16 / 9,
+                        viewMode: 2,
+                        dragMode: 'move',
+                        background: false,
+                        modal: true,
+                        guides: true,
+                        highlight: true,
+                        autoCropArea: 1,
+                        responsive: true,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        toggleDragModeOnDblclick: true,
+                    });
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function rotateLeft() {
+            if (cropper) cropper.rotate(-90);
+        }
+
+        function rotateRight() {
+            if (cropper) cropper.rotate(90);
+        }
+
+        function flipHorizontal() {
+            if (cropper) cropper.scaleX(-cropper.getData().scaleX || -1);
+        }
+
+        function zoomIn() {
+            if (cropper) cropper.zoom(0.1);
+        }
+
+        function zoomOut() {
+            if (cropper) cropper.zoom(-0.1);
+        }
+
+        function useOriginalImage() {
+            if (originalFile) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    // Set preview image
+                    const previewGambar = document.getElementById('previewGambar');
+                    previewGambar.src = e.target.result;
+
+                    // Simpan data gambar asli ke dalam hidden input
+                    document.getElementById('croppedImageData').value = e.target.result;
+
+                    // Juga atur file asli ke input file (penting untuk mengirim file ke server)
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(originalFile);
+                    document.getElementById('gambar_layanan').files = dataTransfer.files;
+
+                    closeCropperModal();
+                };
+
+                reader.readAsDataURL(originalFile);
+            }
+        }
+
+        function cancelCrop() {
+            closeCropperModal();
+            document.getElementById('gambar_layanan').value = '';
+            document.getElementById('previewGambar').src = "{{ asset('images/UploadFoto.png') }}";
+            document.getElementById('croppedImageData').value = '';
+        }
+
+        function cropImage() {
+            if (cropper) {
+                const canvas = cropper.getCroppedCanvas({
+                    width: 1280,
+                    height: 720,
+                    imageSmoothingEnabled: true,
+                    imageSmoothingQuality: 'high',
+                });
+
+                canvas.toBlob((blob) => {
+                    const croppedFile = new File([blob], originalFile.name, {
+                        type: 'image/jpeg',
+                        lastModified: Date.now()
+                    });
+
+                    const preview = document.getElementById('previewGambar');
+
+                    preview.src = canvas.toDataURL('image/jpeg');
+
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(croppedFile);
+                    document.getElementById('gambar_layanan').files = dataTransfer.files;
+
+                    // Simpan data gambar yang di-crop ke dalam hidden input
+                    document.getElementById('croppedImageData').value = canvas.toDataURL('image/jpeg');
+
+                    closeCropperModal();
+                }, 'image/jpeg', 0.9);
+            }
+        }
+
+        function closeCropperModal() {
+            const modal = document.getElementById('cropperModal');
+            modal.classList.add('hidden');
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+        }
+    </script>
 </body>
 
 </html>

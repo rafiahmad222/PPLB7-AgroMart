@@ -149,9 +149,9 @@
                             <a href="{{ route('profile.adminshowuser') }}"
                                 class="block px-4 py-2 text-sm rounded-md hover:bg-emerald-50/50">Akun Customer</a>
                         @endif
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form method="POST" action="{{ route('logout') }}" id="logoutForm">
                             @csrf
-                            <button type="submit"
+                            <button type="button" id="logoutButton"
                                 class="w-full px-4 py-2 text-sm text-left rounded-md hover:bg-emerald-50/50">Logout</button>
                         </form>
                     </div>
@@ -200,7 +200,7 @@
                     <p class="text-sm text-center text-gray-600">Temukan berbagai produk hidroponik berkualitas
                         dari sayuran hingga peralatan.</p>
                     <div class="mt-6 text-center">
-                        <a href="#produk" class="inline-block text-primary-600 hover:text-primary-700">Lihat
+                        <a href="{{ route("produk.index") }}" class="inline-block text-primary-600 hover:text-primary-700">Lihat
                             Produk <i class="ml-1 fas fa-arrow-right"></i></a>
                     </div>
                 </div>
@@ -214,7 +214,7 @@
                     <p class="text-sm text-center text-gray-600">Pelajari berbagai hal tentang hidroponik melalui
                         materi edukasi kami.</p>
                     <div class="mt-6 text-center">
-                        <a href="#edukasi" class="inline-block text-primary-600 hover:text-primary-700">Pelajari
+                        <a href="{{ route("edukasi.index") }}" class="inline-block text-primary-600 hover:text-primary-700">Pelajari
                             <i class="ml-1 fas fa-arrow-right"></i></a>
                     </div>
                 </div>
@@ -228,7 +228,7 @@
                     <p class="text-sm text-center text-gray-600">Lihat koleksi foto dan video produk hidroponik
                         kami yang menarik.</p>
                     <div class="mt-6 text-center">
-                        <a href="#galeri" class="inline-block text-primary-600 hover:text-primary-700">Lihat
+                        <a href="{{ route("galeri.index") }}" class="inline-block text-primary-600 hover:text-primary-700">Lihat
                             Galeri <i class="ml-1 fas fa-arrow-right"></i></a>
                     </div>
                 </div>
@@ -242,7 +242,7 @@
                     <p class="text-sm text-center text-gray-600">Dapatkan layanan konsultasi dan pengelolaan
                         hidroponik terbaik.</p>
                     <div class="mt-6 text-center">
-                        <a href="#layanan" class="inline-block text-primary-600 hover:text-primary-700">Lihat
+                        <a href="{{ route("layanan.index") }}" class="inline-block text-primary-600 hover:text-primary-700">Lihat
                             Layanan <i class="ml-1 fas fa-arrow-right"></i></a>
                     </div>
                 </div>
@@ -259,8 +259,7 @@
             </div>
 
             <div id="carouselContainer" class="relative group">
-                <div class="absolute inset-0 z-10 pointer-events-none"
-                    style="width: 100%;"></div>
+                <div class="absolute inset-0 z-10 pointer-events-none" style="width: 100%;"></div>
 
                 <div id="produkCarousel" class="flex transition-transform duration-500 ease-in-out">
                     @foreach ($produks as $produk)
@@ -389,6 +388,27 @@
             </div>
         </div>
     </section>
+    <div id="logoutModal" class="fixed inset-0 z-50 flex items-center justify-center hidden" aria-modal="true">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="logoutModalBackdrop"></div>
+
+        <!-- Modal Content -->
+        <div class="relative w-full max-w-md p-6 mx-4 bg-white rounded-lg shadow-xl animate-fadeIn">
+            <div class="text-center">
+                <h3 class="mb-5 text-lg font-medium text-gray-800">Anda yakin ingin Logout?</h3>
+                <div class="flex justify-center gap-4 mt-6">
+                    <button id="confirmLogout"
+                        class="px-6 py-2 text-white rounded-md bg-primary-600 hover:bg-primary-700">
+                        Logout
+                    </button>
+                    <button id="cancelLogout"
+                        class="px-6 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100">
+                        Batal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Footer -->
     <x-footer></x-footer>
 
@@ -450,6 +470,31 @@
                 updateDots();
             }
         });
+        // Logout Confirmation Modal Logic
+        const logoutButton = document.getElementById('logoutButton');
+        const logoutModal = document.getElementById('logoutModal');
+        const logoutModalBackdrop = document.getElementById('logoutModalBackdrop');
+        const confirmLogout = document.getElementById('confirmLogout');
+        const cancelLogout = document.getElementById('cancelLogout');
+        const logoutForm = document.getElementById('logoutForm');
+
+        logoutButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            logoutModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden'); // Prevent scrolling when modal is open
+        });
+
+        function closeLogoutModal() {
+            logoutModal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        confirmLogout.addEventListener('click', function() {
+            logoutForm.submit(); // Submit the logout form
+        });
+
+        cancelLogout.addEventListener('click', closeLogoutModal);
+        logoutModalBackdrop.addEventListener('click', closeLogoutModal);
 
         // Initialize
         updateCarousel();
