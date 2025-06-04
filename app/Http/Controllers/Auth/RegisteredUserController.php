@@ -39,6 +39,7 @@ class RegisteredUserController extends Controller
             'address.min' => 'Alamat minimal 10 karakter',
             'phone.min' => 'Nomor telepon minimal 12 karakter',
             'email.unique' => 'Email anda sudah terdaftar',
+            'email.email' => 'Format email tidak sesuai',
         ]);
 
         $user = User::create([

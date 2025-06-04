@@ -276,11 +276,6 @@
                             <span class="text-gray-600">Harga Layanan:</span>
                             <span class="font-medium text-gray-800" id="summary-harga">Rp 0</span>
                         </div>
-
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-gray-600">Biaya Admin:</span>
-                            <span class="font-medium text-gray-800">Rp 0</span>
-                        </div>
                     </div>
 
                     <div class="flex items-center justify-between pt-4 mt-4 border-t border-gray-200">
