@@ -55,9 +55,19 @@ class ProfileController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $request->user()->id],
-            'phone' => ['nullable', 'string', 'max:15'],
+            'phone' => ['required', 'string', 'max:13', 'min:12', 'regex:/^[0-9]+$/'],
             'cropped_avatar' => ['nullable', 'string'],
+        ],[
+            'name.required' => 'Nama tidak boleh kosong',
+            'email.required' => 'Email tidak boleh kosong',
+            'phone.required' => 'Nomor telepon tidak boleh kosong',
+            'phone.regex' => 'Nomor telepon hanya boleh mengandung angka',
+            'address.min' => 'Alamat minimal 10 karakter',
+            'phone.min' => 'Nomor telepon minimal 12 karakter',
+            'email.unique' => 'Email anda sudah terdaftar',
+            'email.email' => 'Format email tidak sesuai',
         ]);
+
 
         $user = $request->user();
 
