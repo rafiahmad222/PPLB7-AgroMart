@@ -39,36 +39,4 @@ class KategoriController extends Controller
 
         return redirect()->route('produk.index')->with('success', 'Kategori created successfully.');
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Kategori $kategori)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Kategori $kategori)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Kategori $kategori)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Kategori $kategori)
-    {
-        //
-    }
 }
