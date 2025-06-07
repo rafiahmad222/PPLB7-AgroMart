@@ -39,7 +39,7 @@
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(-5px);
             }
 
             to {
@@ -60,28 +60,12 @@
             }
         }
 
-        @keyframes slideIn {
-            from {
-                transform: translateX(-20px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
         .animate-fadeIn {
-            animation: fadeIn 0.8s ease-out forwards;
+            animation: fadeIn 0.4s ease-out forwards;
         }
 
         .animate-fadeOut {
             animation: fadeOut 0.3s ease-out forwards;
-        }
-
-        .animate-slideIn {
-            animation: slideIn 0.6s ease-out forwards;
         }
 
         .hero-gradient {
@@ -99,61 +83,108 @@
 </head>
 
 <body class="text-gray-800 bg-gray-100">
-    <!-- Header with Glassmorphism -->
-    <header class="sticky top-0 z-50 shadow-lg backdrop-blur-md bg-white/70">
+    <header class="sticky top-0 z-50 bg-white shadow-lg">
         <nav class="flex items-center justify-between max-w-screen-xl px-4 py-3 mx-auto">
             <div class="flex items-center space-x-6">
-                <a href="{{ route('home') }}">
+                <a href="{{ route('home') }}" class="transition-transform hover:scale-105">
                     <img src="{{ asset('images/Logo_AgroMart.png') }}" alt="Logo AgroMart" class="h-12">
                 </a>
-                <div class="items-center hidden gap-4 text-base font-semibold md:flex text-emerald-700 font-[signika]">
-                    <a href="{{ route('home') }}" class="hover:text-emerald-400">HOME</a>
+                <div class="items-center hidden gap-6 text-base font-semibold md:flex text-emerald-700 font-[signika]">
+                    <a href="{{ route('home') }}"
+                        class="{{ request()->routeIs('home') ? 'px-4 py-1.5 text-white font-medium bg-emerald-600 rounded-full' : 'transition-all hover:text-emerald-500 hover:underline hover:underline-offset-4' }}">HOME</a>
                     <div class="relative group">
                         <a href="{{ route('produk.index') }}"
-                            class="flex items-center gap-1 hover:text-emerald-400">PRODUK</a>
+                            class="{{ request()->routeIs('produk.*') ? 'px-4 py-1.5 text-white font-medium bg-emerald-600 rounded-full flex items-center' : 'flex items-center gap-1 transition-all hover:text-emerald-500 hover:underline hover:underline-offset-4' }}">PRODUK</a>
                         <div
-                            class="absolute hidden w-40 border rounded-md shadow-lg backdrop-blur-md bg-white/80 z-5 group-hover:block animate-fadeIn text-emerald-600 border-white/20">
+                            class="absolute hidden bg-white border rounded-lg shadow-xl w-44 z-5 group-hover:block animate-fadeIn border-emerald-100">
                             @foreach ($kategoris as $kategori)
                                 <a href="{{ route('produk.index', $kategori->id_kategori) }}"
-                                    class="block px-4 py-2 text-sm rounded-md text-emerald-700 hover:bg-emerald-50/50 hover:text-emerald-400">{{ $kategori->nama_kategori }}</a>
+                                    class="block px-4 py-2.5 text-sm rounded-md text-emerald-700 hover:bg-emerald-50">
+                                    {{ $kategori->nama_kategori }}
+                                </a>
                             @endforeach
                         </div>
                     </div>
-                    <a href="{{ route('edukasi.index') }}" class="hover:text-emerald-400">EDUKASI</a>
-                    <a href="{{ route('galeri.index') }}" class="hover:text-emerald-400">GALERI</a>
-                    <a href="{{ route('layanan.index') }}" class="hover:text-emerald-400">LAYANAN</a>
+                    <a href="{{ route('edukasi.index') }}"
+                        class="{{ request()->routeIs('edukasi.*') ? 'px-4 py-1.5 text-white font-medium bg-emerald-600 rounded-full' : 'transition-all hover:text-emerald-500 hover:underline hover:underline-offset-4' }}">EDUKASI</a>
+                    <a href="{{ route('galeri.index') }}"
+                        class="{{ request()->routeIs('galeri.*') ? 'px-4 py-1.5 text-white font-medium bg-emerald-600 rounded-full' : 'transition-all hover:text-emerald-500 hover:underline hover:underline-offset-4' }}">GALERI</a>
+                    <a href="{{ route('layanan.index') }}"
+                        class="{{ request()->routeIs('layanan.*') ? 'px-4 py-1.5 text-white font-medium bg-emerald-600 rounded-full' : 'transition-all hover:text-emerald-500 hover:underline hover:underline-offset-4' }}">LAYANAN</a>
                     @if (Auth::user()->role === 'admin')
-                        <a href="{{ route('status.index') }}" class="hover:text-emerald-400">TRANSAKSI</a>
+                        <a href="{{ route('status.index') }}"
+                            class="{{ request()->routeIs('status.*') ? 'px-4 py-1.5 text-white font-medium bg-emerald-600 rounded-full' : 'transition-all hover:text-emerald-500 hover:underline hover:underline-offset-4' }}">TRANSAKSI</a>
                     @else
-                        <a href="{{ route('pesananku') }}" class="hover:text-emerald-400">TRANSAKSI</a>
+                        <a href="{{ route('pesananku') }}"
+                            class="{{ request()->routeIs('pesananku') ? 'px-4 py-1.5 text-white font-medium bg-emerald-600 rounded-full' : 'transition-all hover:text-emerald-500 hover:underline hover:underline-offset-4' }}">TRANSAKSI</a>
                     @endif
                 </div>
             </div>
             <div class="flex items-center space-x-4">
-                <img src="{{ asset('images/notifIcon.png') }}" alt="Notifikasi"
-                    class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
+                <div class="relative">
+                    <img src="{{ asset('images/notifIcon.png') }}" alt="Notifikasi"
+                        class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
+                    <div
+                        class="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white transform -translate-y-1/2 rounded-full -right-1 bg-emerald-500 top-1">
+                        3</div>
+                </div>
                 <div id="menuButton" class="relative">
-                    <div class="flex items-center gap-2 cursor-pointer">
+                    <div
+                        class="flex items-center gap-3 p-1.5 rounded-full cursor-pointer hover:bg-gray-100 transition-all">
                         <img src="{{ Auth::user()->avatar_url }}" alt="Avatar"
-                            class="w-12 h-12 border-2 rounded-full border-emerald-500">
+                            class="object-cover w-10 h-10 border-2 rounded-full border-emerald-500">
                         <div class="hidden text-left md:block">
-                            <span class="block font-bold">{{ Auth::user()->name }}</span>
+                            <span class="block font-bold text-gray-800">{{ Auth::user()->name }}</span>
                             <small class="text-gray-500">{{ Auth::user()->email }}</small>
                         </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="text-gray-500" viewBox="0 0 16 16">
+                            <path
+                                d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                        </svg>
                     </div>
                     <div id="dropdownUser"
-                        class="absolute right-0 z-30 flex-col hidden w-48 mt-4 border rounded-md shadow-2xl backdrop-blur-md bg-white/80 border-white/20 font-[signika]">
-                        <a href="{{ route('profile.edit') }}"
-                            class="block px-4 py-2 text-sm rounded-md hover:bg-emerald-50/50">Akun</a>
-                        @if (Auth::user()->role === 'admin')
-                            <a href="{{ route('profile.adminshowuser') }}"
-                                class="block px-4 py-2 text-sm rounded-md hover:bg-emerald-50/50">Akun Customer</a>
-                        @endif
-                        <form method="POST" action="{{ route('logout') }}" id="logoutForm">
-                            @csrf
-                            <button type="button" id="logoutButton"
-                                class="w-full px-4 py-2 text-sm text-left rounded-md hover:bg-emerald-50/50">Logout</button>
-                        </form>
+                        class="absolute right-0 z-30 flex-col hidden w-56 mt-2 overflow-hidden bg-white rounded-lg shadow-2xl">
+                        <div class="p-4 bg-emerald-50">
+                            <p class="font-semibold text-emerald-700">{{ Auth::user()->name }}</p>
+                            <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
+                        </div>
+                        <div class="border-t">
+                            <a href="{{ route('profile.edit') }}"
+                                class="flex items-center gap-2 px-4 py-3 text-sm transition-colors hover:bg-gray-50">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                    fill="currentColor" class="text-gray-600" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                                </svg>
+                                Pengaturan Akun
+                            </a>
+                            @if (Auth::user()->role === 'admin')
+                                <a href="{{ route('profile.adminshowuser') }}"
+                                    class="flex items-center gap-2 px-4 py-3 text-sm transition-colors hover:bg-gray-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        fill="currentColor" class="text-gray-600" viewBox="0 0 16 16">
+                                        <path
+                                            d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4" />
+                                    </svg>
+                                    Manajemen Pengguna
+                                </a>
+                            @endif
+                            <form method="POST" action="{{ route('logout') }}" id="logoutForm">
+                                @csrf
+                                <button type="button" id="logoutButton"
+                                    class="flex items-center w-full gap-2 px-4 py-3 text-sm text-red-600 transition-colors hover:bg-red-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        fill="currentColor" class="text-red-500" viewBox="0 0 16 16">
+                                        <path
+                                            d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
+                                        <path
+                                            d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
+                                    </svg>
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -200,7 +231,8 @@
                     <p class="text-sm text-center text-gray-600">Temukan berbagai produk hidroponik berkualitas
                         dari sayuran hingga peralatan.</p>
                     <div class="mt-6 text-center">
-                        <a href="{{ route("produk.index") }}" class="inline-block text-primary-600 hover:text-primary-700">Lihat
+                        <a href="{{ route('produk.index') }}"
+                            class="inline-block text-primary-600 hover:text-primary-700">Lihat
                             Produk <i class="ml-1 fas fa-arrow-right"></i></a>
                     </div>
                 </div>
@@ -214,7 +246,8 @@
                     <p class="text-sm text-center text-gray-600">Pelajari berbagai hal tentang hidroponik melalui
                         materi edukasi kami.</p>
                     <div class="mt-6 text-center">
-                        <a href="{{ route("edukasi.index") }}" class="inline-block text-primary-600 hover:text-primary-700">Pelajari
+                        <a href="{{ route('edukasi.index') }}"
+                            class="inline-block text-primary-600 hover:text-primary-700">Pelajari
                             <i class="ml-1 fas fa-arrow-right"></i></a>
                     </div>
                 </div>
@@ -228,7 +261,8 @@
                     <p class="text-sm text-center text-gray-600">Lihat koleksi foto dan video produk hidroponik
                         kami yang menarik.</p>
                     <div class="mt-6 text-center">
-                        <a href="{{ route("galeri.index") }}" class="inline-block text-primary-600 hover:text-primary-700">Lihat
+                        <a href="{{ route('galeri.index') }}"
+                            class="inline-block text-primary-600 hover:text-primary-700">Lihat
                             Galeri <i class="ml-1 fas fa-arrow-right"></i></a>
                     </div>
                 </div>
@@ -242,7 +276,8 @@
                     <p class="text-sm text-center text-gray-600">Dapatkan layanan konsultasi dan pengelolaan
                         hidroponik terbaik.</p>
                     <div class="mt-6 text-center">
-                        <a href="{{ route("layanan.index") }}" class="inline-block text-primary-600 hover:text-primary-700">Lihat
+                        <a href="{{ route('layanan.index') }}"
+                            class="inline-block text-primary-600 hover:text-primary-700">Lihat
                             Layanan <i class="ml-1 fas fa-arrow-right"></i></a>
                     </div>
                 </div>
@@ -388,31 +423,71 @@
             </div>
         </div>
     </section>
-    <div id="logoutModal" class="fixed inset-0 z-50 flex items-center justify-center hidden" aria-modal="true">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="logoutModalBackdrop"></div>
-
-        <!-- Modal Content -->
-        <div class="relative w-full max-w-md p-6 mx-4 bg-white rounded-lg shadow-xl animate-fadeIn">
+    <!-- Footer -->
+    <x-footer></x-footer>
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div id="logoutModalBackdrop" class="absolute inset-0 bg-black/60"></div>
+        <div class="relative w-full max-w-md p-6 mx-4 bg-white rounded-lg shadow-xl">
             <div class="text-center">
-                <h3 class="mb-5 text-lg font-medium text-gray-800">Anda yakin ingin Logout?</h3>
-                <div class="flex justify-center gap-4 mt-6">
-                    <button id="confirmLogout"
-                        class="px-6 py-2 text-white rounded-md bg-primary-600 hover:bg-primary-700">
-                        Logout
-                    </button>
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                    class="mx-auto mb-4 text-red-500" viewBox="0 0 16 16">
+                    <path
+                        d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
+                    <path
+                        d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
+                </svg>
+                <h3 class="mb-5 text-lg font-semibold text-gray-800">Konfirmasi Logout</h3>
+                <p class="mb-6 text-gray-600">Apakah Anda yakin ingin keluar dari akun ini?</p>
+                <div class="flex justify-center space-x-3">
                     <button id="cancelLogout"
-                        class="px-6 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100">
+                        class="px-4 py-2 font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
                         Batal
+                    </button>
+                    <button id="confirmLogout"
+                        class="px-4 py-2 font-medium text-white bg-red-500 rounded-lg hover:bg-red-600">
+                        Ya, Keluar
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Footer -->
-    <x-footer></x-footer>
-
     <script>
+        const menuButton = document.getElementById('menuButton');
+        const dropdownUser = document.getElementById('dropdownUser');
+        let isDropdownVisible = false;
+
+        menuButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (!isDropdownVisible) {
+                dropdownUser.classList.remove('hidden');
+                dropdownUser.classList.remove('animate-fadeOut');
+                dropdownUser.classList.add('animate-fadeIn');
+                isDropdownVisible = true;
+            } else {
+                dropdownUser.classList.remove('animate-fadeIn');
+                dropdownUser.classList.add('animate-fadeOut');
+                setTimeout(() => {
+                    dropdownUser.classList.add('hidden');
+                    isDropdownVisible = false;
+                }, 300);
+            }
+        });
+
+        document.addEventListener('click', function() {
+            if (isDropdownVisible) {
+                dropdownUser.classList.remove('animate-fadeIn');
+                dropdownUser.classList.add('animate-fadeOut');
+                setTimeout(() => {
+                    dropdownUser.classList.add('hidden');
+                    isDropdownVisible = false;
+                }, 300);
+            }
+        });
+
+        dropdownUser.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
         // Carousel Logic
         const carousel = document.getElementById('produkCarousel');
         const prevButton = document.getElementById('prevCarousel');
@@ -499,42 +574,6 @@
         // Initialize
         updateCarousel();
         updateDots();
-        const menuButton = document.getElementById('menuButton');
-        const dropdownUser = document.getElementById('dropdownUser');
-
-        let isDropdownVisible = false;
-
-        menuButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (!isDropdownVisible) {
-                dropdownUser.classList.remove('hidden');
-                dropdownUser.classList.remove('animate-fadeOut');
-                dropdownUser.classList.add('animate-fadeIn');
-                isDropdownVisible = true;
-            } else {
-                dropdownUser.classList.remove('animate-fadeIn');
-                dropdownUser.classList.add('animate-fadeOut');
-                setTimeout(() => {
-                    dropdownUser.classList.add('hidden');
-                    isDropdownVisible = false;
-                }, 300);
-            }
-        });
-
-        document.addEventListener('click', function() {
-            if (isDropdownVisible) {
-                dropdownUser.classList.remove('animate-fadeIn');
-                dropdownUser.classList.add('animate-fadeOut');
-                setTimeout(() => {
-                    dropdownUser.classList.add('hidden');
-                    isDropdownVisible = false;
-                }, 300);
-            }
-        });
-
-        dropdownUser.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
     </script>
 </body>
 

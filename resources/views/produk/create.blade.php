@@ -81,83 +81,21 @@
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
         }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: none;
+        }
     </style>
 </head>
 
 <body class="text-gray-800 bg-gray-50 font-poppins">
-    <!-- Header with Glassmorphism -->
-    <header class="sticky top-0 z-50 shadow-lg backdrop-blur-md bg-white/70">
-        <nav class="flex items-center justify-between max-w-screen-xl px-4 py-3 mx-auto">
-            <div class="flex items-center space-x-6">
-                <a href="{{ route('home') }}">
-                    <img src="{{ asset('images/Logo_AgroMart.png') }}" alt="Logo AgroMart" class="h-12">
-                </a>
-                <div class="items-center hidden gap-4 text-base font-semibold md:flex text-emerald-700 font-signika">
-                    <a href="{{ route('home') }}" class="hover:text-emerald-400">HOME</a>
-                    <div class="relative group">
-                        <a href="{{ route('produk.index') }}" class="flex items-center gap-1 hover:text-emerald-400">
-                            PRODUK
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </a>
-                        <div
-                            class="absolute hidden w-40 border rounded-md shadow-lg backdrop-blur-md bg-white/80 z-5 group-hover:block animate-fadeIn text-emerald-600 border-white/20">
-                            @foreach ($kategoris as $kategori)
-                                <a href="{{ route('produk.index', $kategori->id_kategori) }}"
-                                    class="block px-4 py-2 text-sm rounded-md text-emerald-700 hover:bg-emerald-50/50 hover:text-emerald-400">
-                                    {{ $kategori->nama_kategori }}
-                                </a>
-                            @endforeach
-                        </div>
-                    </div>
-                    <a href="#edukasi" class="hover:text-emerald-400">EDUKASI</a>
-                    <a href="#galeri" class="hover:text-emerald-400">GALERI</a>
-                    <a href="#layanan" class="hover:text-emerald-400">LAYANAN</a>
-                    <a href="#contact" class="hover:text-emerald-400">CONTACT US</a>
-                </div>
-            </div>
-
-            <div class="flex items-center space-x-4">
-                <button class="relative p-1.5 transition-transform hover:scale-110 active:scale-90">
-                    <img src="{{ asset('images/keranjangIcon.png') }}" alt="Keranjang" class="w-8 h-8">
-                    <div
-                        class="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
-                        0</div>
-                </button>
-
-                <button class="transition-transform hover:scale-110 active:scale-90">
-                    <img src="{{ asset('images/notifIcon.png') }}" alt="Notifikasi" class="w-10 h-10">
-                </button>
-
-                <div id="menuButton" class="relative">
-                    <div class="flex items-center gap-2 cursor-pointer">
-                        <img src="{{ asset('images/avatar.png') }}" alt="Avatar"
-                            class="w-12 h-12 border-2 rounded-full border-emerald-500">
-                        <div class="hidden text-left md:block">
-                            <span class="block font-bold">{{ Auth::user()->name }}</span>
-                            <small class="text-gray-500">{{ Auth::user()->email }}</small>
-                        </div>
-                    </div>
-                    <div id="dropdownUser"
-                        class="absolute right-0 z-30 flex-col hidden w-48 mt-4 border rounded-md shadow-2xl backdrop-blur-md bg-white/80 border-white/20 font-signika">
-                        <a href="{{ route('profile.edit') }}"
-                            class="block px-4 py-2 text-sm rounded-md hover:bg-emerald-50/50">Profile</a>
-                        <a href="{{ route('pesananku') }}"
-                            class="block px-4 py-2 text-sm rounded-md hover:bg-emerald-50/50">Pesananku</a>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit"
-                                class="w-full px-4 py-2 text-sm text-left rounded-md hover:bg-emerald-50/50">Logout</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
-
     <!-- Main Content -->
     <main class="container px-4 py-5 mx-auto">
         <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data" class="mb-10">
@@ -209,8 +147,7 @@
                                 <label for="jumlah_stok" class="block mb-1 text-sm font-medium text-gray-700">Jumlah
                                     Stok</label>
                                 <div class="relative">
-                                    <input type="number" id="jumlah_stok" name="jumlah_stok" required
-                                        min="1"
+                                    <input type="number" id="jumlah_stok" name="jumlah_stok" required min="1"
                                         class="w-full px-4 py-3 transition-colors border-2 rounded-lg border-emerald-600 focus:border-emerald-400 focus:ring focus:ring-emerald-200"
                                         placeholder="0">
                                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -302,36 +239,6 @@
                     preview.classList.remove('opacity-50');
                 };
                 reader.readAsDataURL(file);
-            }
-        });
-
-        // User dropdown menu
-        const menuButton = document.getElementById('menuButton');
-        const dropdownUser = document.getElementById('dropdownUser');
-
-        menuButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-
-            if (dropdownUser.classList.contains('hidden')) {
-                dropdownUser.classList.remove('hidden');
-                dropdownUser.classList.add('dropdown-animate-in');
-            } else {
-                dropdownUser.classList.add('dropdown-animate-out');
-                setTimeout(() => {
-                    dropdownUser.classList.add('hidden');
-                    dropdownUser.classList.remove('dropdown-animate-out');
-                }, 280);
-            }
-        });
-
-        // Hide dropdown when clicking elsewhere
-        document.addEventListener('click', function() {
-            if (!dropdownUser.classList.contains('hidden')) {
-                dropdownUser.classList.add('dropdown-animate-out');
-                setTimeout(() => {
-                    dropdownUser.classList.add('hidden');
-                    dropdownUser.classList.remove('dropdown-animate-out');
-                }, 280);
             }
         });
 

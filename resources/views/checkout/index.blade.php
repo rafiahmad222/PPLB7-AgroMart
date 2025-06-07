@@ -66,9 +66,12 @@
         }
 
         @keyframes pulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 opacity: 1;
             }
+
             50% {
                 opacity: 0.7;
             }
@@ -460,12 +463,28 @@
         const TOKO_LONGITUDE = 113.746971;
 
         // Tabel tarif ongkir berdasarkan tier jarak
-        const ONGKIR_TIERS = [
-            { maxDistance: 10, price: 5000 },    // 0-10 km: Rp 5.000
-            { maxDistance: 15, price: 8000 },    // 11-15 km: Rp 8.000
-            { maxDistance: 25, price: 15000 },   // 16-25 km: Rp 15.000
-            { maxDistance: 40, price: 20000 },   // 26-40 km: Rp 20.000
-            { maxDistance: Infinity, price: 30000 } // >40 km: Rp 30.000
+        const ONGKIR_TIERS = [{
+                minDistance: 0,
+                maxDistance: 10,
+                price: 5000
+            }, // 0-10 km: Rp 5.000
+            {
+                minDistance: 10,
+                maxDistance: 15,
+                price: 8000
+            }, // 11-15 km: Rp 8.000
+            {
+                maxDistance: 25,
+                price: 15000
+            }, // 16-25 km: Rp 15.000
+            {
+                maxDistance: 40,
+                price: 20000
+            }, // 26-40 km: Rp 20.000
+            {
+                maxDistance: Infinity,
+                price: 30000
+            } // >40 km: Rp 30.000
         ];
 
         function toggleOngkir() {
@@ -520,8 +539,7 @@
 
         // Fungsi untuk mendapatkan tarif ongkir berdasarkan jarak
         function hitungTarifOngkir(jarak) {
-            // Tambahkan faktor koreksi untuk menyesuaikan dengan jalan nyata (1.3x)
-            const koreksiJarak = jarak * 1.3;
+            const koreksiJarak = jarak * 1.51;
 
             // Cari tier yang sesuai dengan jarak
             for (const tier of ONGKIR_TIERS) {
@@ -567,7 +585,7 @@
                 // Tampilkan info jarak
                 if (document.getElementById('jarak-info')) {
                     document.getElementById('jarak-info').textContent =
-                        `Jarak pengiriman: ${jarakBulat.toFixed(1)} km`;
+                        `Jarak pengiriman: ${(jarakBulat * 1.51).toFixed(1)} km - Ongkir: Rp ${ongkir.toLocaleString('id-ID')}`;
                 }
 
                 // Update ongkir

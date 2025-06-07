@@ -437,7 +437,7 @@
         const decrementButton = document.getElementById('decrement');
         const incrementButton = document.getElementById('increment');
         const jumlahInput = document.getElementById('jumlah');
-        const maxPembelian = Math.min({{ $produk->jumlah_stok }}, 10);
+        const maxPembelian = Math.min({{ $produk->jumlah_stok - 2 }}, 10);
         const hargaProduk = {{ $produk->harga_produk }};
         const totalHargaElement = document.getElementById('totalHarga');
         const jumlahCheckoutInput = document.getElementById('jumlahCheckout');
