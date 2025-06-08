@@ -539,7 +539,7 @@
 
         // Fungsi untuk mendapatkan tarif ongkir berdasarkan jarak
         function hitungTarifOngkir(jarak) {
-            const koreksiJarak = jarak * 1.51;
+            const koreksiJarak = jarak * 1.33;
 
             // Cari tier yang sesuai dengan jarak
             for (const tier of ONGKIR_TIERS) {
@@ -585,7 +585,7 @@
                 // Tampilkan info jarak
                 if (document.getElementById('jarak-info')) {
                     document.getElementById('jarak-info').textContent =
-                        `Jarak pengiriman: ${(jarakBulat * 1.51).toFixed(1)} km - Ongkir: Rp ${ongkir.toLocaleString('id-ID')}`;
+                        `Jarak pengiriman: ${(jarakBulat * 1.33).toFixed(1)} km - Ongkir: Rp ${ongkir.toLocaleString('id-ID')}`;
                 }
 
                 // Update ongkir

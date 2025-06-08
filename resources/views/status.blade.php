@@ -196,12 +196,13 @@
         </div>
 
         <!-- Content Pesanan -->
-        <div id="contentPesanan">
-            <div class="grid grid-cols-5 gap-4 mb-8">
+        <div id="contentPesanan" class="space-y-8">
+            <!-- Stats Cards - Dengan desain yang lebih modern dan responsif -->
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
                 <div class="p-6 transition-all bg-white shadow-sm rounded-xl hover:shadow-md">
-                    <div class="flex items-center justify-between">
-                        <div class="text-gray-600">Total Pesanan</div>
-                        <div class="p-2 bg-indigo-100 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="font-medium text-gray-600">Total Pesanan</div>
+                        <div class="p-2.5 bg-indigo-100 rounded-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                 fill="currentColor" class="text-indigo-600" viewBox="0 0 16 16">
                                 <path
@@ -211,14 +212,14 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="mt-4 text-2xl font-bold text-gray-800">{{ $allPesanans->count() }}</div>
+                    <div class="mt-2 text-2xl font-bold text-gray-800">{{ $allPesanans->count() }}</div>
                     <div class="mt-1 text-sm text-gray-500">Bulan ini</div>
                 </div>
 
                 <div class="p-6 transition-all bg-white shadow-sm rounded-xl hover:shadow-md">
-                    <div class="flex items-center justify-between">
-                        <div class="text-gray-600">Diproses</div>
-                        <div class="p-2 bg-blue-100 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="font-medium text-gray-600">Diproses</div>
+                        <div class="p-2.5 bg-blue-100 rounded-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                 fill="currentColor" class="text-blue-600" viewBox="0 0 16 16">
                                 <path
@@ -228,16 +229,16 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="mt-4 text-2xl font-bold text-gray-800">
+                    <div class="mt-2 text-2xl font-bold text-gray-800">
                         {{ $allPesanans->where('status', 'Diproses')->count() }}
                     </div>
                     <div class="mt-1 text-sm text-gray-500">Menunggu pengiriman</div>
                 </div>
 
                 <div class="p-6 transition-all bg-white shadow-sm rounded-xl hover:shadow-md">
-                    <div class="flex items-center justify-between">
-                        <div class="text-gray-600">Dikirim</div>
-                        <div class="p-2 rounded-lg bg-amber-100">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="font-medium text-gray-600">Dikirim</div>
+                        <div class="p-2.5 rounded-lg bg-amber-100">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                 fill="currentColor" class="text-amber-600" viewBox="0 0 16 16">
                                 <path
@@ -245,16 +246,16 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="mt-4 text-2xl font-bold text-gray-800">
+                    <div class="mt-2 text-2xl font-bold text-gray-800">
                         {{ $allPesanans->where('status', 'Dikirim')->count() }}
                     </div>
                     <div class="mt-1 text-sm text-gray-500">Dalam pengiriman</div>
                 </div>
 
                 <div class="p-6 transition-all bg-white shadow-sm rounded-xl hover:shadow-md">
-                    <div class="flex items-center justify-between">
-                        <div class="text-gray-600">Diterima</div>
-                        <div class="p-2 bg-green-100 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="font-medium text-gray-600">Diterima</div>
+                        <div class="p-2.5 bg-green-100 rounded-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                 fill="currentColor" class="text-green-600" viewBox="0 0 16 16">
                                 <path
@@ -262,15 +263,16 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="mt-4 text-2xl font-bold text-gray-800">
+                    <div class="mt-2 text-2xl font-bold text-gray-800">
                         {{ $allPesanans->where('status', 'Diterima')->count() }}
                     </div>
-                    <div class="mt-1 text-sm text-gray-500">Pesanan Diterima</div>
+                    <div class="mt-1 text-sm text-gray-500">Pesanan diterima</div>
                 </div>
+
                 <div class="p-6 transition-all bg-white shadow-sm rounded-xl hover:shadow-md">
-                    <div class="flex items-center justify-between">
-                        <div class="text-gray-600">Selesai</div>
-                        <div class="p-2 bg-purple-100 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="font-medium text-gray-600">Selesai</div>
+                        <div class="p-2.5 bg-purple-100 rounded-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                 fill="currentColor" class="text-purple-600" viewBox="0 0 16 16">
                                 <path
@@ -278,173 +280,320 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="mt-4 text-2xl font-bold text-gray-800">
+                    <div class="mt-2 text-2xl font-bold text-gray-800">
                         {{ $allPesanans->where('status', 'Selesai')->count() }}
                     </div>
                     <div class="mt-1 text-sm text-gray-500">Transaksi selesai</div>
                 </div>
             </div>
 
+            <!-- Filter dan Search -->
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="relative">
+                        <select id="filterStatus"
+                            class="pl-4 pr-10 py-2.5 text-sm bg-white border rounded-lg appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            <option value="">Semua Status</option>
+                            <option value="Diproses">Diproses</option>
+                            <option value="Dikirim">Dikirim</option>
+                            <option value="Diterima">Diterima</option>
+                            <option value="Selesai">Selesai</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
 
-            @foreach ($pesanans as $pesanan)
-                <div
-                    class="p-6 mb-6 transition-shadow bg-white border border-gray-100 shadow-sm rounded-2xl hover:shadow-md">
-                    <div class="flex items-start justify-between pb-4 border-b">
-                        <div class="flex items-center gap-4">
-                            <img src="{{ asset($pesanan->user->avatar_url ?? 'images/avatar.png') }}" alt="Avatar"
-                                class="object-cover border rounded-full w-14 h-14 border-emerald-100">
-                            <div>
-                                <p class="text-lg font-semibold text-gray-800">{{ $pesanan->user->name }}</p>
-                                <div class="flex items-center gap-1 text-sm text-gray-600">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                        fill="currentColor" viewBox="0 0 16 16">
-                                        <path
-                                            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z" />
-                                        <path
-                                            d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z" />
-                                    </svg>
-                                    {{ $pesanan->alamat->detail_alamat }},
-                                    {{ $pesanan->alamat->kecamatan->nama_kecamatan }},
-                                    {{ $pesanan->alamat->kabupatenKota->nama_kabupaten_kota }},
-                                    {{ $pesanan->alamat->kodePos->kode_pos }}
+                    <div class="relative">
+                        <select id="filterPengiriman"
+                            class="pl-4 pr-10 py-2.5 text-sm bg-white border rounded-lg appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            <option value="">Semua Pengiriman</option>
+                            <option value="wa_jek">Paxel</option>
+                            <option value="ambil_ditempat">Ambil di Tempat</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="Cari pesanan atau pelanggan..."
+                        class="w-full md:w-64 pl-10 pr-4 py-2.5 text-sm border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <button id="clearSearch"
+                        class="absolute inset-y-0 right-0 items-center hidden pr-3 text-gray-400 hover:text-gray-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path
+                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Daftar Pesanan - Dengan desain yang lebih modern dan informatif -->
+            <div class="space-y-6">
+                @foreach ($pesanans as $pesanan)
+                    <div
+                        class="overflow-hidden transition-all bg-white border border-gray-100 shadow-sm rounded-xl hover:shadow-md">
+                        <!-- Header Pesanan -->
+                        <div
+                            class="flex flex-col justify-between p-5 border-b border-gray-100 md:flex-row md:items-center">
+                            <div class="flex items-center gap-4 mb-3 md:mb-0">
+                                <img src="{{ asset($pesanan->user->avatar_url ?? 'images/avatar.png') }}"
+                                    alt="Avatar"
+                                    class="object-cover w-12 h-12 border-2 rounded-full border-emerald-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-800">{{ $pesanan->user->name }}</p>
+                                    <div class="flex items-center gap-1.5 text-sm text-gray-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                            fill="currentColor" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z" />
+                                            <path
+                                                d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z" />
+                                        </svg>
+                                        <span class="truncate">
+                                            {{ $pesanan->alamat->detail_alamat }},
+                                            {{ $pesanan->alamat->kecamatan->nama_kecamatan }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="flex flex-col items-end">
-                            <div class="mb-2 text-sm font-medium text-right text-gray-500">Status Pesanan:</div>
+                            <!-- Status Pesanan -->
+                            <div class="flex flex-col items-end">
+                                <div class="mb-1.5 text-sm font-medium text-right text-gray-500">ID:
+                                    #{{ substr($pesanan->id_pesanan, 0, 8) }}</div>
 
-                            @if ($pesanan->status === 'Selesai')
-                                <span class="px-4 py-2 text-sm font-medium text-purple-700 bg-purple-100 rounded-full">
-                                    Selesai
-                                </span>
-                            @elseif ($pesanan->status === 'Diterima')
-                                <div class="flex items-center space-x-2">
+                                @if ($pesanan->status === 'Selesai')
                                     <span
-                                        class="px-4 py-2 text-sm font-medium text-green-700 bg-green-100 rounded-full">
-                                        Diterima
+                                        class="px-4 py-1.5 text-sm font-medium text-purple-700 bg-purple-100 rounded-full">
+                                        <span class="flex items-center gap-1.5">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                            </svg>
+                                            Selesai
+                                        </span>
                                     </span>
+                                @elseif ($pesanan->status === 'Diterima')
+                                    <div class="flex items-center space-x-2">
+                                        <span
+                                            class="px-4 py-1.5 text-sm font-medium text-green-700 bg-green-100 rounded-full">
+                                            <span class="flex items-center gap-1.5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                    <path
+                                                        d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                                </svg>
+                                                Diterima
+                                            </span>
+                                        </span>
+                                        <form
+                                            action="{{ route('dashboard.pesanan.updateStatus', $pesanan->id_pesanan) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="status" value="Selesai">
+                                            <button type="submit"
+                                                class="px-3 py-1.5 text-xs font-medium text-purple-700 transition-colors bg-purple-100 rounded-full hover:bg-purple-200 hover:text-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-1">
+                                                Selesaikan
+                                            </button>
+                                        </form>
+                                    </div>
+                                @elseif ($pesanan->status === 'Dikirim')
                                     <form action="{{ route('dashboard.pesanan.updateStatus', $pesanan->id_pesanan) }}"
                                         method="POST">
                                         @csrf
                                         @method('PUT')
-                                        <input type="hidden" name="status" value="Selesai">
-                                        <button type="submit"
-                                            class="px-3 py-2 text-xs font-medium text-purple-700 transition-colors bg-purple-100 rounded-full hover:bg-purple-200">
-                                            Selesaikan
-                                        </button>
+                                        <select name="status" onchange="this.form.submit()"
+                                            class="px-4 py-1.5 text-sm font-medium bg-amber-100 text-amber-700 rounded-full cursor-pointer appearance-none pr-10 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1">
+                                            <option value="Dikirim" selected>Dikirim</option>
+                                            <option value="Diterima">Diterima</option>
+                                        </select>
+                                        <div
+                                            class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </div>
                                     </form>
-                                </div>
-                            @else
-                                <form action="{{ route('dashboard.pesanan.updateStatus', $pesanan->id_pesanan) }}"
-                                    method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <select name="status" onchange="this.form.submit()"
-                                        class="px-4 py-2 text-sm font-medium rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-1
-                    {{ $pesanan->status === 'Dikirim'
-                        ? 'bg-amber-100 text-amber-700 focus:ring-amber-500'
-                        : 'bg-blue-100 text-blue-700 focus:ring-blue-500' }}">
-                                        <option value="Diproses" @selected($pesanan->status === 'Diproses')>Diproses</option>
-                                        <option value="Dikirim" @selected($pesanan->status === 'Dikirim')>Dikirim</option>
-                                        <option value="Diterima">Diterima</option>
-                                    </select>
-                                </form>
-                            @endif
+                                @else
+                                    <form action="{{ route('dashboard.pesanan.updateStatus', $pesanan->id_pesanan) }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <select name="status" onchange="this.form.submit()"
+                                            class="px-4 py-1.5 text-sm font-medium bg-blue-100 text-blue-700 rounded-full cursor-pointer appearance-none pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1">
+                                            <option value="Diproses" selected>Diproses</option>
+                                            <option value="Dikirim">Dikirim</option>
+                                        </select>
+                                        <div
+                                            class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </div>
+                                    </form>
+                                @endif
+                            </div>
                         </div>
 
-                        <div class="flex items-start gap-6 mt-4">
-                            <img src="{{ asset('storage/' . $pesanan->produk->gambar_produk ?? 'images/default-product.png') }}"
-                                alt="{{ $pesanan->produk->nama_produk }}"
-                                class="object-cover w-24 h-24 border border-gray-100 rounded-lg">
+                        <!-- Detail Pesanan -->
+                        <div class="p-5">
+                            <div class="flex flex-col items-start gap-6 lg:flex-row">
+                                <div class="flex-shrink-0">
+                                    <img src="{{ asset('storage/' . $pesanan->produk->gambar_produk ?? 'images/default-product.png') }}"
+                                        alt="{{ $pesanan->produk->nama_produk }}"
+                                        class="object-cover w-24 h-24 border border-gray-100 rounded-lg">
+                                </div>
 
-                            <div class="grid flex-1 grid-cols-2 gap-y-2">
-                                <div>
-                                    <p class="text-sm text-gray-500">Produk</p>
-                                    <p class="font-medium text-gray-800">{{ $pesanan->produk->nama_produk }}</p>
+                                <div class="grid flex-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-4">
+                                    <div>
+                                        <p class="text-sm text-gray-500">Produk</p>
+                                        <p class="font-medium text-gray-800 line-clamp-1">
+                                            {{ $pesanan->produk->nama_produk }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Jumlah</p>
+                                        <p class="font-medium text-gray-800">{{ $pesanan->jumlah }} pcs</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Tanggal Pesan</p>
+                                        <p class="font-medium text-gray-800">
+                                            {{ $pesanan->created_at->format('d M Y') }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Pengiriman</p>
+                                        <p class="font-medium text-gray-800">
+                                            <span class="inline-flex items-center">
+                                                @if ($pesanan->pengiriman === 'wa_jek')
+                                                    <span
+                                                        class="inline-block w-2 h-2 mr-2 rounded-full bg-amber-400"></span>
+                                                    Paxel
+                                                @elseif ($pesanan->pengiriman === 'ambil_ditempat')
+                                                    <span
+                                                        class="inline-block w-2 h-2 mr-2 bg-green-400 rounded-full"></span>
+                                                    Ambil di Tempat
+                                                @else
+                                                    {{ $pesanan->pengiriman ?? '-' }}
+                                                @endif
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Pembayaran</p>
+                                        <p class="font-medium text-gray-800">
+                                            <span class="inline-flex items-center">
+                                                @if ($pesanan->pembayaran === 'transfer')
+                                                    <span
+                                                        class="inline-block w-2 h-2 mr-2 bg-blue-400 rounded-full"></span>
+                                                    Transfer
+                                                @elseif ($pesanan->pembayaran === 'cod')
+                                                    <span
+                                                        class="inline-block w-2 h-2 mr-2 bg-indigo-400 rounded-full"></span>
+                                                    Cash on Delivery
+                                                @else
+                                                    {{ $pesanan->pembayaran ?? '-' }}
+                                                @endif
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Total Pembayaran</p>
+                                        <p class="text-lg font-semibold text-emerald-700">
+                                            Rp {{ number_format($pesanan->total, 0, ',', '.') }}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">ID Pesanan</p>
-                                    <p class="font-medium text-gray-800">{{ $pesanan->id_pesanan }}</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Jumlah</p>
-                                    <p class="font-medium text-gray-800">{{ $pesanan->jumlah }} pcs</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Tanggal Pesan</p>
-                                    <p class="font-medium text-gray-800">{{ $pesanan->created_at->format('d M Y') }}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Pengiriman</p>
-                                    <p class="font-medium text-gray-800">
-                                        @if ($pesanan->pengiriman === 'wa_jek')
-                                            Paxel
-                                        @elseif ($pesanan->pengiriman === 'ambil_ditempat')
-                                            Ambil di Tempat
-                                        @else
-                                            {{ $pesanan->pengiriman ?? '-' }}
-                                        @endif
-                                    </p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Pembayaran</p>
-                                    <p class="font-medium text-gray-800">
-                                        @if ($pesanan->pembayaran === 'transfer')
-                                            Transfer
-                                        @elseif ($pesanan->pembayaran === 'cod')
-                                            Cash on Delivery (COD)
-                                        @else
-                                            {{ $pesanan->pembayaran ?? '-' }}
-                                        @endif
-                                    </p>
-                                </div>
-                            </div>
 
-                            <div class="flex flex-col items-end">
-                                <div class="text-sm text-gray-500">Total Pembayaran</div>
-                                <div class="text-xl font-bold text-emerald-700">Rp
-                                    {{ number_format($pesanan->total, 0, ',', '.') }}</div>
-                                <div class="flex gap-2 mt-3">
-                                    <button
-                                        class="px-3 py-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-full transition-colors">Cetak
-                                        Invoice</button>
-                                    <button
-                                        class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-full transition-colors">Detail</button>
+                                <div class="flex flex-col items-end self-stretch justify-between">
+                                    <div class="flex items-center gap-1.5 text-xs text-gray-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                            fill="currentColor" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                                            <path
+                                                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                                        </svg>
+                                        {{ $pesanan->created_at->diffForHumans() }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-            @endforeach
+                @endforeach
+            </div>
 
-            <!-- Pagination -->
-            <div class="flex items-center justify-center mt-8">
-                <nav class="inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-                    <a href="#"
-                        class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50">
-                        <span class="sr-only">Previous</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
-                        </svg>
-                    </a>
-                    <a href="#"
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium bg-white border border-gray-300 text-emerald-600 hover:bg-gray-50">1</a>
-                    <a href="#"
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50">2</a>
-                    <a href="#"
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50">3</a>
-                    <a href="#"
-                        class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50">
-                        <span class="sr-only">Next</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
-                        </svg>
-                    </a>
+            <!-- Pagination yang lebih modern -->
+            <div class="mt-8">
+                <nav class="flex items-center justify-center" aria-label="Pagination">
+                    <ul class="inline-flex space-x-1">
+                        <li>
+                            <a href="#"
+                                class="flex items-center justify-center w-10 h-10 text-gray-500 transition-colors bg-white border rounded-lg hover:bg-gray-100">
+                                <span class="sr-only">Previous</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                    fill="currentColor" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
+                                </svg>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="flex items-center justify-center w-10 h-10 font-semibold transition-colors bg-white border rounded-lg text-emerald-600 hover:bg-emerald-50 border-emerald-200">1</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="flex items-center justify-center w-10 h-10 text-gray-500 transition-colors bg-white border rounded-lg hover:bg-gray-100">2</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="flex items-center justify-center w-10 h-10 text-gray-500 transition-colors bg-white border rounded-lg hover:bg-gray-100">3</a>
+                        </li>
+                        <li>
+                            <span class="flex items-center justify-center w-10 h-10 text-gray-400 bg-white">...</span>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="flex items-center justify-center w-10 h-10 text-gray-500 transition-colors bg-white border rounded-lg hover:bg-gray-100">8</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="flex items-center justify-center w-10 h-10 text-gray-500 transition-colors bg-white border rounded-lg hover:bg-gray-100">
+                                <span class="sr-only">Next</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                    fill="currentColor" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                                </svg>
+                            </a>
+                        </li>
+                    </ul>
                 </nav>
             </div>
         </div>
@@ -463,18 +612,7 @@
                             </svg>
                         </span>
                     </div>
-                    <h2 class="text-3xl font-bold text-gray-800">Rp 15.240.000</h2>
-                    <div class="flex items-center mt-2">
-                        <span class="flex items-center text-sm font-medium text-green-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                fill="currentColor" viewBox="0 0 16 16" class="mr-1">
-                                <path fill-rule="evenodd"
-                                    d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z" />
-                            </svg>
-                            8.2%
-                        </span>
-                        <span class="ml-2 text-sm text-gray-500">vs bulan lalu</span>
-                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800">{{ $totalPendapatan }}</h2>
                 </div>
 
                 <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-xl">
@@ -488,18 +626,7 @@
                             </svg>
                         </span>
                     </div>
-                    <h2 class="text-3xl font-bold text-gray-800">254</h2>
-                    <div class="flex items-center mt-2">
-                        <span class="flex items-center text-sm font-medium text-green-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                fill="currentColor" viewBox="0 0 16 16" class="mr-1">
-                                <path fill-rule="evenodd"
-                                    d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z" />
-                            </svg>
-                            12.5%
-                        </span>
-                        <span class="ml-2 text-sm text-gray-500">vs bulan lalu</span>
-                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800">Rp. {{ $allPesanans->count() }}</h2>
                 </div>
 
                 <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-xl">
@@ -513,18 +640,7 @@
                             </svg>
                         </span>
                     </div>
-                    <h2 class="text-3xl font-bold text-gray-800">879</h2>
-                    <div class="flex items-center mt-2">
-                        <span class="flex items-center text-sm font-medium text-green-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                fill="currentColor" viewBox="0 0 16 16" class="mr-1">
-                                <path fill-rule="evenodd"
-                                    d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z" />
-                            </svg>
-                            5.3%
-                        </span>
-                        <span class="ml-2 text-sm text-gray-500">vs bulan lalu</span>
-                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800">{{ $totalProduk }}</h2>
                 </div>
             </div>
 
@@ -559,63 +675,6 @@
                         </div>
                     </div>
                     <canvas id="chartPenjualan" class="w-full h-64"></canvas>
-                </div>
-
-                <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-xl">
-                    <h3 class="mb-6 text-lg font-semibold text-gray-800">Produk Terlaris</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center p-2 transition-all rounded-lg hover:bg-gray-50">
-                            <img src="{{ asset('images/default-product.png') }}" alt="Product 1"
-                                class="object-cover w-12 h-12 mr-3 rounded-lg">
-                            <div class="flex-grow">
-                                <h4 class="text-sm font-medium">Pupuk Organik Premium</h4>
-                                <div class="flex items-center justify-between mt-1">
-                                    <span class="text-sm text-gray-500">145 terjual</span>
-                                    <span class="text-sm font-semibold text-emerald-600">Rp 85.000</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center p-2 transition-all rounded-lg hover:bg-gray-50">
-                            <img src="{{ asset('images/default-product.png') }}" alt="Product 2"
-                                class="object-cover w-12 h-12 mr-3 rounded-lg">
-                            <div class="flex-grow">
-                                <h4 class="text-sm font-medium">Bibit Unggul Cabai</h4>
-                                <div class="flex items-center justify-between mt-1">
-                                    <span class="text-sm text-gray-500">98 terjual</span>
-                                    <span class="text-sm font-semibold text-emerald-600">Rp 25.000</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center p-2 transition-all rounded-lg hover:bg-gray-50">
-                            <img src="{{ asset('images/default-product.png') }}" alt="Product 3"
-                                class="object-cover w-12 h-12 mr-3 rounded-lg">
-                            <div class="flex-grow">
-                                <h4 class="text-sm font-medium">Alat Penyiram Otomatis</h4>
-                                <div class="flex items-center justify-between mt-1">
-                                    <span class="text-sm text-gray-500">67 terjual</span>
-                                    <span class="text-sm font-semibold text-emerald-600">Rp 320.000</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center p-2 transition-all rounded-lg hover:bg-gray-50">
-                            <img src="{{ asset('images/default-product.png') }}" alt="Product 4"
-                                class="object-cover w-12 h-12 mr-3 rounded-lg">
-                            <div class="flex-grow">
-                                <h4 class="text-sm font-medium">Media Tanam Hidroponik</h4>
-                                <div class="flex items-center justify-between mt-1">
-                                    <span class="text-sm text-gray-500">52 terjual</span>
-                                    <span class="text-sm font-semibold text-emerald-600">Rp 45.000</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button
-                        class="w-full py-2 mt-4 text-sm font-medium text-center transition-colors border rounded-lg text-emerald-600 border-emerald-200 hover:bg-emerald-50">
-                        Lihat Semua Produk
-                    </button>
                 </div>
             </div>
         </div>
@@ -814,6 +873,191 @@
             const tahun = this.value;
             const bulan = document.getElementById('filterBulan').value;
             fetchChartData(bulan, tahun);
+        });
+        // Filter dan Search functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterStatus = document.getElementById('filterStatus');
+            const filterPengiriman = document.getElementById('filterPengiriman');
+            const searchInput = document.getElementById('searchInput');
+            const clearSearch = document.getElementById('clearSearch');
+            const pesananCards = document.querySelectorAll('.space-y-6 > div');
+
+            // Fungsi untuk menampilkan atau menyembunyikan pesanan berdasarkan filter
+            function applyFilters() {
+                const statusValue = filterStatus.value.toLowerCase();
+                const pengirimanValue = filterPengiriman.value.toLowerCase();
+                const searchValue = searchInput.value.toLowerCase().trim();
+
+                let visibleCount = 0;
+
+                pesananCards.forEach(card => {
+                    // Ambil atribut data yang diperlukan
+                    const status = card.getAttribute('data-status') || '';
+                    const pengiriman = card.getAttribute('data-pengiriman') || '';
+                    const customerName = card.querySelector('.text-lg.font-semibold').textContent
+                        .toLowerCase();
+                    const produkName = card.querySelector('.line-clamp-1')?.textContent.toLowerCase() || '';
+                    const orderId = card.querySelector('.text-right.text-gray-500').textContent
+                        .toLowerCase();
+
+                    // Cek apakah memenuhi filter status
+                    const matchStatus = !statusValue || status.toLowerCase() === statusValue;
+
+                    // Cek apakah memenuhi filter pengiriman
+                    const matchPengiriman = !pengirimanValue || pengiriman.toLowerCase() ===
+                        pengirimanValue;
+
+                    // Cek apakah memenuhi filter pencarian
+                    const matchSearch = !searchValue ||
+                        customerName.includes(searchValue) ||
+                        produkName.includes(searchValue) ||
+                        orderId.includes(searchValue);
+
+                    // Tampilkan kartu jika memenuhi semua filter
+                    if (matchStatus && matchPengiriman && matchSearch) {
+                        card.classList.remove('hidden');
+                        visibleCount++;
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+
+                // Tampilkan pesan tidak ada data jika tidak ada pesanan yang ditampilkan
+                const noDataMessage = document.getElementById('noDataMessage');
+                if (visibleCount === 0) {
+                    if (!noDataMessage) {
+                        const message = document.createElement('div');
+                        message.id = 'noDataMessage';
+                        message.className = 'p-8 text-center bg-gray-50 rounded-lg';
+                        message.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="mx-auto mb-4 text-gray-400" viewBox="0 0 16 16">
+                            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                        <p class="text-lg font-medium text-gray-600">Tidak ada pesanan yang ditemukan</p>
+                        <p class="mt-2 text-gray-500">Coba ubah filter atau kata kunci pencarian</p>
+                        <button id="resetFilters" class="px-4 py-2 mt-4 text-sm font-medium text-white transition-colors rounded-lg bg-emerald-600 hover:bg-emerald-700">
+                            Reset Filter
+                        </button>
+                    `;
+                        document.querySelector('.space-y-6').appendChild(message);
+
+                        // Event listener untuk tombol reset
+                        document.getElementById('resetFilters').addEventListener('click', resetAllFilters);
+                    }
+                } else if (noDataMessage) {
+                    noDataMessage.remove();
+                }
+
+                // Update tampilan tombol clear search
+                if (searchValue.length > 0) {
+                    clearSearch.style.display = 'flex';
+                } else {
+                    clearSearch.style.display = 'none';
+                }
+            }
+
+            // Reset semua filter ke nilai default
+            function resetAllFilters() {
+                filterStatus.value = '';
+                filterPengiriman.value = '';
+                searchInput.value = '';
+                clearSearch.style.display = 'none';
+                applyFilters();
+            }
+
+            // Tambahkan data atribut ke pesanan cards
+            pesananCards.forEach(card => {
+                // Ambil status dari tampilan badge
+                let statusElement;
+                if (card.querySelector('.text-purple-700')) {
+                    statusElement = card.querySelector('.text-purple-700');
+                    card.setAttribute('data-status', 'Selesai');
+                } else if (card.querySelector('.text-green-700')) {
+                    statusElement = card.querySelector('.text-green-700');
+                    card.setAttribute('data-status', 'Diterima');
+                } else if (card.querySelector('.text-amber-700')) {
+                    statusElement = card.querySelector('.text-amber-700');
+                    card.setAttribute('data-status', 'Dikirim');
+                } else if (card.querySelector('.text-blue-700')) {
+                    statusElement = card.querySelector('.text-blue-700');
+                    card.setAttribute('data-status', 'Diproses');
+                }
+
+                // Ambil pengiriman dari teks
+                const pengirimanTeks = card.querySelector('.inline-flex.items-center')?.textContent.trim();
+                if (pengirimanTeks?.includes('Paxel')) {
+                    card.setAttribute('data-pengiriman', 'wa_jek');
+                } else if (pengirimanTeks?.includes('Ambil di Tempat')) {
+                    card.setAttribute('data-pengiriman', 'ambil_ditempat');
+                }
+            });
+
+            // Trigger filter saat dropdown berubah
+            filterStatus.addEventListener('change', applyFilters);
+            filterPengiriman.addEventListener('change', applyFilters);
+
+            // Terapkan filter saat user mengetik (dengan debounce)
+            let debounceTimer;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(applyFilters, 300);
+            });
+
+            // Clear search input
+            clearSearch.addEventListener('click', function() {
+                searchInput.value = '';
+                clearSearch.style.display = 'none';
+                applyFilters();
+            });
+
+            // Tambahkan tombol shortcut di bagian atas untuk filter status umum
+            const filterButtons = `
+            <div class="flex flex-wrap items-center gap-2 mb-4">
+                <button data-status="" class="px-3 py-1.5 text-sm rounded-full bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                    Semua
+                </button>
+                <button data-status="Diproses" class="px-3 py-1.5 text-sm rounded-full bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Diproses
+                </button>
+                <button data-status="Dikirim" class="px-3 py-1.5 text-sm rounded-full bg-amber-100 text-amber-800 hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    Dikirim
+                </button>
+                <button data-status="Diterima" class="px-3 py-1.5 text-sm rounded-full bg-green-100 text-green-800 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500">
+                    Diterima
+                </button>
+                <button data-status="Selesai" class="px-3 py-1.5 text-sm rounded-full bg-purple-100 text-purple-800 hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    Selesai
+                </button>
+            </div>
+        `;
+
+            // Sisipkan tombol filter di bawah statistik
+            document.querySelector('.grid.grid-cols-1.gap-4.sm\\:grid-cols-2.lg\\:grid-cols-5').insertAdjacentHTML(
+                'afterend', filterButtons);
+
+            // Tambahkan event listener untuk tombol filter
+            document.querySelectorAll('button[data-status]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const status = this.getAttribute('data-status');
+                    filterStatus.value = status;
+
+                    // Hapus highlight dari semua tombol
+                    document.querySelectorAll('button[data-status]').forEach(btn => {
+                        btn.classList.remove('ring-2');
+                    });
+
+                    // Tambahkan highlight untuk tombol yang aktif
+                    if (status) {
+                        this.classList.add('ring-2');
+                    }
+
+                    applyFilters();
+                });
+            });
+
+            // Inisialisasi
+            applyFilters();
         });
     </script>
 </body>

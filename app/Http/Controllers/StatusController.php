@@ -34,7 +34,24 @@ class StatusController extends Controller
             ->pluck('tahun')
             ->toArray();
 
-        return view('status', compact('pesanans', 'allPesanans', 'kategoris', 'listTahun'));
+        //hitung total jumlah pendapatan
+        $totalPendapatan = $allPesanans->sum(function ($pesanan) {
+            return $pesanan->total;
+        });
+
+        $totalProduk = $allPesanans->sum(function ($pesanan) {
+            return $pesanan->jumlah;
+        });
+
+        return view('status', compact(
+            'pesanans',
+            'allPesanans',
+            'kategoris',
+            'listTahun',
+            'currentStatus',
+            'totalPendapatan',
+            'totalProduk'
+        ));
     }
 
     public function updateStatus(Request $request, $id)

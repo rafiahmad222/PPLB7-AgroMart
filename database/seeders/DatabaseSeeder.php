@@ -18,11 +18,5 @@ class DatabaseSeeder extends Seeder
             KecamatanSeeder::class,
             KodePosSeeder::class,
         ]);
-
-        // Buat user contoh
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
     }
 }

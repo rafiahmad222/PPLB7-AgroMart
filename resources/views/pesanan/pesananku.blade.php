@@ -105,6 +105,7 @@
                 opacity: 0;
                 transform: translateY(10px) scale(0.98);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -155,6 +156,10 @@
                         </button>
                         <button type="button" data-filter="Diterima"
                             class="filter-btn px-4 py-2 text-sm font-medium border-t border-b border-r border-gray-200 rounded-r-lg {{ request()->get('status') === 'Diterima' ? 'active text-white bg-primary-600 hover:bg-primary-700' : 'text-gray-700 bg-white hover:bg-gray-100' }}">
+                            Diterima
+                        </button>
+                        <button type="button" data-filter="Selesai"
+                            class="filter-btn px-4 py-2 text-sm font-medium border-t border-b border-r border-gray-200 rounded-r-lg {{ request()->get('status') === 'Diterima' ? 'active text-white bg-primary-600 hover:bg-primary-700' : 'text-gray-700 bg-white hover:bg-gray-100' }}">
                             Selesai
                         </button>
                     </div>
@@ -198,7 +203,8 @@
         @else
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3" id="pesanan-container">
                 @foreach ($pesanans as $pesanan)
-                    <div class="overflow-hidden transition-shadow bg-white rounded-lg shadow-sm order-card hover:shadow-md" data-order-status="{{ $pesanan->status }}">
+                    <div class="overflow-hidden transition-shadow bg-white rounded-lg shadow-sm order-card hover:shadow-md"
+                        data-order-status="{{ $pesanan->status }}">
                         <div class="p-4 border-b border-gray-100">
                             <div class="flex items-center justify-between">
                                 <span class="text-sm font-medium text-gray-500">No. Pesanan
@@ -266,13 +272,17 @@
             </div>
 
             <!-- Empty state message when no orders match filter -->
-            <div class="flex flex-col items-center justify-center hidden p-10 mt-8 text-center bg-white rounded-lg shadow-sm empty-state">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mb-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            <div
+                class="flex flex-col items-center justify-center hidden p-10 mt-8 text-center bg-white rounded-lg shadow-sm empty-state">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mb-4 text-gray-400" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 <h3 class="mb-2 text-xl font-medium text-gray-800">Tidak Ada Pesanan</h3>
                 <p class="mb-6 text-gray-500">Tidak ada pesanan dengan status yang dipilih.</p>
-                <button type="button" data-filter="all" class="px-6 py-2 text-white transition-colors rounded-md filter-btn bg-primary-600 hover:bg-primary-700">
+                <button type="button" data-filter="all"
+                    class="px-6 py-2 text-white transition-colors rounded-md filter-btn bg-primary-600 hover:bg-primary-700">
                     Lihat Semua Pesanan
                 </button>
             </div>
@@ -363,7 +373,8 @@
 
                                     <div class="flex items-start justify-between">
                                         <span class="text-sm text-gray-500">Alamat Pengiriman:</span>
-                                        <span id="orderDetailAddress" class="text-sm text-right text-gray-900" style="max-width: 65%;"></span>
+                                        <span id="orderDetailAddress" class="text-sm text-right text-gray-900"
+                                            style="max-width: 65%;"></span>
                                     </div>
                                 </div>
 

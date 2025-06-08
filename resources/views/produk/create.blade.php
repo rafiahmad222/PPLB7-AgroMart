@@ -96,26 +96,69 @@
 </head>
 
 <body class="text-gray-800 bg-gray-50 font-poppins">
-    <!-- Main Content -->
-    <main class="container px-4 py-5 mx-auto">
+    <!-- Header yang lebih rapi dengan padding dan margin yang konsisten -->
+    <div class="max-w-5xl px-6 mx-auto my-8">
+        <nav class="flex mb-2" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a href="{{ route('home') }}"
+                        class="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                            </path>
+                        </svg>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <a href="{{ route('produk.index') }}"
+                            class="ml-1 text-sm font-medium text-emerald-600 hover:text-emerald-700 md:ml-2">Produk</a>
+                    </div>
+                </li>
+                <li aria-current="page">
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">Tambah Produk</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+        <h1 class="mb-2 text-3xl font-bold text-gray-800">Tambah Produk</h1>
+        <p class="mb-2 text-gray-600">Tambahkan informasi lengkap tentang produk Anda</p>
+    </div>
+
+    <!-- Main Content dengan container yang lebih konsisten -->
+    <main class="max-w-5xl px-6 py-2 mx-auto mb-16">
         <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data" class="mb-10">
             @csrf
-            <div class="p-6 bg-white shadow-lg rounded-xl">
-                <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-                    <!-- Left Side - Image Upload -->
+            <div class="p-8 bg-white shadow-lg rounded-xl">
+                <div class="grid grid-cols-1 gap-10 lg:grid-cols-3">
+                    <!-- Left Side - Image Upload dengan desain yang lebih baik -->
                     <div class="lg:col-span-1">
                         <div
-                            class="flex flex-col items-center p-6 space-y-4 border-2 border-dashed rounded-lg border-emerald-200 bg-emerald-50">
+                            class="flex flex-col items-center p-6 space-y-4 transition-colors border-2 border-dashed rounded-lg border-emerald-200 bg-emerald-50 hover:bg-emerald-100">
                             <h3 class="text-xl font-bold text-emerald-700">Foto Produk</h3>
 
-                            <div class="relative w-full overflow-hidden rounded-lg aspect-square image-container">
+                            <div
+                                class="relative w-full overflow-hidden rounded-lg shadow-sm aspect-square image-container">
                                 <img id="preview-image" src="{{ asset('images/UploadFoto.png') }}" alt="Upload Icon"
-                                    class="object-contain w-full h-full transition-opacity">
+                                    class="object-contain w-full h-full transition-all duration-300">
 
                                 <div
                                     class="absolute inset-0 flex flex-col items-center justify-center transition-opacity bg-black opacity-0 bg-opacity-40 hover:opacity-100">
                                     <span
-                                        class="px-4 py-2 mb-2 font-medium text-white rounded-lg shadow-lg bg-emerald-600">
+                                        class="px-4 py-2 mb-2 font-medium text-white transition-colors rounded-lg shadow-lg bg-emerald-600 hover:bg-emerald-700">
                                         <i class="mr-2 fas fa-camera"></i> Pilih Foto
                                     </span>
                                     <p class="text-xs text-white">Klik untuk mengunggah gambar</p>
@@ -125,65 +168,64 @@
                             <input type="file" id="gambar_produk" name="gambar_produk" accept="image/*" required
                                 class="hidden">
 
-                            <p class="text-sm text-center text-gray-500">
+                            <p class="w-full px-3 py-2 text-sm text-center text-gray-500 bg-white rounded-md">
                                 Format gambar: JPG, PNG, atau GIF<br>
                                 Maksimal ukuran: 2MB
                             </p>
                         </div>
                     </div>
 
-                    <!-- Right Side - Form Fields -->
+                    <!-- Right Side - Form Fields dengan spacing yang lebih baik -->
                     <div class="lg:col-span-2">
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <div class="col-span-2">
-                                <label for="nama_produk" class="block mb-1 text-sm font-medium text-gray-700">Nama
+                                <label for="nama_produk" class="block mb-2 text-sm font-semibold text-gray-700">Nama
                                     Produk</label>
                                 <input type="text" id="nama_produk" name="nama_produk" required
-                                    class="w-full px-4 py-3 transition-colors border-2 rounded-lg border-emerald-600 focus:border-2 focus:border-emerald-400 focus:ring focus:ring-emerald-200"
+                                    class="w-full px-4 py-3 transition-colors border-2 rounded-lg border-emerald-500 focus:border-emerald-600 focus:ring focus:ring-emerald-200 focus:ring-opacity-50"
                                     placeholder="Masukkan nama produk">
                             </div>
 
                             <div>
-                                <label for="jumlah_stok" class="block mb-1 text-sm font-medium text-gray-700">Jumlah
+                                <label for="jumlah_stok" class="block mb-2 text-sm font-semibold text-gray-700">Jumlah
                                     Stok</label>
                                 <div class="relative">
                                     <input type="number" id="jumlah_stok" name="jumlah_stok" required min="1"
-                                        class="w-full px-4 py-3 transition-colors border-2 rounded-lg border-emerald-600 focus:border-emerald-400 focus:ring focus:ring-emerald-200"
+                                        class="w-full px-4 py-3 transition-colors border-2 rounded-lg border-emerald-500 focus:border-emerald-600 focus:ring focus:ring-emerald-200 focus:ring-opacity-50"
                                         placeholder="0">
                                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                        <span class="text-gray-500">unit</span>
+                                        <span class="font-medium text-gray-500">unit</span>
                                     </div>
                                 </div>
                             </div>
 
                             <div>
-                                <label for="harga_produk" class="block mb-1 text-sm font-medium text-gray-700">Harga
+                                <label for="harga_produk" class="block mb-2 text-sm font-semibold text-gray-700">Harga
                                     Produk</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                                         <span class="font-medium text-gray-500">Rp</span>
                                     </div>
                                     <input type="text" id="harga_produk" name="harga_produk" required
-                                        class="w-full px-4 py-3 pl-10 transition-colors border-2 rounded-lg border-emerald-600 focus:border-emerald-400 focus:ring focus:ring-emerald-200"
-                                        placeholder="10000">
+                                        class="w-full px-4 py-3 pl-10 transition-colors border-2 rounded-lg border-emerald-500 focus:border-emerald-600 focus:ring focus:ring-emerald-200 focus:ring-opacity-50"
+                                        placeholder="10.000">
                                 </div>
                             </div>
 
                             <div class="col-span-2">
                                 <label for="id_kategori"
-                                    class="block mb-1 text-sm font-medium text-gray-700">Kategori</label>
-                                <select id="id_kategori" name="id_kategori" required
-                                    class="w-full px-4 py-3 transition-colors bg-white border-2 rounded-lg appearance-none border-emerald-600 focus:border-emerald-400 focus:ring focus:ring-emerald-200">
-                                    <option value="">-- Pilih Kategori Produk --</option>
-                                    @foreach ($kategoris as $kategori)
-                                        <option value="{{ $kategori->id_kategori }}">{{ $kategori->nama_kategori }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                    class="block mb-2 text-sm font-semibold text-gray-700">Kategori</label>
                                 <div class="relative">
-                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
-                                        style="top: -30px">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400"
+                                    <select id="id_kategori" name="id_kategori" required
+                                        class="w-full px-4 py-3 transition-colors bg-white border-2 rounded-lg appearance-none border-emerald-500 focus:border-emerald-600 focus:ring focus:ring-emerald-200 focus:ring-opacity-50">
+                                        <option value="">-- Pilih Kategori Produk --</option>
+                                        @foreach ($kategoris as $kategori)
+                                            <option value="{{ $kategori->id_kategori }}">{{ $kategori->nama_kategori }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500"
                                             viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd"
                                                 d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -195,11 +237,11 @@
 
                             <div class="col-span-2">
                                 <label for="deskripsi_produk"
-                                    class="block mb-1 text-sm font-medium text-gray-700">Deskripsi Produk</label>
+                                    class="block mb-2 text-sm font-semibold text-gray-700">Deskripsi Produk</label>
                                 <textarea id="deskripsi_produk" name="deskripsi_produk" rows="5" maxlength="305" required
-                                    class="w-full px-4 py-3 transition-colors border-2 rounded-lg resize-none border-emerald-600 focus:border-emerald-400 focus:ring focus:ring-emerald-200"
+                                    class="w-full px-4 py-3 transition-colors border-2 rounded-lg resize-none border-emerald-500 focus:border-emerald-600 focus:ring focus:ring-emerald-200 focus:ring-opacity-50"
                                     placeholder="Jelaskan secara detail tentang produk ini agar pelanggan dapat mengenal produk Anda dengan baik."></textarea>
-                                <div class="flex justify-end mt-1 text-xs text-gray-500">
+                                <div class="flex justify-end mt-2 text-xs text-gray-500">
                                     <span id="char-count">0</span>/305 karakter
                                 </div>
                             </div>
@@ -207,14 +249,14 @@
                     </div>
                 </div>
 
-                <!-- Form Actions -->
-                <div class="flex justify-end mt-8 space-x-4">
+                <!-- Form Actions dengan tombol yang lebih menarik -->
+                <div class="flex flex-col justify-end mt-10 space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                     <a href="{{ route('produk.index') }}"
-                        class="px-6 py-3 font-medium text-gray-700 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300">
-                        Batal
+                        class="px-6 py-3 font-medium text-center text-gray-700 transition-colors bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:ring-2 focus:ring-gray-300 focus:outline-none">
+                        <i class="mr-2 fas fa-arrow-left"></i> Batal
                     </a>
                     <button type="submit"
-                        class="px-6 py-3 font-medium text-white transition-all transform rounded-lg shadow-md bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 hover:-translate-y-0.5 hover:shadow-lg">
+                        class="px-6 py-3 font-medium text-center text-white transition-all transform rounded-lg shadow-md bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 hover:-translate-y-0.5 hover:shadow-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                         <i class="mr-2 fas fa-plus"></i> Tambahkan Produk
                     </button>
                 </div>
@@ -223,7 +265,7 @@
     </main>
 
     <script>
-        // Image upload preview
+        // Image upload preview dengan animasi yang lebih halus
         document.querySelector('.image-container').addEventListener('click', function() {
             document.getElementById('gambar_produk').click();
         });
@@ -233,21 +275,35 @@
             const preview = document.getElementById('preview-image');
 
             if (file) {
+                // Validasi ukuran file (max 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('Ukuran file terlalu besar. Maksimal 2MB.');
+                    this.value = '';
+                    return;
+                }
+
+                // Validasi tipe file
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Format file tidak didukung. Gunakan JPG, PNG, atau GIF.');
+                    this.value = '';
+                    return;
+                }
+
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.classList.remove('opacity-50');
+                    // Add fade effect
+                    preview.classList.add('opacity-70');
+                    setTimeout(() => {
+                        preview.src = e.target.result;
+                        preview.classList.remove('opacity-70');
+                    }, 200);
                 };
                 reader.readAsDataURL(file);
             }
         });
 
-        // Prevent dropdown from closing when clicked
-        dropdownUser.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-
-        // Character counter for description
+        // Character counter for description with better feedback
         const textarea = document.getElementById("deskripsi_produk");
         const charCount = document.getElementById("char-count");
 
@@ -256,17 +312,18 @@
             charCount.textContent = count;
 
             // Add visual feedback as user approaches limit
-            if (count > 275) {
-                charCount.classList.add('text-red-500', 'font-semibold');
-            } else if (count > 240) {
+            if (count > 290) {
+                charCount.classList.add('text-red-500', 'font-bold');
+                charCount.classList.remove('text-yellow-500');
+            } else if (count > 250) {
                 charCount.classList.add('text-yellow-500', 'font-semibold');
-                charCount.classList.remove('text-red-500');
+                charCount.classList.remove('text-red-500', 'font-bold');
             } else {
-                charCount.classList.remove('text-yellow-500', 'text-red-500', 'font-semibold');
+                charCount.classList.remove('text-yellow-500', 'text-red-500', 'font-semibold', 'font-bold');
             }
         });
 
-        // Format currency input
+        // Format currency input with better handling
         const hargaInput = document.getElementById('harga_produk');
         hargaInput.addEventListener('input', function(e) {
             // Remove non-digits
@@ -274,10 +331,42 @@
 
             // Format with thousand separators
             if (value) {
-                value = parseInt(value, 10).toLocaleString('id-ID');
+                value = new Intl.NumberFormat('id-ID').format(parseInt(value, 10));
             }
 
             this.value = value;
+        });
+
+        // Form validation before submit
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            const namaInput = document.getElementById('nama_produk');
+            const stokInput = document.getElementById('jumlah_stok');
+            const hargaInput = document.getElementById('harga_produk');
+            const kategoriInput = document.getElementById('id_kategori');
+            const gambarInput = document.getElementById('gambar_produk');
+
+            let isValid = true;
+
+            // Basic validation example
+            if (namaInput.value.trim().length < 3) {
+                alert('Nama produk terlalu pendek');
+                isValid = false;
+            }
+
+            if (parseInt(stokInput.value) <= 0) {
+                alert('Jumlah stok harus lebih dari 0');
+                isValid = false;
+            }
+
+            if (!hargaInput.value) {
+                alert('Harga produk harus diisi');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+            }
         });
     </script>
 </body>
