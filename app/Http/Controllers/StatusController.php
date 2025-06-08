@@ -6,6 +6,9 @@ use App\Models\Kategori;
 use App\Models\Pesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Models\Produk;
+use Carbon\Carbon;
 
 class StatusController extends Controller
 {
@@ -43,21 +46,70 @@ class StatusController extends Controller
             return $pesanan->jumlah;
         });
 
+        // Ambil produk terlaris (5 teratas)
+        $produkTerlaris = DB::table('pesanans')
+            ->select(
+                'produks.id_produk',
+                'produks.nama_produk',
+                'produks.harga_produk',
+                'produks.jumlah_stok',
+                'produks.gambar_produk',
+                DB::raw('SUM(pesanans.jumlah) as total_terjual'),
+                DB::raw('SUM(pesanans.total) as total_pendapatan')
+            )
+            ->join('produks', 'pesanans.produk_id', '=', 'produks.id_produk')
+            ->where('pesanans.status', 'Selesai')
+            ->groupBy('produks.id_produk', 'produks.nama_produk', 'produks.harga_produk', 'produks.jumlah_stok', 'produks.gambar_produk')
+            ->orderBy('total_terjual', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Ambil data kategori terlaris
+        // Ambil data kategori terlaris
+        $kategoriTerlaris = Kategori::select(
+            'kategoris.id_kategori',
+            'kategoris.nama_kategori',
+            DB::raw('COUNT(pesanans.id_pesanan) as total_produk')
+        )
+            ->join('produks', 'kategoris.id_kategori', '=', 'produks.id_kategori')
+            ->join('pesanans', 'produks.id_produk', '=', 'pesanans.produk_id')
+            ->where('pesanans.status', 'Selesai')
+            ->groupBy('kategoris.id_kategori', 'kategoris.nama_kategori')
+            ->orderBy('total_produk', 'desc')
+            ->limit(5)
+            ->get();
+
+        $totalProdukKategori = Pesanan::where('status', 'Selesai')->count();
+
+        // Ambil statistik bulan ini dan bulan lalu
+        $bulanIni = Carbon::now()->startOfMonth();
+        $bulanLalu = Carbon::now()->subMonth()->startOfMonth();
+
+        $pesananBulanIni = Pesanan::whereDate('created_at', '>=', $bulanIni)->count();
+        $pesananBulanLalu = Pesanan::whereDate('created_at', '>=', $bulanLalu)
+            ->whereDate('created_at', '<', $bulanIni)
+            ->count();
+
+        // Tambahkan variabel ke view
         return view('status', compact(
             'pesanans',
             'allPesanans',
+            'totalPendapatan',
+            'totalProduk',
             'kategoris',
             'listTahun',
-            'currentStatus',
-            'totalPendapatan',
-            'totalProduk'
+            'produkTerlaris',
+            'kategoriTerlaris',
+            'totalProdukKategori',
+            'pesananBulanIni',
+            'pesananBulanLalu'
         ));
     }
 
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:Diproses,Dikirim,Diterima',
+            'status' => 'required|in:Diproses,Dikirim,Diterima,Selesai',
         ]);
 
         $pesanan = Pesanan::findOrFail($id);

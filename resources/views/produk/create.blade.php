@@ -1,11 +1,12 @@
-<!-- filepath: d:\PPL-AgroMart\resources\views\produk\create.blade.php -->
+<!-- filepath: d:\PPL B7 - AgroMart\PPLB7-AgroMart\resources\views\produk\create.blade.php -->
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Produk - AgroMart</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" sizes="45x45" href="{{ asset('images/icon-40x40.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,6 +81,11 @@
                 linear-gradient(45deg, #f3f4f6 25%, transparent 25%, transparent 75%, #f3f4f6 75%, #f3f4f6);
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
+            cursor: pointer;
+        }
+
+        .image-container:active {
+            transform: scale(0.98);
         }
 
         input[type="number"]::-webkit-inner-spin-button,
@@ -92,10 +98,60 @@
             -moz-appearance: textfield;
             appearance: none;
         }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 30px, 0);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        @keyframes fadeOutDown {
+            from {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translate3d(0, 30px, 0);
+            }
+        }
+
+        .animate__animated {
+            animation-duration: 0.3s;
+            animation-fill-mode: both;
+        }
+
+        .animate__fadeInUp {
+            animation-name: fadeInUp;
+        }
+
+        .animate__fadeOutDown {
+            animation-name: fadeOutDown;
+        }
     </style>
 </head>
 
 <body class="text-gray-800 bg-gray-50 font-poppins">
+    <!-- Display validation errors if any -->
+    @if ($errors->any())
+        <div class="max-w-5xl px-6 mx-auto mt-4">
+            <div class="p-4 bg-red-100 border border-red-400 rounded-md">
+                <ul class="pl-4 text-red-700 list-disc">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    @endif
+
     <!-- Header yang lebih rapi dengan padding dan margin yang konsisten -->
     <div class="max-w-5xl px-6 mx-auto my-8">
         <nav class="flex mb-2" aria-label="Breadcrumb">
@@ -140,7 +196,9 @@
 
     <!-- Main Content dengan container yang lebih konsisten -->
     <main class="max-w-5xl px-6 py-2 mx-auto mb-16">
-        <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data" class="mb-10">
+        <form id="produkForm" action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data"
+            class="mb-10"
+            onsubmit="document.getElementById('submitBtn').innerHTML = '<i class=\'fas fa-spinner fa-spin mr-2\'></i> Memproses...';">
             @csrf
             <div class="p-8 bg-white shadow-lg rounded-xl">
                 <div class="grid grid-cols-1 gap-10 lg:grid-cols-3">
@@ -165,7 +223,7 @@
                                 </div>
                             </div>
 
-                            <input type="file" id="gambar_produk" name="gambar_produk" accept="image/*" required
+                            <input type="file" id="gambar_produk" name="gambar_produk" accept="image/*"
                                 class="hidden">
 
                             <p class="w-full px-3 py-2 text-sm text-center text-gray-500 bg-white rounded-md">
@@ -181,7 +239,7 @@
                             <div class="col-span-2">
                                 <label for="nama_produk" class="block mb-2 text-sm font-semibold text-gray-700">Nama
                                     Produk</label>
-                                <input type="text" id="nama_produk" name="nama_produk" required
+                                <input type="text" id="nama_produk" name="nama_produk"
                                     class="w-full px-4 py-3 transition-colors border-2 rounded-lg border-emerald-500 focus:border-emerald-600 focus:ring focus:ring-emerald-200 focus:ring-opacity-50"
                                     placeholder="Masukkan nama produk">
                             </div>
@@ -190,7 +248,7 @@
                                 <label for="jumlah_stok" class="block mb-2 text-sm font-semibold text-gray-700">Jumlah
                                     Stok</label>
                                 <div class="relative">
-                                    <input type="number" id="jumlah_stok" name="jumlah_stok" required min="1"
+                                    <input type="number" id="jumlah_stok" name="jumlah_stok" min="1"
                                         class="w-full px-4 py-3 transition-colors border-2 rounded-lg border-emerald-500 focus:border-emerald-600 focus:ring focus:ring-emerald-200 focus:ring-opacity-50"
                                         placeholder="0">
                                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -200,15 +258,17 @@
                             </div>
 
                             <div>
-                                <label for="harga_produk" class="block mb-2 text-sm font-semibold text-gray-700">Harga
+                                <label for="harga_produk_display"
+                                    class="block mb-2 text-sm font-semibold text-gray-700">Harga
                                     Produk</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                                         <span class="font-medium text-gray-500">Rp</span>
                                     </div>
-                                    <input type="text" id="harga_produk" name="harga_produk" required
+                                    <input type="text" id="harga_produk_display"
                                         class="w-full px-4 py-3 pl-10 transition-colors border-2 rounded-lg border-emerald-500 focus:border-emerald-600 focus:ring focus:ring-emerald-200 focus:ring-opacity-50"
                                         placeholder="10.000">
+                                    <input type="hidden" id="harga_produk" name="harga_produk">
                                 </div>
                             </div>
 
@@ -216,7 +276,7 @@
                                 <label for="id_kategori"
                                     class="block mb-2 text-sm font-semibold text-gray-700">Kategori</label>
                                 <div class="relative">
-                                    <select id="id_kategori" name="id_kategori" required
+                                    <select id="id_kategori" name="id_kategori"
                                         class="w-full px-4 py-3 transition-colors bg-white border-2 rounded-lg appearance-none border-emerald-500 focus:border-emerald-600 focus:ring focus:ring-emerald-200 focus:ring-opacity-50">
                                         <option value="">-- Pilih Kategori Produk --</option>
                                         @foreach ($kategoris as $kategori)
@@ -238,7 +298,7 @@
                             <div class="col-span-2">
                                 <label for="deskripsi_produk"
                                     class="block mb-2 text-sm font-semibold text-gray-700">Deskripsi Produk</label>
-                                <textarea id="deskripsi_produk" name="deskripsi_produk" rows="5" maxlength="305" required
+                                <textarea id="deskripsi_produk" name="deskripsi_produk" rows="5" maxlength="305"
                                     class="w-full px-4 py-3 transition-colors border-2 rounded-lg resize-none border-emerald-500 focus:border-emerald-600 focus:ring focus:ring-emerald-200 focus:ring-opacity-50"
                                     placeholder="Jelaskan secara detail tentang produk ini agar pelanggan dapat mengenal produk Anda dengan baik."></textarea>
                                 <div class="flex justify-end mt-2 text-xs text-gray-500">
@@ -255,7 +315,7 @@
                         class="px-6 py-3 font-medium text-center text-gray-700 transition-colors bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:ring-2 focus:ring-gray-300 focus:outline-none">
                         <i class="mr-2 fas fa-arrow-left"></i> Batal
                     </a>
-                    <button type="submit"
+                    <button type="submit" id="submitBtn"
                         class="px-6 py-3 font-medium text-center text-white transition-all transform rounded-lg shadow-md bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 hover:-translate-y-0.5 hover:shadow-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                         <i class="mr-2 fas fa-plus"></i> Tambahkan Produk
                     </button>
@@ -263,109 +323,324 @@
             </div>
         </form>
     </main>
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="fixed inset-0 bg-black opacity-50" id="successModalOverlay"></div>
+        <div class="relative z-10 w-full max-w-md p-6 mx-4 bg-white rounded-lg shadow-xl">
+            <div class="text-center">
+                <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-green-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-emerald-500" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <h3 class="mb-2 text-xl font-bold text-gray-800">Berhasil!</h3>
+                <p class="mb-6 text-gray-600" id="successMessage">Produk berhasil ditambahkan ke katalog.</p>
+                <button id="successOkButton"
+                    class="w-full px-6 py-3 text-base font-medium text-white transition-colors rounded-lg bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+                    Oke
+                </button>
+            </div>
+        </div>
+    </div>
 
+    <!-- Error Modal -->
+    <div id="errorModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="fixed inset-0 bg-black opacity-50" id="errorModalOverlay"></div>
+        <div class="relative z-10 w-full max-w-md p-6 mx-4 bg-white rounded-lg shadow-xl">
+            <div class="text-center">
+                <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-red-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-red-500" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </div>
+                <h3 class="mb-2 text-xl font-bold text-gray-800">Gagal!</h3>
+                <p class="mb-6 text-gray-600" id="errorMessage">Terjadi kesalahan saat menambahkan produk.</p>
+                <button id="errorOkButton"
+                    class="w-full px-6 py-3 text-base font-medium text-white transition-colors bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    Oke
+                </button>
+            </div>
+        </div>
+    </div>
     <script>
-        // Image upload preview dengan animasi yang lebih halus
-        document.querySelector('.image-container').addEventListener('click', function() {
-            document.getElementById('gambar_produk').click();
-        });
-
-        document.getElementById('gambar_produk').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            const preview = document.getElementById('preview-image');
-
-            if (file) {
-                // Validasi ukuran file (max 2MB)
-                if (file.size > 2 * 1024 * 1024) {
-                    alert('Ukuran file terlalu besar. Maksimal 2MB.');
-                    this.value = '';
-                    return;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Modal functions
+            function showModal(modalId, message = null) {
+                const modal = document.getElementById(modalId);
+                if (message && modalId === 'successModal') {
+                    document.getElementById('successMessage').textContent = message;
+                } else if (message && modalId === 'errorModal') {
+                    document.getElementById('errorMessage').textContent = message;
                 }
 
-                // Validasi tipe file
-                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
-                if (!validTypes.includes(file.type)) {
-                    alert('Format file tidak didukung. Gunakan JPG, PNG, atau GIF.');
-                    this.value = '';
-                    return;
+                document.body.classList.add('overflow-hidden'); // Prevent scrolling
+                modal.classList.remove('hidden');
+
+                // Add animation
+                setTimeout(() => {
+                    modal.querySelector('div:not(.fixed)').classList.add('animate__animated',
+                        'animate__fadeInUp');
+                }, 10);
+            }
+
+            function hideModal(modalId) {
+                const modal = document.getElementById(modalId);
+                document.body.classList.remove('overflow-hidden');
+
+                // Add animation before hiding
+                modal.querySelector('div:not(.fixed)').classList.add('animate__animated', 'animate__fadeOutDown');
+
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.querySelector('div:not(.fixed)').classList.remove('animate__animated',
+                        'animate__fadeOutDown');
+                }, 300);
+            }
+
+            // Modal event listeners
+            document.getElementById('successOkButton').addEventListener('click', () => {
+                hideModal('successModal');
+                window.location.href = "{{ route('produk.index') }}"; // Redirect to product index
+            });
+
+            document.getElementById('errorOkButton').addEventListener('click', () => {
+                hideModal('errorModal');
+            });
+
+            document.getElementById('successModalOverlay').addEventListener('click', () => {
+                hideModal('successModal');
+            });
+
+            document.getElementById('errorModalOverlay').addEventListener('click', () => {
+                hideModal('errorModal');
+            });
+
+            // Image upload handler
+            const imageContainer = document.querySelector('.image-container');
+            const fileInput = document.getElementById('gambar_produk');
+            const previewImage = document.getElementById('preview-image');
+
+            // Make the entire container clickable
+            imageContainer.addEventListener('click', function() {
+                fileInput.click();
+            });
+
+            // Handle file selection
+            fileInput.addEventListener('change', function(event) {
+                console.log("File input change triggered");
+                const file = event.target.files[0];
+
+                if (file) {
+                    console.log("Selected file:", file.name, file.type, file.size);
+
+                    // Validate file size (max 2MB)
+                    if (file.size > 2 * 1024 * 1024) {
+                        showModal('errorModal', 'Ukuran file terlalu besar. Maksimal 2MB.');
+                        fileInput.value = '';
+                        return;
+                    }
+
+                    // Validate file type
+                    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                    if (!validTypes.includes(file.type)) {
+                        showModal('errorModal', 'Format file tidak didukung. Gunakan JPG, PNG, atau GIF.');
+                        fileInput.value = '';
+                        return;
+                    }
+
+                    // Show preview with smooth transition
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImage.style.opacity = '0.3';
+                        setTimeout(() => {
+                            previewImage.src = e.target.result;
+                            previewImage.style.opacity = '1';
+                        }, 200);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Character counter for description with better feedback
+            const textarea = document.getElementById("deskripsi_produk");
+            const charCount = document.getElementById("char-count");
+
+            textarea.addEventListener("input", function() {
+                const count = textarea.value.length;
+                charCount.textContent = count;
+
+                // Add visual feedback as user approaches limit
+                if (count > 290) {
+                    charCount.classList.add('text-red-500', 'font-bold');
+                    charCount.classList.remove('text-yellow-500');
+                } else if (count > 250) {
+                    charCount.classList.add('text-yellow-500', 'font-semibold');
+                    charCount.classList.remove('text-red-500', 'font-bold');
+                } else {
+                    charCount.classList.remove('text-yellow-500', 'text-red-500', 'font-semibold',
+                        'font-bold');
+                }
+            });
+
+            // Format currency input with better handling
+            const hargaDisplayInput = document.getElementById('harga_produk_display');
+            const hargaRealInput = document.getElementById('harga_produk');
+
+            hargaDisplayInput.addEventListener('input', function(e) {
+                // Remove non-digits
+                let value = this.value.replace(/\D/g, '');
+
+                // Store the raw value in the hidden input
+                hargaRealInput.value = value;
+
+                // Format with thousand separators for display only
+                if (value) {
+                    value = new Intl.NumberFormat('id-ID').format(parseInt(value, 10));
                 }
 
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    // Add fade effect
-                    preview.classList.add('opacity-70');
-                    setTimeout(() => {
-                        preview.src = e.target.result;
-                        preview.classList.remove('opacity-70');
-                    }, 200);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
+                this.value = value;
+            });
 
-        // Character counter for description with better feedback
-        const textarea = document.getElementById("deskripsi_produk");
-        const charCount = document.getElementById("char-count");
-
-        textarea.addEventListener("input", function() {
-            const count = textarea.value.length;
-            charCount.textContent = count;
-
-            // Add visual feedback as user approaches limit
-            if (count > 290) {
-                charCount.classList.add('text-red-500', 'font-bold');
-                charCount.classList.remove('text-yellow-500');
-            } else if (count > 250) {
-                charCount.classList.add('text-yellow-500', 'font-semibold');
-                charCount.classList.remove('text-red-500', 'font-bold');
-            } else {
-                charCount.classList.remove('text-yellow-500', 'text-red-500', 'font-semibold', 'font-bold');
-            }
-        });
-
-        // Format currency input with better handling
-        const hargaInput = document.getElementById('harga_produk');
-        hargaInput.addEventListener('input', function(e) {
-            // Remove non-digits
-            let value = this.value.replace(/\D/g, '');
-
-            // Format with thousand separators
-            if (value) {
-                value = new Intl.NumberFormat('id-ID').format(parseInt(value, 10));
-            }
-
-            this.value = value;
-        });
-
-        // Form validation before submit
-        const form = document.querySelector('form');
-        form.addEventListener('submit', function(e) {
-            const namaInput = document.getElementById('nama_produk');
-            const stokInput = document.getElementById('jumlah_stok');
-            const hargaInput = document.getElementById('harga_produk');
-            const kategoriInput = document.getElementById('id_kategori');
-            const gambarInput = document.getElementById('gambar_produk');
-
-            let isValid = true;
-
-            // Basic validation example
-            if (namaInput.value.trim().length < 3) {
-                alert('Nama produk terlalu pendek');
-                isValid = false;
-            }
-
-            if (parseInt(stokInput.value) <= 0) {
-                alert('Jumlah stok harus lebih dari 0');
-                isValid = false;
-            }
-
-            if (!hargaInput.value) {
-                alert('Harga produk harus diisi');
-                isValid = false;
-            }
-
-            if (!isValid) {
+            // Form submission with AJAX
+            const form = document.getElementById('produkForm');
+            form.addEventListener('submit', function(e) {
                 e.preventDefault();
+
+                // Basic validation
+                const namaInput = document.getElementById('nama_produk');
+                const stokInput = document.getElementById('jumlah_stok');
+                const hargaInput = document.getElementById('harga_produk');
+                const kategoriInput = document.getElementById('id_kategori');
+                const fileInput = document.getElementById('gambar_produk');
+
+                // Make sure the hidden harga field has the raw value
+                if (hargaDisplayInput.value) {
+                    hargaInput.value = hargaDisplayInput.value.replace(/\D/g, '');
+                }
+
+                let isValid = true;
+
+                if (namaInput.value.trim().length <= 0) {
+                    showModal('errorModal', 'Nama Tidak Boleh Kosong.');
+                    isValid = false;
+                    return;
+                }
+
+                if (!stokInput.value || parseInt(stokInput.value) <= 2) {
+                    showModal('errorModal', 'Jumlah stok harus lebih dari 2.');
+                    isValid = false;
+                    return;
+                }
+
+                if (!hargaInput.value || parseInt(hargaInput.value) <= 0) {
+                    showModal('errorModal', 'Harga produk harus lebih dari 0.');
+                    isValid = false;
+                    return;
+                }
+
+                if (!kategoriInput.value) {
+                    showModal('errorModal', 'Silakan pilih kategori produk.');
+                    isValid = false;
+                    return;
+                }
+
+                if (!fileInput.files || !fileInput.files[0]) {
+                    showModal('errorModal', 'Silakan pilih gambar produk.');
+                    isValid = false;
+                    return;
+                }
+
+                if (!isValid) {
+                    return;
+                }
+
+                // Disable submit button to prevent multiple submissions
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `<i class="mr-2 fas fa-spinner fa-spin"></i> Memproses...`;
+
+                // Submit form data with fetch API
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute('content'),
+                            // Remove 'Accept: application/json' to receive HTML response if JSON fails
+                        }
+                    })
+                    .then(response => {
+                        // Log the raw response for debugging
+                        console.log('Response status:', response.status);
+                        return response.text().then(text => {
+                            try {
+                                // Try to parse as JSON
+                                const data = JSON.parse(text);
+                                return {
+                                    data,
+                                    isJson: true
+                                };
+                            } catch (e) {
+                                // If not JSON, return as text
+                                return {
+                                    data: text,
+                                    isJson: false
+                                };
+                            }
+                        });
+                    })
+                    .then(result => {
+                        if (result.isJson) {
+                            // Handle JSON response
+                            if (result.data.success) {
+                                showModal('successModal', 'Produk berhasil ditambahkan ke katalog.');
+                            } else {
+                                showModal('errorModal', result.data.message ||
+                                    'Gagal menambahkan produk.');
+                            }
+                        } else {
+                            // Handle HTML response or other non-JSON response
+                            console.log('Non-JSON response:', result.data.substring(0, 500) + '...');
+
+                            // If it looks like a redirect, follow it
+                            if (result.data.includes('<meta http-equiv="refresh"')) {
+                                window.location.href = '{{ route('produk.index') }}';
+                            } else {
+                                showModal('successModal', 'Produk ditambahkan, mengalihkan...');
+                                setTimeout(() => {
+                                    window.location.href = '{{ route('produk.index') }}';
+                                }, 1000);
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showModal('errorModal', 'Terjadi kesalahan: ' + error.message);
+                    })
+                    .finally(() => {
+                        // Re-enable submit button
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = `<i class="mr-2 fas fa-plus"></i> Tambahkan Produk`;
+                    });
+            });
+
+            // Initialize the hidden price field if there's a value already
+            if (hargaDisplayInput) {
+                hargaDisplayInput.addEventListener('input', function() {
+                    // Make sure the hidden price field gets updated
+                    let value = this.value.replace(/\D/g, '');
+                    hargaRealInput.value = value;
+
+                    // Format for display
+                    if (value) {
+                        this.value = new Intl.NumberFormat('id-ID').format(parseInt(value, 10));
+                    }
+                });
             }
         });
     </script>

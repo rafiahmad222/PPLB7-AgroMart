@@ -51,30 +51,52 @@ class ProdukController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    { {
-            $request->validate([
-                'nama_produk' => 'required|string|max:255',
-                'gambar_produk' => 'image|mimes:jpeg,png,jpg|max:2048',
-                'jumlah_stok' => 'required|integer',
-                'harga_produk' => 'required|numeric',
-                'deskripsi_produk' => 'nullable|string',
+    {
+        try {
+            // Validate the request
+            $validated = $request->validate([
+                'nama_produk' => 'required|string|min:3|max:255',
+                'harga_produk' => 'required|numeric|min:1',
+                'jumlah_stok' => 'required|numeric|min:1',
                 'id_kategori' => 'required|exists:kategoris,id_kategori',
+                'deskripsi_produk' => 'required|string|min:3|max:305',
+                'gambar_produk' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
-            $gambarPath = null;
+            $produk = new Produk();
+            $produk->nama_produk = $request->nama_produk;
+            $produk->harga_produk = $request->harga_produk;
+            $produk->jumlah_stok = $request->jumlah_stok;
+            $produk->id_kategori = $request->id_kategori;
+            $produk->deskripsi_produk = $request->deskripsi_produk;
+
             if ($request->hasFile('gambar_produk')) {
-                $gambarPath = $request->file('gambar_produk')->store('gambar_produk', 'public');
+                $image = $request->file('gambar_produk');
+                $gambarPath = $image->store('gambar_produk', 'public');
+                $produk->gambar_produk = $gambarPath;
             }
 
-            Produk::create([
-                'nama_produk' => $request->nama_produk,
-                'gambar_produk' => $gambarPath,
-                'jumlah_stok' => $request->jumlah_stok,
-                'harga_produk' => $request->harga_produk,
-                'deskripsi_produk' => $request->deskripsi_produk,
-                'id_kategori' => $request->id_kategori,
-            ]);
-            return redirect()->route('produk.index')->with('success', 'Produk created successfully.');
+            $produk->save();
+
+            // Respond based on request type
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Produk berhasil ditambahkan!',
+                    'data' => $produk
+                ]);
+            }
+
+            return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal menambahkan produk: ' . $e->getMessage()
+                ], 422);
+            }
+
+            return redirect()->back()->withInput()->with('error', 'Gagal menambahkan produk: ' . $e->getMessage());
         }
     }
 

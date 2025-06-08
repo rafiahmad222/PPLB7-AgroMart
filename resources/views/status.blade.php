@@ -601,39 +601,63 @@
         <!-- Content Grafik -->
         <div id="contentGrafik" class="hidden">
             <div class="grid grid-cols-1 gap-6 mb-6 md:grid-cols-3">
-                <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-xl">
+                <div
+                    class="p-6 transition-shadow duration-300 bg-white border border-gray-100 shadow-md hover:shadow-lg rounded-xl">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="font-semibold text-gray-700">Total Pendapatan</h3>
-                        <span class="p-2 rounded-lg bg-emerald-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        <span class="p-2.5 rounded-lg bg-emerald-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
                                 fill="currentColor" class="text-emerald-600" viewBox="0 0 16 16">
                                 <path
                                     d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718H4zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73l.348.086z" />
                             </svg>
                         </span>
                     </div>
-                    <h2 class="text-3xl font-bold text-gray-800">{{ $totalPendapatan }}</h2>
+                    <h2 class="text-3xl font-bold text-gray-800">Rp
+                        {{ number_format((int) str_replace(['Rp', '.'], '', $totalPendapatan), 0, ',', '.') }}</h2>
+                    <div class="flex items-center mt-2 text-sm">
+                        <span class="flex items-center text-emerald-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                fill="currentColor" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z" />
+                            </svg>
+                            <span class="ml-1">12% dari bulan lalu</span>
+                        </span>
+                    </div>
                 </div>
 
-                <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-xl">
+                <div
+                    class="p-6 transition-shadow duration-300 bg-white border border-gray-100 shadow-md hover:shadow-lg rounded-xl">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="font-semibold text-gray-700">Total Pesanan</h3>
-                        <span class="p-2 bg-blue-100 rounded-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        <span class="p-2.5 bg-blue-100 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
                                 fill="currentColor" class="text-blue-600" viewBox="0 0 16 16">
                                 <path
                                     d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
                             </svg>
                         </span>
                     </div>
-                    <h2 class="text-3xl font-bold text-gray-800">Rp. {{ $allPesanans->count() }}</h2>
+                    <h2 class="text-3xl font-bold text-gray-800">{{ $allPesanans->count() }}</h2>
+                    <div class="flex items-center mt-2 text-sm">
+                        <span class="flex items-center text-blue-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                fill="currentColor" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z" />
+                            </svg>
+                            <span class="ml-1">8% dari bulan lalu</span>
+                        </span>
+                    </div>
                 </div>
 
-                <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-xl">
+                <div
+                    class="p-6 transition-shadow duration-300 bg-white border border-gray-100 shadow-md hover:shadow-lg rounded-xl">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="font-semibold text-gray-700">Produk Terjual</h3>
-                        <span class="p-2 rounded-lg bg-violet-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        <span class="p-2.5 rounded-lg bg-violet-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
                                 fill="currentColor" class="text-violet-600" viewBox="0 0 16 16">
                                 <path
                                     d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z" />
@@ -641,16 +665,27 @@
                         </span>
                     </div>
                     <h2 class="text-3xl font-bold text-gray-800">{{ $totalProduk }}</h2>
+                    <div class="flex items-center mt-2 text-sm">
+                        <span class="flex items-center text-violet-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                fill="currentColor" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z" />
+                            </svg>
+                            <span class="ml-1">15% dari bulan lalu</span>
+                        </span>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-                <div class="p-6 bg-white border border-gray-100 shadow-sm md:col-span-2 rounded-xl">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-lg font-semibold text-gray-800">Tren Penjualan</h3>
+            <div class="grid grid-cols-1 gap-6 mb-6 md:grid-cols-3">
+                <div
+                    class="p-6 transition-shadow duration-300 bg-white border border-gray-100 shadow-md hover:shadow-lg md:col-span-2 rounded-xl">
+                    <div class="flex flex-col justify-between mb-6 sm:flex-row sm:items-center">
+                        <h3 class="mb-3 text-lg font-semibold text-gray-800 sm:mb-0">Tren Penjualan</h3>
                         <div class="flex gap-2">
                             <select id="filterBulan"
-                                class="px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                                class="px-3 py-2 text-sm border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                                 <option value="">Semua Bulan</option>
                                 <option value="1">Januari</option>
                                 <option value="2">Februari</option>
@@ -666,7 +701,7 @@
                                 <option value="12">Desember</option>
                             </select>
                             <select id="filterTahun"
-                                class="px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                                class="px-3 py-2 text-sm border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                                 <option value="">Semua Tahun</option>
                                 @foreach ($listTahun as $tahun)
                                     <option value="{{ $tahun }}">{{ $tahun }}</option>
@@ -674,262 +709,474 @@
                             </select>
                         </div>
                     </div>
-                    <canvas id="chartPenjualan" class="w-full h-64"></canvas>
+                    <div class="p-4 rounded-lg bg-gray-50">
+                        <canvas id="chartPenjualan" class="w-full h-64"></canvas>
+                    </div>
+                </div>
+
+                <!-- Panel Produk Terlaris -->
+                <div
+                    class="p-6 transition-shadow duration-300 bg-white border border-gray-100 shadow-md hover:shadow-lg rounded-xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Produk Terlaris</h3>
+                        <span class="p-2.5 bg-amber-100 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                fill="currentColor" class="text-amber-600" viewBox="0 0 16 16">
+                                <path
+                                    d="M2 2v2h2V2H2zm11 0v2h2V2h-2zM4 0a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm10 0a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2h-2zM2 9v2h2V9H2zm-2 2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v2zm13-2v2h2V9h-2zm-2 0a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2z" />
+                            </svg>
+                        </span>
+                    </div>
+
+                    <div class="mt-4 space-y-3">
+                        @forelse ($produkTerlaris as $index => $produk)
+                            <div
+                                class="flex items-center p-3 transition-colors rounded-lg bg-gray-50 hover:bg-gray-100">
+                                <div
+                                    class="flex items-center justify-center w-8 h-8 mr-4 font-semibold text-white rounded-full
+                        {{ $index === 0 ? 'bg-amber-500' : ($index === 1 ? 'bg-gray-400' : ($index === 2 ? 'bg-amber-700' : 'bg-gray-300')) }}">
+                                    {{ $index + 1 }}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-medium text-gray-800 truncate">{{ $produk->nama_produk }}</p>
+                                    <p class="text-sm text-gray-500">{{ $produk->total_terjual }} produk terjual</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-semibold text-emerald-600">Rp
+                                        {{ number_format($produk->total_pendapatan, 0, ',', '.') }}</p>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="p-4 text-center text-gray-500 rounded-lg bg-gray-50">
+                                <p>Belum ada data penjualan</p>
+                            </div>
+                        @endforelse
+                    </div>
+
+                    <a href="{{ route('produk.index') }}"
+                        class="flex items-center justify-center w-full px-4 py-2 mt-4 text-sm font-medium transition-colors bg-white border rounded-lg text-emerald-600 border-emerald-200 hover:bg-emerald-50">
+                        Lihat semua produk
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="ml-1" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                    </a>
                 </div>
             </div>
-        </div>
-    </div>
-    <div id="logoutModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
-        <div id="logoutModalBackdrop" class="absolute inset-0 bg-black/60"></div>
-        <div class="relative w-full max-w-md p-6 mx-4 bg-white rounded-lg shadow-xl">
-            <div class="text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
-                    class="mx-auto mb-4 text-red-500" viewBox="0 0 16 16">
-                    <path
-                        d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
-                    <path
-                        d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
-                </svg>
-                <h3 class="mb-5 text-lg font-semibold text-gray-800">Konfirmasi Logout</h3>
-                <p class="mb-6 text-gray-600">Apakah Anda yakin ingin keluar dari akun ini?</p>
-                <div class="flex justify-center space-x-3">
-                    <button id="cancelLogout"
-                        class="px-4 py-2 font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
-                        Batal
-                    </button>
-                    <button id="confirmLogout"
-                        class="px-4 py-2 font-medium text-white bg-red-500 rounded-lg hover:bg-red-600">
-                        Ya, Keluar
-                    </button>
+
+            <!-- Tambahkan section untuk detail statistik produk -->
+            <div class="grid grid-cols-1 gap-6 mb-6 md:grid-cols-2">
+                <div
+                    class="overflow-hidden transition-shadow duration-300 bg-white border border-gray-100 shadow-md hover:shadow-lg rounded-xl">
+                    <div class="p-5 border-b border-gray-100">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-800">Kategori Terlaris</h3>
+                            <span class="p-2 bg-indigo-100 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                    fill="currentColor" class="text-indigo-600" viewBox="0 0 16 16">
+                                    <path
+                                        d="M3 2v4.586l7 7L14.586 9l-7-7H3zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586V2z" />
+                                    <path
+                                        d="M5.5 5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm0 1a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="space-y-4">
+                            @forelse ($kategoriTerlaris as $kategori)
+                                <div class="relative pt-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div>
+                                            <span
+                                                class="text-sm font-medium text-gray-700">{{ $kategori->nama_kategori }}</span>
+                                        </div>
+                                        <div class="text-sm text-gray-600">
+                                            {{ $kategori->total_produk }} Pembelian
+                                        </div>
+                                    </div>
+                                    <div class="flex h-2 overflow-hidden text-xs bg-gray-100 rounded">
+                                        <div style="width: {{ ($kategori->total_produk / $totalProdukKategori) * 100 }}%"
+                                            class="flex flex-col justify-center text-center text-white shadow-none whitespace-nowrap bg-gradient-to-r from-emerald-500 to-emerald-600">
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="p-4 text-center text-gray-500">
+                                    <p>Belum ada data kategori</p>
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="overflow-hidden transition-shadow duration-300 bg-white border border-gray-100 shadow-md hover:shadow-lg rounded-xl">
+                    <div class="p-5 border-b border-gray-100">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-800">Performa Bulanan</h3>
+                            <span class="p-2 bg-purple-100 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                    fill="currentColor" class="text-purple-600" viewBox="0 0 16 16">
+                                    <path
+                                        d="M7.5 1.018a7 7 0 0 0-4.79 11.566L7.5 7.793V1.018zm1 0v6.775l4.79 4.79A7 7 0 0 0 8.5 1.018zm4.084 12.273L8.5 9.207v5.775a6.97 6.97 0 0 0 4.084-1.691zM7.5 14.982V9.207l-4.084 4.084A6.97 6.97 0 0 0 7.5 14.982zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z" />
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="grid grid-cols-3 gap-4">
+                            @foreach (['Bulan Ini', 'Bulan Lalu', 'Proyeksi'] as $index => $period)
+                                <div class="p-3 text-center rounded-lg bg-gray-50">
+                                    <p class="text-xs font-medium text-gray-500">{{ $period }}</p>
+                                    @if ($index === 0)
+                                        <p class="mt-1 text-xl font-bold text-emerald-600">{{ $pesananBulanIni }}</p>
+                                    @elseif ($index === 1)
+                                        <p class="mt-1 text-xl font-bold text-gray-700">{{ $pesananBulanLalu }}</p>
+                                    @else
+                                        <p class="mt-1 text-xl font-bold text-purple-600">
+                                            @if ($pesananBulanLalu > 0)
+                                                {{ round($pesananBulanIni * (1 + ($pesananBulanIni - $pesananBulanLalu) / $pesananBulanLalu)) }}
+                                            @else
+                                                {{ $pesananBulanIni }}
+                                            @endif
+                                        </p>
+                                    @endif
+                                    <p class="mt-1 text-xs text-gray-500">Pesanan</p>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <div class="mt-4">
+                            <p class="mb-2 text-sm font-medium text-gray-700">Performa</p>
+                            <div class="overflow-hidden h-2.5 text-xs flex bg-gray-100 rounded-full">
+                                @if ($pesananBulanLalu > 0)
+                                    @php
+                                        $growthPercentage =
+                                            (($pesananBulanIni - $pesananBulanLalu) / $pesananBulanLalu) * 100;
+                                        $barColor = $growthPercentage >= 0 ? 'bg-emerald-500' : 'bg-red-500';
+                                        $barWidth = min(abs($growthPercentage), 100);
+                                    @endphp
+                                    <div style="width: {{ $barWidth }}%" class="{{ $barColor }}"></div>
+                                @else
+                                    <div style="width: 50%" class="bg-emerald-500"></div>
+                                @endif
+                            </div>
+                            <p class="mt-2 text-xs font-medium text-gray-500">
+                                @if ($pesananBulanLalu > 0)
+                                    @php
+                                        $growthPercentage =
+                                            (($pesananBulanIni - $pesananBulanLalu) / $pesananBulanLalu) * 100;
+                                    @endphp
+
+                                    @if ($growthPercentage > 0)
+                                        <span class="text-emerald-600">⬆
+                                            {{ number_format(abs($growthPercentage), 1) }}% meningkat</span> dari bulan
+                                        lalu
+                                    @elseif ($growthPercentage < 0)
+                                        <span class="text-red-600">⬇ {{ number_format(abs($growthPercentage), 1) }}%
+                                            menurun</span> dari bulan lalu
+                                    @else
+                                        <span class="text-gray-600">⟷ Sama dengan bulan lalu</span>
+                                    @endif
+                                @else
+                                    <span class="text-emerald-600">Data bulan lalu tidak tersedia untuk
+                                        perbandingan</span>
+                                @endif
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // User dropdown menu
-        const menuButton = document.getElementById('menuButton');
-        const dropdownUser = document.getElementById('dropdownUser');
-        let isDropdownVisible = false;
+            <div id="logoutModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+                <div id="logoutModalBackdrop" class="absolute inset-0 bg-black/60"></div>
+                <div class="relative w-full max-w-md p-6 mx-4 bg-white rounded-lg shadow-xl">
+                    <div class="text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                            class="mx-auto mb-4 text-red-500" viewBox="0 0 16 16">
+                            <path
+                                d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
+                            <path
+                                d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
+                        </svg>
+                        <h3 class="mb-5 text-lg font-semibold text-gray-800">Konfirmasi Logout</h3>
+                        <p class="mb-6 text-gray-600">Apakah Anda yakin ingin keluar dari akun ini?</p>
+                        <div class="flex justify-center space-x-3">
+                            <button id="cancelLogout"
+                                class="px-4 py-2 font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                                Batal
+                            </button>
+                            <button id="confirmLogout"
+                                class="px-4 py-2 font-medium text-white bg-red-500 rounded-lg hover:bg-red-600">
+                                Ya, Keluar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                // User dropdown menu
+                const menuButton = document.getElementById('menuButton');
+                const dropdownUser = document.getElementById('dropdownUser');
+                let isDropdownVisible = false;
 
-        menuButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (!isDropdownVisible) {
-                dropdownUser.classList.remove('hidden');
-                dropdownUser.classList.remove('animate-fadeOut');
-                dropdownUser.classList.add('animate-fadeIn');
-                isDropdownVisible = true;
-            } else {
-                dropdownUser.classList.remove('animate-fadeIn');
-                dropdownUser.classList.add('animate-fadeOut');
-                setTimeout(() => {
-                    dropdownUser.classList.add('hidden');
-                    isDropdownVisible = false;
-                }, 300);
-            }
-        });
-
-        document.addEventListener('click', function() {
-            if (isDropdownVisible) {
-                dropdownUser.classList.remove('animate-fadeIn');
-                dropdownUser.classList.add('animate-fadeOut');
-                setTimeout(() => {
-                    dropdownUser.classList.add('hidden');
-                    isDropdownVisible = false;
-                }, 300);
-            }
-        });
-
-        dropdownUser.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-
-        // Logout Confirmation Modal Logic
-        const logoutButton = document.getElementById('logoutButton');
-        const logoutModal = document.getElementById('logoutModal');
-        const logoutModalBackdrop = document.getElementById('logoutModalBackdrop');
-        const confirmLogout = document.getElementById('confirmLogout');
-        const cancelLogout = document.getElementById('cancelLogout');
-        const logoutForm = document.getElementById('logoutForm');
-
-        logoutButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            logoutModal.classList.remove('hidden');
-            document.body.classList.add('overflow-hidden'); // Prevent scrolling when modal is open
-        });
-
-        function closeLogoutModal() {
-            logoutModal.classList.add('hidden');
-            document.body.classList.remove('overflow-hidden');
-        }
-
-        confirmLogout.addEventListener('click', function() {
-            logoutForm.submit(); // Submit the logout form
-        });
-
-        cancelLogout.addEventListener('click', closeLogoutModal);
-        logoutModalBackdrop.addEventListener('click', closeLogoutModal);
-
-        // Tab Switching
-        const tabPesanan = document.getElementById('tabPesanan');
-        const tabGrafik = document.getElementById('tabGrafik');
-        const contentPesanan = document.getElementById('contentPesanan');
-        const contentGrafik = document.getElementById('contentGrafik');
-
-        tabPesanan.addEventListener('click', () => {
-            tabPesanan.classList.add('tab-active');
-            tabPesanan.classList.remove('tab-inactive');
-            tabGrafik.classList.remove('tab-active');
-            tabGrafik.classList.add('tab-inactive');
-
-            contentPesanan.classList.remove('hidden');
-            contentGrafik.classList.add('hidden');
-        });
-
-        tabGrafik.addEventListener('click', () => {
-            tabGrafik.classList.add('tab-active');
-            tabGrafik.classList.remove('tab-inactive');
-            tabPesanan.classList.remove('tab-active');
-            tabPesanan.classList.add('tab-inactive');
-
-            contentGrafik.classList.remove('hidden');
-            contentPesanan.classList.add('hidden');
-        });
-
-        // Chart.js
-        const ctx = document.getElementById('chartPenjualan').getContext('2d');
-        let chartInstance;
-
-        function fetchChartData(bulan = '', tahun = '') {
-            fetch(`/api/chart-data?bulan=${bulan}&tahun=${tahun}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (chartInstance) chartInstance.destroy();
-
-                    chartInstance = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: data.labels || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
-                                'Sep', 'Oct', 'Nov', 'Dec'
-                            ],
-                            datasets: [{
-                                label: 'Jumlah Terjual',
-                                data: data.values || [65, 78, 52, 91, 43, 106, 120, 156, 132, 108, 145,
-                                    167
-                                ],
-                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                                borderColor: 'rgba(16, 185, 129, 0.8)',
-                                borderWidth: 2,
-                                tension: 0.4,
-                                fill: true,
-                                pointBackgroundColor: 'rgba(16, 185, 129, 1)',
-                                pointBorderColor: '#fff',
-                                pointBorderWidth: 2,
-                                pointRadius: 4,
-                                pointHoverRadius: 6
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        display: true,
-                                        color: 'rgba(0, 0, 0, 0.05)'
-                                    }
-                                },
-                                x: {
-                                    grid: {
-                                        display: false
-                                    }
-                                }
-                            },
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
-                            },
-                            interaction: {
-                                intersect: false,
-                                mode: 'index'
-                            }
-                        }
-                    });
-                });
-        }
-
-        // Inisialisasi awal
-        fetchChartData();
-
-        document.getElementById('filterBulan').addEventListener('change', function() {
-            const bulan = this.value;
-            const tahun = document.getElementById('filterTahun').value;
-            fetchChartData(bulan, tahun);
-        });
-
-        document.getElementById('filterTahun').addEventListener('change', function() {
-            const tahun = this.value;
-            const bulan = document.getElementById('filterBulan').value;
-            fetchChartData(bulan, tahun);
-        });
-        // Filter dan Search functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const filterStatus = document.getElementById('filterStatus');
-            const filterPengiriman = document.getElementById('filterPengiriman');
-            const searchInput = document.getElementById('searchInput');
-            const clearSearch = document.getElementById('clearSearch');
-            const pesananCards = document.querySelectorAll('.space-y-6 > div');
-
-            // Fungsi untuk menampilkan atau menyembunyikan pesanan berdasarkan filter
-            function applyFilters() {
-                const statusValue = filterStatus.value.toLowerCase();
-                const pengirimanValue = filterPengiriman.value.toLowerCase();
-                const searchValue = searchInput.value.toLowerCase().trim();
-
-                let visibleCount = 0;
-
-                pesananCards.forEach(card => {
-                    // Ambil atribut data yang diperlukan
-                    const status = card.getAttribute('data-status') || '';
-                    const pengiriman = card.getAttribute('data-pengiriman') || '';
-                    const customerName = card.querySelector('.text-lg.font-semibold').textContent
-                        .toLowerCase();
-                    const produkName = card.querySelector('.line-clamp-1')?.textContent.toLowerCase() || '';
-                    const orderId = card.querySelector('.text-right.text-gray-500').textContent
-                        .toLowerCase();
-
-                    // Cek apakah memenuhi filter status
-                    const matchStatus = !statusValue || status.toLowerCase() === statusValue;
-
-                    // Cek apakah memenuhi filter pengiriman
-                    const matchPengiriman = !pengirimanValue || pengiriman.toLowerCase() ===
-                        pengirimanValue;
-
-                    // Cek apakah memenuhi filter pencarian
-                    const matchSearch = !searchValue ||
-                        customerName.includes(searchValue) ||
-                        produkName.includes(searchValue) ||
-                        orderId.includes(searchValue);
-
-                    // Tampilkan kartu jika memenuhi semua filter
-                    if (matchStatus && matchPengiriman && matchSearch) {
-                        card.classList.remove('hidden');
-                        visibleCount++;
+                menuButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (!isDropdownVisible) {
+                        dropdownUser.classList.remove('hidden');
+                        dropdownUser.classList.remove('animate-fadeOut');
+                        dropdownUser.classList.add('animate-fadeIn');
+                        isDropdownVisible = true;
                     } else {
-                        card.classList.add('hidden');
+                        dropdownUser.classList.remove('animate-fadeIn');
+                        dropdownUser.classList.add('animate-fadeOut');
+                        setTimeout(() => {
+                            dropdownUser.classList.add('hidden');
+                            isDropdownVisible = false;
+                        }, 300);
                     }
                 });
 
-                // Tampilkan pesan tidak ada data jika tidak ada pesanan yang ditampilkan
-                const noDataMessage = document.getElementById('noDataMessage');
-                if (visibleCount === 0) {
-                    if (!noDataMessage) {
-                        const message = document.createElement('div');
-                        message.id = 'noDataMessage';
-                        message.className = 'p-8 text-center bg-gray-50 rounded-lg';
-                        message.innerHTML = `
+                document.addEventListener('click', function() {
+                    if (isDropdownVisible) {
+                        dropdownUser.classList.remove('animate-fadeIn');
+                        dropdownUser.classList.add('animate-fadeOut');
+                        setTimeout(() => {
+                            dropdownUser.classList.add('hidden');
+                            isDropdownVisible = false;
+                        }, 300);
+                    }
+                });
+
+                dropdownUser.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+
+                // Logout Confirmation Modal Logic
+                const logoutButton = document.getElementById('logoutButton');
+                const logoutModal = document.getElementById('logoutModal');
+                const logoutModalBackdrop = document.getElementById('logoutModalBackdrop');
+                const confirmLogout = document.getElementById('confirmLogout');
+                const cancelLogout = document.getElementById('cancelLogout');
+                const logoutForm = document.getElementById('logoutForm');
+
+                logoutButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logoutModal.classList.remove('hidden');
+                    document.body.classList.add('overflow-hidden'); // Prevent scrolling when modal is open
+                });
+
+                function closeLogoutModal() {
+                    logoutModal.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                }
+
+                confirmLogout.addEventListener('click', function() {
+                    logoutForm.submit(); // Submit the logout form
+                });
+
+                cancelLogout.addEventListener('click', closeLogoutModal);
+                logoutModalBackdrop.addEventListener('click', closeLogoutModal);
+
+                // Tab Switching
+                const tabPesanan = document.getElementById('tabPesanan');
+                const tabGrafik = document.getElementById('tabGrafik');
+                const contentPesanan = document.getElementById('contentPesanan');
+                const contentGrafik = document.getElementById('contentGrafik');
+
+                tabPesanan.addEventListener('click', () => {
+                    tabPesanan.classList.add('tab-active');
+                    tabPesanan.classList.remove('tab-inactive');
+                    tabGrafik.classList.remove('tab-active');
+                    tabGrafik.classList.add('tab-inactive');
+
+                    contentPesanan.classList.remove('hidden');
+                    contentGrafik.classList.add('hidden');
+                });
+
+                tabGrafik.addEventListener('click', () => {
+                    tabGrafik.classList.add('tab-active');
+                    tabGrafik.classList.remove('tab-inactive');
+                    tabPesanan.classList.remove('tab-active');
+                    tabPesanan.classList.add('tab-inactive');
+
+                    contentGrafik.classList.remove('hidden');
+                    contentPesanan.classList.add('hidden');
+
+                    // Inisialisasi grafik ketika tab grafik dibuka
+                    setTimeout(() => {
+                        createPenjualanChart();
+                    }, 100);
+                });
+
+                // Chart.js
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Chart.js untuk Grafik Penjualan
+                    const ctxPenjualan = document.getElementById('chartPenjualan')?.getContext('2d');
+                    let chartPenjualanInstance;
+
+                    // Fungsi untuk membuat grafik penjualan (batang)
+                    function createPenjualanChart(bulan = '', tahun = '') {
+                        if (!ctxPenjualan) return;
+
+                        fetch(`/api/chart-data?bulan=${bulan}&tahun=${tahun}`)
+                            .then(res => res.json())
+                            .then(data => {
+                                if (chartPenjualanInstance) chartPenjualanInstance.destroy();
+
+                                chartPenjualanInstance = new Chart(ctxPenjualan, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: data.labels || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+                                            'Aug',
+                                            'Sep', 'Oct', 'Nov', 'Dec'
+                                        ],
+                                        datasets: [{
+                                            label: 'Jumlah Terjual',
+                                            data: data.values || [65, 78, 52, 91, 43, 106, 120, 156,
+                                                132, 108, 145, 167
+                                            ],
+                                            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                                            borderColor: 'rgba(16, 185, 129, 1)',
+                                            borderWidth: 2,
+                                            borderRadius: 4,
+                                            barThickness: 'flex',
+                                            maxBarThickness: 35
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        plugins: {
+                                            legend: {
+                                                display: false
+                                            },
+                                            tooltip: {
+                                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                                titleColor: '#fff',
+                                                bodyColor: '#fff',
+                                                padding: 12,
+                                                displayColors: false,
+                                                callbacks: {
+                                                    label: function(context) {
+                                                        return `${context.parsed.y} produk terjual`;
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true,
+                                                grid: {
+                                                    display: true,
+                                                    color: 'rgba(0, 0, 0, 0.05)'
+                                                },
+                                                ticks: {
+                                                    font: {
+                                                        size: 11
+                                                    }
+                                                }
+                                            },
+                                            x: {
+                                                grid: {
+                                                    display: false
+                                                },
+                                                ticks: {
+                                                    font: {
+                                                        size: 11
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                            })
+                            .catch(error => {
+                                console.error('Error fetching chart data:', error);
+                            });
+                    }
+
+                    // Inisialisasi filter untuk grafik
+                    const filterBulan = document.getElementById('filterBulan');
+                    const filterTahun = document.getElementById('filterTahun');
+
+                    if (filterBulan) {
+                        filterBulan.addEventListener('change', function() {
+                            const bulan = this.value;
+                            const tahun = filterTahun ? filterTahun.value : '';
+                            createPenjualanChart(bulan, tahun);
+                        });
+                    }
+
+                    if (filterTahun) {
+                        filterTahun.addEventListener('change', function() {
+                            const tahun = this.value;
+                            const bulan = filterBulan ? filterBulan.value : '';
+                            createPenjualanChart(bulan, tahun);
+                        });
+                    }
+
+                    // Filter dan Search functionality untuk pesanan
+                    const filterStatus = document.getElementById('filterStatus');
+                    const filterPengiriman = document.getElementById('filterPengiriman');
+                    const searchInput = document.getElementById('searchInput');
+                    const clearSearch = document.getElementById('clearSearch');
+                    const pesananCards = document.querySelectorAll('.space-y-6 > div');
+
+                    // Fungsi untuk menampilkan atau menyembunyikan pesanan berdasarkan filter
+                    function applyFilters() {
+                        if (!filterStatus || !filterPengiriman || !searchInput) return;
+
+                        const statusValue = filterStatus.value.toLowerCase();
+                        const pengirimanValue = filterPengiriman.value.toLowerCase();
+                        const searchValue = searchInput.value.toLowerCase().trim();
+
+                        let visibleCount = 0;
+
+                        pesananCards.forEach(card => {
+                            // Ambil atribut data yang diperlukan
+                            const status = card.getAttribute('data-status') || '';
+                            const pengiriman = card.getAttribute('data-pengiriman') || '';
+                            const customerName = card.querySelector('.text-lg.font-semibold')?.textContent
+                                .toLowerCase() || '';
+                            const produkName = card.querySelector('.line-clamp-1')?.textContent.toLowerCase() || '';
+                            const orderId = card.querySelector('.text-right.text-gray-500')?.textContent
+                                .toLowerCase() || '';
+
+                            // Cek apakah memenuhi filter status
+                            const matchStatus = !statusValue || status.toLowerCase() === statusValue;
+
+                            // Cek apakah memenuhi filter pengiriman
+                            const matchPengiriman = !pengirimanValue || pengiriman.toLowerCase() ===
+                                pengirimanValue;
+
+                            // Cek apakah memenuhi filter pencarian
+                            const matchSearch = !searchValue ||
+                                customerName.includes(searchValue) ||
+                                produkName.includes(searchValue) ||
+                                orderId.includes(searchValue);
+
+                            // Tampilkan kartu jika memenuhi semua filter
+                            if (matchStatus && matchPengiriman && matchSearch) {
+                                card.classList.remove('hidden');
+                                visibleCount++;
+                            } else {
+                                card.classList.add('hidden');
+                            }
+                        });
+
+                        // Tampilkan pesan tidak ada data jika tidak ada pesanan yang ditampilkan
+                        const noDataMessage = document.getElementById('noDataMessage');
+                        const parentContainer = document.querySelector('.space-y-6');
+
+                        if (visibleCount === 0 && parentContainer) {
+                            if (!noDataMessage) {
+                                const message = document.createElement('div');
+                                message.id = 'noDataMessage';
+                                message.className = 'p-8 text-center bg-gray-50 rounded-lg';
+                                message.innerHTML = `
                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="mx-auto mb-4 text-gray-400" viewBox="0 0 16 16">
                             <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
@@ -940,79 +1187,80 @@
                             Reset Filter
                         </button>
                     `;
-                        document.querySelector('.space-y-6').appendChild(message);
+                                parentContainer.appendChild(message);
 
-                        // Event listener untuk tombol reset
-                        document.getElementById('resetFilters').addEventListener('click', resetAllFilters);
+                                // Event listener untuk tombol reset
+                                document.getElementById('resetFilters').addEventListener('click', resetAllFilters);
+                            }
+                        } else if (noDataMessage) {
+                            noDataMessage.remove();
+                        }
+
+                        // Update tampilan tombol clear search
+                        if (clearSearch) {
+                            if (searchValue.length > 0) {
+                                clearSearch.style.display = 'flex';
+                            } else {
+                                clearSearch.style.display = 'none';
+                            }
+                        }
                     }
-                } else if (noDataMessage) {
-                    noDataMessage.remove();
-                }
 
-                // Update tampilan tombol clear search
-                if (searchValue.length > 0) {
-                    clearSearch.style.display = 'flex';
-                } else {
-                    clearSearch.style.display = 'none';
-                }
-            }
+                    // Reset semua filter ke nilai default
+                    function resetAllFilters() {
+                        if (filterStatus) filterStatus.value = '';
+                        if (filterPengiriman) filterPengiriman.value = '';
+                        if (searchInput) searchInput.value = '';
+                        if (clearSearch) clearSearch.style.display = 'none';
+                        applyFilters();
+                    }
 
-            // Reset semua filter ke nilai default
-            function resetAllFilters() {
-                filterStatus.value = '';
-                filterPengiriman.value = '';
-                searchInput.value = '';
-                clearSearch.style.display = 'none';
-                applyFilters();
-            }
+                    // Tambahkan data atribut ke pesanan cards
+                    pesananCards.forEach(card => {
+                        // Ambil status dari tampilan badge
+                        if (card.querySelector('.text-purple-700')) {
+                            card.setAttribute('data-status', 'Selesai');
+                        } else if (card.querySelector('.text-green-700')) {
+                            card.setAttribute('data-status', 'Diterima');
+                        } else if (card.querySelector('.text-amber-700')) {
+                            card.setAttribute('data-status', 'Dikirim');
+                        } else if (card.querySelector('.text-blue-700')) {
+                            card.setAttribute('data-status', 'Diproses');
+                        }
 
-            // Tambahkan data atribut ke pesanan cards
-            pesananCards.forEach(card => {
-                // Ambil status dari tampilan badge
-                let statusElement;
-                if (card.querySelector('.text-purple-700')) {
-                    statusElement = card.querySelector('.text-purple-700');
-                    card.setAttribute('data-status', 'Selesai');
-                } else if (card.querySelector('.text-green-700')) {
-                    statusElement = card.querySelector('.text-green-700');
-                    card.setAttribute('data-status', 'Diterima');
-                } else if (card.querySelector('.text-amber-700')) {
-                    statusElement = card.querySelector('.text-amber-700');
-                    card.setAttribute('data-status', 'Dikirim');
-                } else if (card.querySelector('.text-blue-700')) {
-                    statusElement = card.querySelector('.text-blue-700');
-                    card.setAttribute('data-status', 'Diproses');
-                }
+                        // Ambil pengiriman dari teks
+                        const pengirimanTeks = card.querySelector('.inline-flex.items-center')?.textContent.trim();
+                        if (pengirimanTeks?.includes('Paxel')) {
+                            card.setAttribute('data-pengiriman', 'wa_jek');
+                        } else if (pengirimanTeks?.includes('Ambil di Tempat')) {
+                            card.setAttribute('data-pengiriman', 'ambil_ditempat');
+                        }
+                    });
 
-                // Ambil pengiriman dari teks
-                const pengirimanTeks = card.querySelector('.inline-flex.items-center')?.textContent.trim();
-                if (pengirimanTeks?.includes('Paxel')) {
-                    card.setAttribute('data-pengiriman', 'wa_jek');
-                } else if (pengirimanTeks?.includes('Ambil di Tempat')) {
-                    card.setAttribute('data-pengiriman', 'ambil_ditempat');
-                }
-            });
+                    // Trigger filter saat dropdown berubah
+                    if (filterStatus) filterStatus.addEventListener('change', applyFilters);
+                    if (filterPengiriman) filterPengiriman.addEventListener('change', applyFilters);
 
-            // Trigger filter saat dropdown berubah
-            filterStatus.addEventListener('change', applyFilters);
-            filterPengiriman.addEventListener('change', applyFilters);
+                    // Terapkan filter saat user mengetik (dengan debounce)
+                    let debounceTimer;
+                    if (searchInput) {
+                        searchInput.addEventListener('input', function() {
+                            clearTimeout(debounceTimer);
+                            debounceTimer = setTimeout(applyFilters, 300);
+                        });
+                    }
 
-            // Terapkan filter saat user mengetik (dengan debounce)
-            let debounceTimer;
-            searchInput.addEventListener('input', function() {
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(applyFilters, 300);
-            });
+                    // Clear search input
+                    if (clearSearch) {
+                        clearSearch.addEventListener('click', function() {
+                            if (searchInput) searchInput.value = '';
+                            clearSearch.style.display = 'none';
+                            applyFilters();
+                        });
+                    }
 
-            // Clear search input
-            clearSearch.addEventListener('click', function() {
-                searchInput.value = '';
-                clearSearch.style.display = 'none';
-                applyFilters();
-            });
-
-            // Tambahkan tombol shortcut di bagian atas untuk filter status umum
-            const filterButtons = `
+                    // Tambahkan tombol shortcut di bagian atas untuk filter status umum
+                    const filterButtons = `
             <div class="flex flex-wrap items-center gap-2 mb-4">
                 <button data-status="" class="px-3 py-1.5 text-sm rounded-full bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500">
                     Semua
@@ -1032,34 +1280,42 @@
             </div>
         `;
 
-            // Sisipkan tombol filter di bawah statistik
-            document.querySelector('.grid.grid-cols-1.gap-4.sm\\:grid-cols-2.lg\\:grid-cols-5').insertAdjacentHTML(
-                'afterend', filterButtons);
+                    // Sisipkan tombol filter di bawah statistik jika elemen ada
+                    const statsContainer = document.querySelector(
+                        '.grid.grid-cols-1.gap-4.sm\\:grid-cols-2.lg\\:grid-cols-5');
+                    if (statsContainer) {
+                        statsContainer.insertAdjacentHTML('afterend', filterButtons);
 
-            // Tambahkan event listener untuk tombol filter
-            document.querySelectorAll('button[data-status]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const status = this.getAttribute('data-status');
-                    filterStatus.value = status;
+                        // Tambahkan event listener untuk tombol filter
+                        document.querySelectorAll('button[data-status]').forEach(button => {
+                            button.addEventListener('click', function() {
+                                const status = this.getAttribute('data-status');
+                                if (filterStatus) filterStatus.value = status;
 
-                    // Hapus highlight dari semua tombol
-                    document.querySelectorAll('button[data-status]').forEach(btn => {
-                        btn.classList.remove('ring-2');
-                    });
+                                // Hapus highlight dari semua tombol
+                                document.querySelectorAll('button[data-status]').forEach(btn => {
+                                    btn.classList.remove('ring-2');
+                                });
 
-                    // Tambahkan highlight untuk tombol yang aktif
-                    if (status) {
-                        this.classList.add('ring-2');
+                                // Tambahkan highlight untuk tombol yang aktif
+                                if (status) {
+                                    this.classList.add('ring-2');
+                                }
+
+                                applyFilters();
+                            });
+                        });
                     }
 
+                    // Inisialisasi filter
                     applyFilters();
-                });
-            });
 
-            // Inisialisasi
-            applyFilters();
-        });
-    </script>
+                    // Jika tab grafik aktif, inisialisasi grafik
+                    if (contentGrafik && !contentGrafik.classList.contains('hidden')) {
+                        createPenjualanChart();
+                    }
+                });
+            </script>
 </body>
 
 </html>
