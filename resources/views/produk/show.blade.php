@@ -355,7 +355,7 @@
                                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                                             </path>
                                         </svg>
-                                        Nonaktifkan
+                                        Hapus Produk
                                     </button>
                                 </div>
                             @else
@@ -404,10 +404,9 @@
                         </svg>
                     </div>
                 </div>
-                <h3 class="mb-4 text-xl font-medium text-center text-gray-900">Nonaktifkan Produk</h3>
+                <h3 class="mb-4 text-xl font-medium text-center text-gray-900">Hapus Produk</h3>
                 <p class="mb-6 text-sm text-center text-gray-500">
-                    Apakah Anda yakin ingin menonaktifkan produk ini? Produk yang dinonaktifkan tidak
-                    akan ditampilkan kepada pengguna tetapi masih dapat dipulihkan nanti.
+                    Apakah Anda yakin ingin menghapus produk ini?
                 </p>
                 <div class="flex justify-center space-x-3">
                     <button type="button" onclick="hideDeleteModal()"
@@ -418,7 +417,7 @@
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700">
-                            Ya, Nonaktifkan
+                            Ya, Hapus Produk
                         </button>
                     </form>
                 </div>

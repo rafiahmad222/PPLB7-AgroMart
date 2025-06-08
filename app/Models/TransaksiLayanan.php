@@ -20,7 +20,6 @@ class TransaksiLayanan extends Model
         'bukti_transfer',
         'total',
         'jadwal_booking',
-        'status',
     ];
 
     // Relasi ke User
@@ -32,8 +31,8 @@ class TransaksiLayanan extends Model
     // Relasi ke Layanan
     public function layanan()
     {
-    return $this->belongsTo(Layanan::class, 'layanan_id', 'id_layanan');
-}
+        return $this->belongsTo(Layanan::class, 'layanan_id', 'id_layanan');
+    }
 
     // Relasi ke Alamat
     public function alamat()

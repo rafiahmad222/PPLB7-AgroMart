@@ -109,4 +109,34 @@ class LayananController extends Controller
 
         return redirect()->route('layanan.edit', $layanan->id_layanan)->with('success', 'Informasi layanan berhasil diperbarui.');
     }
+    public function destroy($id)
+    {
+        try {
+            $layanan = Layanan::findOrFail($id);
+
+            if ($layanan->gambar_layanan && file_exists(public_path('storage/' . $layanan->gambar_layanan))) {
+                unlink(public_path('storage/' . $layanan->gambar_layanan));
+            }
+
+            $layanan->delete();
+
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Layanan berhasil dihapus.'
+                ]);
+            }
+
+            return redirect()->route('layanan.index')->with('success', 'Layanan berhasil dihapus.');
+        } catch (\Exception $e) {
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal menghapus layanan: ' . $e->getMessage()
+                ], 422);
+            }
+
+            return redirect()->back()->with('error', 'Gagal menghapus layanan: ' . $e->getMessage());
+        }
+    }
 }

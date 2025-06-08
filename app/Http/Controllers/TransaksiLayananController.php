@@ -47,7 +47,6 @@ class TransaksiLayananController extends Controller
             'pembayaran' => $data['pembayaran'],
             'bukti_transfer' => $bukti,
             'total' => $total,
-            'status' => 'pending',
         ]);
 
         return redirect()->route('transaksi-layanan.invoice', ['id' => $transaksi->id_transaksi_layanan])->with('success', 'Transaksi berhasil!');

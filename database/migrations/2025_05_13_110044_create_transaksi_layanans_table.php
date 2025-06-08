@@ -17,11 +17,10 @@ return new class extends Migration
             $table->foreignId('layanan_id')->constrained('layanans', 'id_layanan')->onDelete('cascade');
             $table->foreignId('alamat_id')->constrained('alamat', 'id_alamat')->onDelete('cascade');
             $table->integer('jumlah')->default(1);
-            $table->enum('pembayaran', ['transfer', 'cod']);
+            $table->enum('pembayaran', ['Transfer', 'COD']);
             $table->string('bukti_transfer')->nullable();
             $table->decimal('total', 12, 2);
             $table->dateTime('jadwal_booking');
-            $table->enum('status', ['pending', 'lunas', 'gagal'])->default('pending');
             $table->timestamps();
         });
     }

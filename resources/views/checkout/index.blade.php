@@ -176,7 +176,7 @@
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
                 <!-- Left Column: Delivery & Product -->
                 <div class="space-y-6 lg:col-span-2">
-                    <form action="{{ route('checkout.store') }}" method="POST">
+                    <form action="{{ route('checkout.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         <!-- Delivery Address -->
@@ -402,6 +402,34 @@
                                 <p class="mt-2 text-blue-700">Bank BRI: 123456789</p>
                                 <p class="text-blue-700">A/N: Toko Hidroponik</p>
                             </div>
+
+                            <!-- Add the bukti pembayaran field -->
+                            <div id="buktiPembayaranField" class="hidden mt-4">
+                                <label for="bukti_pembayaran" class="block mb-2 text-sm font-medium">
+                                    Unggah Bukti Pembayaran <span class="text-red-500">*</span>
+                                </label>
+                                <div
+                                    class="relative p-4 transition-colors border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 hover:bg-gray-100">
+                                    <input type="file" name="bukti_pembayaran" id="bukti_pembayaran"
+                                        class="absolute inset-0 z-10 w-full h-full opacity-0 cursor-pointer"
+                                        accept="image/*">
+                                    <div class="flex flex-col items-center justify-center">
+                                        <svg class="w-8 h-8 mb-2 text-gray-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                            </path>
+                                        </svg>
+                                        <p class="mb-1 text-sm text-gray-500">
+                                            <span class="font-semibold">Klik untuk unggah</span> atau seret dan lepas
+                                        </p>
+                                        <p class="text-xs text-gray-500">
+                                            PNG, JPG (Max. 2MB)
+                                        </p>
+                                    </div>
+                                    <p id="fileName" class="hidden mt-2 text-xs text-center text-emerald-600"></p>
+                                </div>
+                            </div>
                         </div>
 
                         <input type="hidden" name="jumlah" value="{{ $jumlah }}">
@@ -610,11 +638,16 @@
             });
 
             const rekeningField = document.getElementById('rekeningField');
+            const buktiPembayaranField = document.getElementById('buktiPembayaranField'); // Add this line
+
             if (selectedPembayaran === 'transfer') {
                 rekeningField.classList.remove('hidden');
                 rekeningField.classList.add('animate-fade-in');
+                buktiPembayaranField.classList.remove('hidden'); // Show bukti pembayaran field
+                buktiPembayaranField.classList.add('animate-fade-in');
             } else {
                 rekeningField.classList.add('hidden');
+                buktiPembayaranField.classList.add('hidden'); // Hide bukti pembayaran field
             }
         }
 
@@ -670,6 +703,19 @@
                         }
                     } else {
                         selectedAddressDetails.classList.add('hidden');
+                    }
+                });
+            }
+            const fileInput = document.getElementById('bukti_pembayaran');
+            const fileNameDisplay = document.getElementById('fileName');
+
+            if (fileInput) {
+                fileInput.addEventListener('change', function() {
+                    if (this.files.length > 0) {
+                        fileNameDisplay.textContent = 'File terpilih: ' + this.files[0].name;
+                        fileNameDisplay.classList.remove('hidden');
+                    } else {
+                        fileNameDisplay.classList.add('hidden');
                     }
                 });
             }

@@ -490,11 +490,11 @@
                                         <p class="text-sm text-gray-500">Pengiriman</p>
                                         <p class="font-medium text-gray-800">
                                             <span class="inline-flex items-center">
-                                                @if ($pesanan->pengiriman === 'wa_jek')
+                                                @if ($pesanan->pengiriman === 'Paxel')
                                                     <span
                                                         class="inline-block w-2 h-2 mr-2 rounded-full bg-amber-400"></span>
                                                     Paxel
-                                                @elseif ($pesanan->pengiriman === 'ambil_ditempat')
+                                                @elseif ($pesanan->pengiriman === 'Ambil Ditempat')
                                                     <span
                                                         class="inline-block w-2 h-2 mr-2 bg-green-400 rounded-full"></span>
                                                     Ambil di Tempat
@@ -508,11 +508,11 @@
                                         <p class="text-sm text-gray-500">Pembayaran</p>
                                         <p class="font-medium text-gray-800">
                                             <span class="inline-flex items-center">
-                                                @if ($pesanan->pembayaran === 'transfer')
+                                                @if ($pesanan->pembayaran === 'Transfer')
                                                     <span
                                                         class="inline-block w-2 h-2 mr-2 bg-blue-400 rounded-full"></span>
                                                     Transfer
-                                                @elseif ($pesanan->pembayaran === 'cod')
+                                                @elseif ($pesanan->pembayaran === 'COD')
                                                     <span
                                                         class="inline-block w-2 h-2 mr-2 bg-indigo-400 rounded-full"></span>
                                                     Cash on Delivery

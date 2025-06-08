@@ -151,11 +151,10 @@
                                 </a>
 
                                 <form action="{{ route('layanan.destroy', $layanan->id_layanan) }}" method="POST"
-                                    class="flex-1">
+                                    class="flex-1" id="delete-form">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit"
-                                        onclick="return confirm('Apakah Anda yakin ingin menghapus layanan ini?')"
+                                    <button type="button" onclick="confirmDelete()"
                                         class="flex items-center justify-center w-full px-6 py-3 text-white transition transform bg-red-500 rounded-lg shadow-md hover:bg-red-600 active:scale-95 hover:shadow-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
@@ -180,7 +179,96 @@
                     </div>
                 </div>
             </div>
+            <div id="deleteModal"
+                class="fixed inset-0 z-50 flex items-center justify-center hidden p-4 bg-black bg-opacity-50">
+                <div class="w-full max-w-md p-6 transition-all transform bg-white rounded-lg shadow-xl">
+                    <h3 class="mb-2 text-lg font-semibold text-gray-900">Konfirmasi Penghapusan</h3>
+                    <p class="mb-6 text-gray-600">Apakah Anda yakin ingin menghapus layanan ini?</p>
+
+                    <div class="flex justify-end gap-3">
+                        <button type="button" onclick="closeModal()"
+                            class="px-4 py-2 text-gray-800 transition bg-gray-200 rounded-lg hover:bg-gray-300">
+                            Batal
+                        </button>
+                        <button type="button" onclick="submitDeleteForm()"
+                            class="px-4 py-2 text-white transition bg-red-500 rounded-lg hover:bg-red-600">
+                            Ya, Hapus
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="deleteSuccessModal"
+                class="fixed inset-0 z-50 flex items-center justify-center hidden p-4 bg-black bg-opacity-50">
+                <div
+                    class="w-full max-w-md p-6 transition-all transform bg-white border-l-4 border-green-500 rounded-lg shadow-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex-shrink-0 p-2 bg-green-100 rounded-full">
+                            <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <h2 class="ml-3 text-xl font-bold text-gray-800">Layanan Berhasil Dihapus</h2>
+                    </div>
+                    <p class="mb-5 text-gray-600">Layanan telah berhasil dihapus dari sistem. Data telah diperbarui
+                        dengan aman.</p>
+                    <div class="flex justify-end">
+                        <a href="{{ route('layanan.index') }}"
+                            class="px-4 py-2 text-white transition-all bg-green-600 rounded-lg shadow-md hover:bg-green-700">
+                            Kembali ke Layanan
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
+    <script>
+        function confirmDelete() {
+            document.getElementById('deleteModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
+        }
+
+        function submitDeleteForm() {
+            const form = document.getElementById('delete-form');
+
+            // Get the CSRF token
+            const csrfToken = document.querySelector('input[name="_token"]').value;
+
+            // Create form data
+            const formData = new FormData();
+            formData.append('_method', 'DELETE');
+            formData.append('_token', csrfToken);
+
+            // Send AJAX request
+            fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+                    // Hide the confirmation modal
+                    document.getElementById('deleteModal').classList.add('hidden');
+
+                    // Show success modal
+                    document.getElementById('deleteSuccessModal').classList.remove('hidden');
+
+                    // Redirect after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = "{{ route('layanan.index') }}";
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat menghapus layanan');
+                });
+        }
+    </script>
 </body>
 
 </html>

@@ -149,7 +149,27 @@ class ProdukController extends Controller
      */
     public function destroy(Produk $produk)
     {
-        //
+        try {
+            $produk->delete();
+
+            if (request()->wantsJson() || request()->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Produk berhasil dihapus!'
+                ]);
+            }
+
+            return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus!');
+        } catch (\Exception $e) {
+            if (request()->wantsJson() || request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal menghapus produk: ' . $e->getMessage()
+                ], 422);
+            }
+
+            return redirect()->back()->with('error', 'Gagal menghapus produk: ' . $e->getMessage());
+        }
     }
     public function filter(Request $request)
     {

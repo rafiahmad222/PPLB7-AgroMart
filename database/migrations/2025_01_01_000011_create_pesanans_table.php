@@ -16,13 +16,13 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('produk_id')->constrained('produks', 'id_produk')->onDelete('cascade');
             $table->foreignId('alamat_id')->constrained('alamat', 'id_alamat')->onDelete('cascade');
-            $table->enum('pengiriman', ['wa_jek', 'ambil_ditempat']);
-            $table->integer('jarak')->nullable();
+            $table->enum('pengiriman', ['Paxel', 'Ambil Ditempat']);
             $table->integer('ongkir');
             $table->integer('jumlah')->default(1);
-            $table->enum('pembayaran', ['transfer', 'cod']);
+            $table->string('bukti_pembayaran');
+            $table->enum('pembayaran', ['Transfer', 'COD']);
             $table->integer('total');
-            $table->enum('status', ['Diproses', 'Dikirim', 'Diterima','Selesai'])->default('Diproses');
+            $table->enum('status', ['Diproses', 'Dikirim', 'Diterima', 'Selesai'])->default('Diproses');
             $table->timestamps();
         });
     }
