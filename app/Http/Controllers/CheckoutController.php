@@ -30,30 +30,46 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validationRules = [
             'alamat_id' => 'required|exists:alamat,id_alamat',
             'produk_id' => 'required|exists:produks,id_produk',
             'jumlah' => 'required|integer|min:1',
-            'pembayaran' => 'required|in:transfer,cod',
-            'pengiriman' => 'required|in:wa_jek,ambil_ditempat',
-        ]);
+            'pembayaran' => 'required|in:Transfer,COD',
+            'pengiriman' => 'required|in:Paxel,Ambil Ditempat',
+        ];
+
+        // Add validation rule for bukti_pembayaran if payment method is transfer
+        if ($request->pembayaran === 'transfer') {
+            $validationRules['bukti_pembayaran'] = 'required|image|mimes:jpeg,png,jpg|max:2048';
+        }
+
+        $request->validate($validationRules);
 
         $produk = Produk::findOrFail($request->produk_id);
         $totalHarga = $produk->harga_produk * $request->jumlah;
         $totalPembayaran = $totalHarga + $request->ongkir;
+
+        // Handle file upload if exists
+        $buktiPembayaranPath = null;
+        if ($request->hasFile('bukti_pembayaran')) {
+            $file = $request->file('bukti_pembayaran');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $buktiPembayaranPath = $file->storeAs('bukti_pembayaran', $fileName, 'public');
+        }
 
         $pesanan = Pesanan::create([
             'user_id' => Auth::id(),
             'alamat_id' => $request->alamat_id,
             'produk_id' => $produk->id_produk,
             'pengiriman' => $request->pengiriman,
-            'jarak' => $request->jarak,
             'ongkir' => $request->ongkir,
             'jumlah' => $request->jumlah,
             'pembayaran' => $request->pembayaran,
+            'bukti_pembayaran' => $buktiPembayaranPath, // Save file path
             'total' => $totalPembayaran,
-            'status' => 'Diproses', // default status awal
+            'status' => 'Diproses',
         ]);
+
         // Update stok produk
         $produk->jumlah_stok -= $request->jumlah;
         $produk->save();

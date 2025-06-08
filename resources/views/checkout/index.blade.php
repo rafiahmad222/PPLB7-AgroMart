@@ -285,7 +285,7 @@
 
                             <div class="space-y-3">
                                 <div class="custom-radio">
-                                    <input type="radio" name="pengiriman" id="paxel" value="wa_jek"
+                                    <input type="radio" name="pengiriman" id="paxel" value="Paxel"
                                         onclick="toggleOngkir()">
                                     <label for="paxel" class="radio-label">
                                         <div class="radio-circle"></div>
@@ -299,7 +299,7 @@
                                 </div>
 
                                 <div class="custom-radio">
-                                    <input type="radio" name="pengiriman" id="pickup" value="ambil_ditempat"
+                                    <input type="radio" name="pengiriman" id="pickup" value="Ambil Ditempat"
                                         onclick="toggleOngkir()">
                                     <label for="pickup" class="radio-label">
                                         <div class="radio-circle"></div>
@@ -373,7 +373,7 @@
                             <h3 class="mb-3 font-semibold">Metode Pembayaran</h3>
                             <div class="space-y-3">
                                 <div class="custom-radio">
-                                    <input type="radio" name="pembayaran" id="transfer" value="transfer"
+                                    <input type="radio" name="pembayaran" id="transfer" value="Transfer"
                                         onclick="toggleRekening()">
                                     <label for="transfer" class="radio-label">
                                         <div class="radio-circle"></div>
@@ -385,7 +385,7 @@
                                 </div>
 
                                 <div class="custom-radio">
-                                    <input type="radio" name="pembayaran" id="cod" value="cod"
+                                    <input type="radio" name="pembayaran" id="cod" value="COD"
                                         onclick="toggleRekening()">
                                     <label for="cod" class="radio-label">
                                         <div class="radio-circle"></div>
@@ -525,7 +525,7 @@
             const ongkirField = document.getElementById('ongkirField');
             const codOption = document.getElementById('cod');
 
-            if (selectedPengiriman === 'wa_jek') {
+            if (selectedPengiriman === 'Paxel') {
                 ongkirField.classList.remove('hidden');
                 ongkirField.classList.add('animate-fade-in');
                 codOption.disabled = true;
@@ -640,7 +640,7 @@
             const rekeningField = document.getElementById('rekeningField');
             const buktiPembayaranField = document.getElementById('buktiPembayaranField'); // Add this line
 
-            if (selectedPembayaran === 'transfer') {
+            if (selectedPembayaran === 'Transfer') {
                 rekeningField.classList.remove('hidden');
                 rekeningField.classList.add('animate-fade-in');
                 buktiPembayaranField.classList.remove('hidden'); // Show bukti pembayaran field
