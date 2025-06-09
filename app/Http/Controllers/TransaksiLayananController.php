@@ -26,7 +26,7 @@ class TransaksiLayananController extends Controller
             'alamat_id' => 'required|exists:alamat,id_alamat',
             'jumlah' => 'required|integer|min:1',
             'jadwal_booking' => 'required|date',
-            'pembayaran' => 'required|in:transfer,cod',
+            'pembayaran' => 'required|in:Transfer,COD',
             'bukti_transfer' => 'nullable|image|max:2048',
         ]);
 

@@ -342,7 +342,7 @@
                             <div class="form-group">
                                 <label for="nama_layanan" class="block mb-1 text-sm font-medium text-gray-700">Nama
                                     Layanan</label>
-                                <input type="text" name="nama_layanan" id="nama_layanan" required
+                                <input type="text" name="nama_layanan" id="nama_layanan"
                                     class="w-full px-4 py-3 transition-colors border-2 rounded-lg border-emerald-600 focus:border-emerald-400 focus:ring focus:ring-emerald-200">
                             </div>
 
@@ -353,7 +353,7 @@
                                     <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                                         <span class="font-medium text-gray-500">Rp</span>
                                     </div>
-                                    <input type="text" name="harga_layanan" id="harga_layanan" required
+                                    <input type="text" name="harga_layanan" id="harga_layanan"
                                         class="w-full px-4 py-3 pl-10 transition-colors border-2 rounded-lg border-emerald-600 focus:border-emerald-400 focus:ring focus:ring-emerald-200"
                                         placeholder="0">
                                 </div>
@@ -362,7 +362,7 @@
                             <div class="form-group">
                                 <label for="deskripsi_layanan"
                                     class="block mb-1 text-sm font-medium text-gray-700">Deskripsi Layanan</label>
-                                <textarea name="deskripsi_layanan" id="deskripsi_layanan" rows="6" required
+                                <textarea name="deskripsi_layanan" id="deskripsi_layanan" rows="6"
                                     class="w-full px-4 py-3 transition-colors border-2 rounded-lg border-emerald-600 focus:border-emerald-400 focus:ring focus:ring-emerald-200"></textarea>
                             </div>
 

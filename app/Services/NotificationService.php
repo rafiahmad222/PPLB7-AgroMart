@@ -51,10 +51,10 @@ class NotificationService
     public function createStatusUpdateNotification(Pesanan $pesanan)
     {
         $statusMessages = [
-            'Diproses' => "Pesanan Anda sedang diproses.",
-            'Dikirim' => "Pesanan Anda telah dikirim.",
-            'Diterima' => "Silahkan Selesaikan Pesanan Anda.",
-            'Selesai' => "Pesanan Anda telah selesai.",
+            'Diproses' => "Pesanan No. $pesanan->id_pesanan sedang diproses.",
+            'Dikirim' => "Pesanan No. $pesanan->id_pesanan telah dikirim.",
+            'Diterima' => "Silahkan Selesaikan Pesanan No. $pesanan->id_pesanan.",
+            'Selesai' => "Pesanan No. $pesanan->id_pesanan telah selesai.",
         ];
 
         // Sesuaikan dengan field status di tabel pesanans
