@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Pesanan;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Alamat;
+use App\Events\NewPesananCreated;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 class CheckoutController extends Controller
@@ -73,6 +75,9 @@ class CheckoutController extends Controller
         // Update stok produk
         $produk->jumlah_stok -= $request->jumlah;
         $produk->save();
+
+        // Trigger event for new pesanan
+        event(new NewPesananCreated($pesanan));
 
         return redirect()->route('checkout.invoice', $pesanan->id_pesanan)
             ->with('success', 'Pesanan berhasil dibuat. Silakan cek invoice.');

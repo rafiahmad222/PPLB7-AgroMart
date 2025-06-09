@@ -22,6 +22,7 @@ use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\EdukasiController;
 use App\Models\Produk;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', function () {
     $produks = Produk::all(); // Ambil semua data produk
@@ -112,4 +113,11 @@ Route::get('/galeri/{id}/edit', [GaleriController::class, 'edit'])->name('galeri
 Route::put('/galeri/{id}', [GaleriController::class, 'update'])->name('galeri.update');
 Route::get('/edukasi', [EdukasiController::class, 'index'])->name('edukasi.index');
 Route::get('/edukasi/{artikel}', [EdukasiController::class, 'show'])->name('edukasi.show');
+Route::middleware('auth')->group(function () {
+    // Notification routes
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount']);
+    Route::patch('/notifications/{notificationId}/read', [NotificationController::class, 'markAsRead']);
+    Route::patch('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead']);
+});
 require __DIR__ . '/auth.php';
