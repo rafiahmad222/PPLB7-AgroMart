@@ -752,22 +752,29 @@
                     minute: '2-digit'
                 });
 
+                // Pilih ikon berdasarkan tipe notifikasi
+                let iconMarkup = '<i class="fas fa-info-circle text-emerald-500"></i>'; // default icon
+
+                if (notification.type === 'new_order') {
+                    iconMarkup = '<i class="fas fa-shopping-bag text-emerald-500"></i>';
+                } else if (notification.type === 'status_update') {
+                    iconMarkup = '<i class="fas fa-sync-alt text-emerald-500"></i>';
+                }
+
                 item.innerHTML = `
-                <div class="flex items-start">
-                    <div class="flex-shrink-0 mr-3">
-                        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100">
-                            ${notification.type === 'new_order' ?
-                                '<i class="fas fa-shopping-bag text-emerald-500"></i>' :
-                                '<i class="fas fa-info-circle text-emerald-500"></i>'}
-                        </div>
-                    </div>
-                    <div class="flex-grow">
-                        <p class="text-sm text-gray-800">${notification.message}</p>
-                        <p class="mt-1 text-xs text-gray-500">${formattedTime}</p>
-                    </div>
-                    ${!notification.is_read ? '<div class="w-2 h-2 mt-2 ml-2 rounded-full bg-emerald-500"></div>' : ''}
-                </div>
-            `;
+    <div class="flex items-start">
+        <div class="flex-shrink-0 mr-3">
+            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100">
+                ${iconMarkup}
+            </div>
+        </div>
+        <div class="flex-grow">
+            <p class="text-sm text-gray-800">${notification.message}</p>
+            <p class="mt-1 text-xs text-gray-500">${formattedTime}</p>
+        </div>
+        ${!notification.is_read ? '<div class="w-2 h-2 mt-2 ml-2 rounded-full bg-emerald-500"></div>' : ''}
+    </div>
+    `;
 
                 // Mark as read when clicked
                 item.addEventListener('click', function() {
@@ -775,9 +782,14 @@
                         markAsRead(notification.id, item);
                     }
 
-                    // If the notification is related to pesanan, redirect to the pesanan details
+                    // Arahkan pengguna ke halaman yang berbeda berdasarkan tipe notifikasi
                     if (notification.pesanan_id) {
-                        window.location.href = `/status`;
+                        // Untuk pelanggan, arahkan berdasarkan tipe notifikasi
+                        if (notification.type === 'new_order') {
+                            window.location.href = `/status`;
+                        } else if (notification.type === 'status_update') {
+                            window.location.href = `/pesananku`;
+                        }
                     }
                 });
 

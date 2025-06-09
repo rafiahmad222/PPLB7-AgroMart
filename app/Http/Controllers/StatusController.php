@@ -9,11 +9,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Produk;
 use Carbon\Carbon;
+use App\Events\PesananStatusUpdated;
 
 class StatusController extends Controller
 {
     public function index(Request $request)
     {
+        // Check if the user is an admin
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
         $currentStatus = $request->query('status');
 
         // Get ALL pesanans for summary statistics (unfiltered)
@@ -115,6 +120,9 @@ class StatusController extends Controller
         $pesanan = Pesanan::findOrFail($id);
         $pesanan->status = $request->status;
         $pesanan->save();
+
+        //Trigger event to send notification
+        event(new PesananStatusUpdated($pesanan));
 
         return back()->with('success', 'Status pesanan berhasil diperbarui.');
     }
