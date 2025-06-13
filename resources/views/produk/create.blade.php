@@ -611,7 +611,7 @@
                             if (result.data.includes('<meta http-equiv="refresh"')) {
                                 window.location.href = '{{ route('produk.index') }}';
                             } else {
-                                showModal('successModal', 'Produk ditambahkan, mengalihkan...');
+                                showModal('successModal', 'Produk berhasil ditambahkan');
                                 setTimeout(() => {
                                     window.location.href = '{{ route('produk.index') }}';
                                 }, 1000);
