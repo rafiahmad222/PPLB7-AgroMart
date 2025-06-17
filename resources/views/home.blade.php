@@ -355,7 +355,6 @@
             </div>
         </div>
     </section>
-
     <!-- Modern Produk Carousel with Hover-visible Navigation -->
     <section class="py-5">
         <div class="px-4 mx-auto max-w-7xl">
@@ -364,7 +363,7 @@
                 <p class="max-w-lg mx-auto text-gray-600">Temukan produk hidroponik terbaru dan terbaik dari kami.</p>
             </div>
 
-            <div id="carouselContainer" class="relative group">
+            <div id="carouselContainer" class="relative overflow-hidden group">
                 <div class="absolute inset-0 z-10 pointer-events-none" style="width: 100%;"></div>
 
                 <div id="produkCarousel" class="flex transition-transform duration-500 ease-in-out">
@@ -420,76 +419,196 @@
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="py-20 bg-gray-100">
+    <!-- Modern Layanan Carousel with Hover-visible Navigation -->
+    <section class="py-5">
         <div class="px-4 mx-auto max-w-7xl">
-            <div class="mb-12 text-center">
-                <h2 class="mb-2 text-3xl font-bold text-gray-800">Apa Kata Mereka?</h2>
-                <p class="max-w-lg mx-auto text-gray-600">Pendapat pelanggan tentang produk dan layanan kami.</p>
+            <div class="text-center mb-7">
+                <h2 class="mb-2 text-3xl font-bold text-gray-800">Layanan Terbaik</h2>
+                <p class="max-w-lg mx-auto text-gray-600">Temukan berbagai layanan hidroponik profesional dari kami.
+                </p>
             </div>
 
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-                <div class="p-6 bg-white shadow-md rounded-xl">
-                    <div class="flex items-center mb-4">
-                        <div
-                            class="flex items-center justify-center w-12 h-12 mr-4 text-gray-500 bg-gray-200 rounded-full">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800">Budi Santoso</h4>
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
+            <div id="layananCarouselContainer" class="relative overflow-hidden group">
+                <div class="absolute inset-0 z-10 pointer-events-none" style="width: 100%;"></div>
+
+                <div id="layananCarousel" class="flex transition-transform duration-500 ease-in-out">
+                    @foreach ($layanans as $layanan)
+                        <div class="flex-none w-full p-4 sm:w-1/2 md:w-1/3">
+                            <div
+                                class="p-6 transition bg-white border border-gray-100 shadow-md rounded-xl hover:shadow-xl card-hover">
+                                @if ($layanan->gambar_layanan)
+                                    <div class="mb-4 overflow-hidden rounded-lg">
+                                        <img src="{{ asset('storage/' . $layanan->gambar_layanan) }}"
+                                            alt="{{ $layanan->nama_layanan }}"
+                                            class="object-cover w-full h-48 transition-transform hover:scale-105">
+                                    </div>
+                                @endif
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-gray-800">{{ $layanan->nama_layanan }}</h3>
+                                        <p class="mt-1 text-sm text-gray-500">{{ $layanan->jenis_layanan }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between mt-1">
+                                    <p class="text-lg font-bold text-primary-600">Rp
+                                        {{ number_format($layanan->harga_layanan, 0, ',', '.') }}</p>
+                                    <a href="{{ route('layanan.show', $layanan->id_layanan) }}"
+                                        class="px-3 py-2 text-sm font-medium text-center text-white rounded-full bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300">Selengkapnya</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <p class="italic text-gray-600">"Produk hidroponik dari AgroMart sangat berkualitas. Sayuran
-                        tumbuh dengan cepat dan hasil panen sangat memuaskan!"</p>
+                    @endforeach
                 </div>
 
-                <div class="p-6 bg-white shadow-md rounded-xl">
-                    <div class="flex items-center mb-4">
-                        <div
-                            class="flex items-center justify-center w-12 h-12 mr-4 text-gray-500 bg-gray-200 rounded-full">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800">Siti Rahayu</h4>
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="italic text-gray-600">"Layanan konsultasi dari tim AgroMart sangat membantu. Mereka
-                        memberikan solusi yang tepat untuk masalah hidroponik saya."</p>
+                <!-- Navigation Buttons with Opacity Transition -->
+                <div
+                    class="absolute inset-y-0 left-0 z-20 flex items-center transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                    <button id="prevLayananCarousel"
+                        class="flex items-center justify-center w-10 h-10 ml-2 text-white transition-transform -translate-y-1/2 rounded-full bg-primary-600/80 hover:bg-primary-700 hover:shadow-lg hover:scale-110">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+                <div
+                    class="absolute inset-y-0 right-0 z-20 flex items-center transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                    <button id="nextLayananCarousel"
+                        class="flex items-center justify-center w-10 h-10 mr-2 text-white transition-transform -translate-y-1/2 rounded-full bg-primary-600/80 hover:bg-primary-700 hover:shadow-lg hover:scale-110">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
 
-                <div class="p-6 bg-white shadow-md rounded-xl">
-                    <div class="flex items-center mb-4">
-                        <div
-                            class="flex items-center justify-center w-12 h-12 mr-4 text-gray-500 bg-gray-200 rounded-full">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800">Ahmad Fauzi</h4>
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
+                <!-- Dots Navigation -->
+                <div class="flex justify-center mt-2 space-x-2" id="layananCarouselDots">
+                    <!-- Dots will be added dynamically by JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Modern Artikel Carousel with Hover-visible Navigation -->
+    <section class="py-5">
+        <div class="px-4 mx-auto max-w-7xl">
+            <div class="text-center mb-7">
+                <h2 class="mb-2 text-3xl font-bold text-gray-800">Artikel Terbaru</h2>
+                <p class="max-w-lg mx-auto text-gray-600">Perluas wawasan hidroponik Anda dengan artikel informatif
+                    dari kami.</p>
+            </div>
+
+            <div id="artikelCarouselContainer" class="relative overflow-hidden group">
+                <div class="absolute inset-0 z-10 pointer-events-none" style="width: 100%;"></div>
+
+                <div id="artikelCarousel" class="flex transition-transform duration-500 ease-in-out">
+                    @foreach ($artikels as $artikel)
+                        <div class="flex-none w-full p-4 sm:w-1/2 md:w-1/3">
+                            <div
+                                class="p-6 transition bg-white border border-gray-100 shadow-md rounded-xl hover:shadow-xl card-hover">
+                                @if ($artikel->gambar)
+                                    <div class="mb-4 overflow-hidden rounded-lg">
+                                        <img src="{{ asset('storage/' . $artikel->gambar) }}"
+                                            alt="{{ $artikel->judul }}"
+                                            class="object-cover w-full h-48 transition-transform hover:scale-105">
+                                    </div>
+                                @endif
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-gray-800">{{ $artikel->judul }}</h3>
+                                        <p class="mt-1 text-sm text-gray-500">
+                                            {{ \Carbon\Carbon::parse($artikel->created_at)->format('d M Y') }} •
+                                            {{ $artikel->user->name }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <p class="mt-2 text-gray-600 line-clamp-2">{{ $artikel->ringkasan }}</p>
+                                <div class="flex items-center justify-end mt-4">
+                                    <a href="{{ route('edukasi.show', $artikel->id_artikel) }}"
+                                        class="px-3 py-2 text-sm font-medium text-center text-white rounded-full bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300">Baca
+                                        Selengkapnya</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <p class="italic text-gray-600">"Saya sangat puas dengan media tanam dari AgroMart. Sangat
-                        cocok untuk pemula dan mudah digunakan. Panen selalu memuaskan!"</p>
+                    @endforeach
+                </div>
+
+                <!-- Navigation Buttons with Opacity Transition -->
+                <div
+                    class="absolute inset-y-0 left-0 z-20 flex items-center transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                    <button id="prevArtikelCarousel"
+                        class="flex items-center justify-center w-10 h-10 ml-2 text-white transition-transform -translate-y-1/2 rounded-full bg-primary-600/80 hover:bg-primary-700 hover:shadow-lg hover:scale-110">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+                <div
+                    class="absolute inset-y-0 right-0 z-20 flex items-center transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                    <button id="nextArtikelCarousel"
+                        class="flex items-center justify-center w-10 h-10 mr-2 text-white transition-transform -translate-y-1/2 rounded-full bg-primary-600/80 hover:bg-primary-700 hover:shadow-lg hover:scale-110">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Dots Navigation -->
+                <div class="flex justify-center mt-2 space-x-2" id="artikelCarouselDots">
+                    <!-- Dots will be added dynamically by JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Modern Video Edukasi Carousel with Hover-visible Navigation -->
+    <section class="py-5">
+        <div class="px-4 mx-auto max-w-7xl">
+            <div class="text-center mb-7">
+                <h2 class="mb-2 text-3xl font-bold text-gray-800">Video Edukasi</h2>
+                <p class="max-w-lg mx-auto text-gray-600">Pelajari teknik hidroponik dengan video tutorial praktis dari
+                    ahli kami.</p>
+            </div>
+
+            <div id="videoCarouselContainer" class="relative overflow-hidden group">
+                <div class="absolute inset-0 z-10 pointer-events-none" style="width: 100%;"></div>
+
+                <div id="videoCarousel" class="flex transition-transform duration-500 ease-in-out">
+                    @foreach ($videos as $video)
+                        <div class="flex-none w-full p-4 sm:w-1/2 md:w-1/3">
+                            <div
+                                class="p-6 transition bg-white border border-gray-100 shadow-md rounded-xl hover:shadow-xl card-hover">
+                                <div class="mb-4 video-thumbnail"
+                                    onclick="window.location.href='{{ route('edukasi.index', ['tab' => 'video']) }}#video-{{ $video->id_video }}'">
+                                    <img src="https://img.youtube.com/vi/{{ $video->youtube_id }}/mqdefault.jpg"
+                                        class="object-cover w-full h-48 rounded-lg" alt="{{ $video->judul }}">
+                                </div>
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-gray-800">{{ $video->judul }}</h3>
+                                        <p class="mt-1 text-sm text-gray-500">
+                                            {{ $video->created_at->format('d M Y') }} • {{ $video->user->name }}</p>
+                                    </div>
+                                </div>
+                                <p class="mt-2 text-gray-600 line-clamp-2">{{ $video->deskripsi }}</p>
+                                <div class="flex items-center justify-end mt-4">
+                                    <a href="{{ route('edukasi.index', ['tab' => 'video']) }}#video-{{ $video->id_video }}"
+                                        class="px-3 py-2 text-sm font-medium text-center text-white rounded-full bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300">Tonton
+                                        Video</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- Navigation Buttons with Opacity Transition -->
+                <div
+                    class="absolute inset-y-0 left-0 z-20 flex items-center transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                    <button id="prevVideoCarousel"
+                        class="flex items-center justify-center w-10 h-10 ml-2 text-white transition-transform -translate-y-1/2 rounded-full bg-primary-600/80 hover:bg-primary-700 hover:shadow-lg hover:scale-110">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+                <div
+                    class="absolute inset-y-0 right-0 z-20 flex items-center transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                    <button id="nextVideoCarousel"
+                        class="flex items-center justify-center w-10 h-10 mr-2 text-white transition-transform -translate-y-1/2 rounded-full bg-primary-600/80 hover:bg-primary-700 hover:shadow-lg hover:scale-110">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Dots Navigation -->
+                <div class="flex justify-center mt-2 space-x-2" id="videoCarouselDots">
+                    <!-- Dots will be added dynamically by JS -->
                 </div>
             </div>
         </div>
@@ -645,6 +764,190 @@
         // Initialize
         updateCarousel();
         updateDots();
+        // Layanan Carousel Logic
+        const layananCarousel = document.getElementById('layananCarousel');
+        const prevLayananButton = document.getElementById('prevLayananCarousel');
+        const nextLayananButton = document.getElementById('nextLayananCarousel');
+        const layananDotsContainer = document.getElementById('layananCarouselDots');
+
+        let currentLayananIndex = 0;
+        const layananItemsPerPage = 3;
+        const totalLayananItems = @json($layanans).length;
+        const maxLayananIndex = Math.ceil(totalLayananItems / layananItemsPerPage) - 1;
+
+        // Create dots for layanan carousel
+        for (let i = 0; i <= maxLayananIndex; i++) {
+            const dot = document.createElement('button');
+            dot.className = 'w-3 h-3 rounded-full bg-gray-300 hover:bg-primary-500 transition-colors';
+            dot.setAttribute('data-index', i);
+            dot.addEventListener('click', () => {
+                currentLayananIndex = i;
+                updateLayananCarousel();
+                updateLayananDots();
+            });
+            layananDotsContainer.appendChild(dot);
+        }
+
+        function updateLayananCarousel() {
+            const offset = currentLayananIndex * -100;
+            layananCarousel.style.transform = `translateX(${offset}%)`;
+        }
+
+        function updateLayananDots() {
+            const dots = layananDotsContainer.querySelectorAll('button');
+            dots.forEach((dot, index) => {
+                if (index === currentLayananIndex) {
+                    dot.classList.remove('bg-gray-300');
+                    dot.classList.add('bg-primary-600');
+                } else {
+                    dot.classList.remove('bg-primary-600');
+                    dot.classList.add('bg-gray-300');
+                }
+            });
+        }
+
+        prevLayananButton.addEventListener('click', () => {
+            if (currentLayananIndex > 0) {
+                currentLayananIndex--;
+                updateLayananCarousel();
+                updateLayananDots();
+            }
+        });
+
+        nextLayananButton.addEventListener('click', () => {
+            if (currentLayananIndex < maxLayananIndex) {
+                currentLayananIndex++;
+                updateLayananCarousel();
+                updateLayananDots();
+            }
+        });
+
+        // Initialize layanan carousel
+        updateLayananCarousel();
+        updateLayananDots();
+        // Artikel Carousel Logic
+        const artikelCarousel = document.getElementById('artikelCarousel');
+        const prevArtikelButton = document.getElementById('prevArtikelCarousel');
+        const nextArtikelButton = document.getElementById('nextArtikelCarousel');
+        const artikelDotsContainer = document.getElementById('artikelCarouselDots');
+
+        let currentArtikelIndex = 0;
+        const artikelItemsPerPage = 3;
+        const totalArtikelItems = @json($artikels).length;
+        const maxArtikelIndex = Math.ceil(totalArtikelItems / artikelItemsPerPage) - 1;
+
+        // Create dots for artikel carousel
+        for (let i = 0; i <= maxArtikelIndex; i++) {
+            const dot = document.createElement('button');
+            dot.className = 'w-3 h-3 rounded-full bg-gray-300 hover:bg-primary-500 transition-colors';
+            dot.setAttribute('data-index', i);
+            dot.addEventListener('click', () => {
+                currentArtikelIndex = i;
+                updateArtikelCarousel();
+                updateArtikelDots();
+            });
+            artikelDotsContainer.appendChild(dot);
+        }
+
+        function updateArtikelCarousel() {
+            const offset = currentArtikelIndex * -100;
+            artikelCarousel.style.transform = `translateX(${offset}%)`;
+        }
+
+        function updateArtikelDots() {
+            const dots = artikelDotsContainer.querySelectorAll('button');
+            dots.forEach((dot, index) => {
+                if (index === currentArtikelIndex) {
+                    dot.classList.remove('bg-gray-300');
+                    dot.classList.add('bg-primary-600');
+                } else {
+                    dot.classList.remove('bg-primary-600');
+                    dot.classList.add('bg-gray-300');
+                }
+            });
+        }
+
+        prevArtikelButton.addEventListener('click', () => {
+            if (currentArtikelIndex > 0) {
+                currentArtikelIndex--;
+                updateArtikelCarousel();
+                updateArtikelDots();
+            }
+        });
+
+        nextArtikelButton.addEventListener('click', () => {
+            if (currentArtikelIndex < maxArtikelIndex) {
+                currentArtikelIndex++;
+                updateArtikelCarousel();
+                updateArtikelDots();
+            }
+        });
+
+        // Initialize artikel carousel
+        updateArtikelCarousel();
+        updateArtikelDots();
+
+        // Video Carousel Logic
+        const videoCarousel = document.getElementById('videoCarousel');
+        const prevVideoButton = document.getElementById('prevVideoCarousel');
+        const nextVideoButton = document.getElementById('nextVideoCarousel');
+        const videoDotsContainer = document.getElementById('videoCarouselDots');
+
+        let currentVideoIndex = 0;
+        const videoItemsPerPage = 3;
+        const totalVideoItems = @json($videos).length;
+        const maxVideoIndex = Math.ceil(totalVideoItems / videoItemsPerPage) - 1;
+
+        // Create dots for video carousel
+        for (let i = 0; i <= maxVideoIndex; i++) {
+            const dot = document.createElement('button');
+            dot.className = 'w-3 h-3 rounded-full bg-gray-300 hover:bg-primary-500 transition-colors';
+            dot.setAttribute('data-index', i);
+            dot.addEventListener('click', () => {
+                currentVideoIndex = i;
+                updateVideoCarousel();
+                updateVideoDots();
+            });
+            videoDotsContainer.appendChild(dot);
+        }
+
+        function updateVideoCarousel() {
+            const offset = currentVideoIndex * -100;
+            videoCarousel.style.transform = `translateX(${offset}%)`;
+        }
+
+        function updateVideoDots() {
+            const dots = videoDotsContainer.querySelectorAll('button');
+            dots.forEach((dot, index) => {
+                if (index === currentVideoIndex) {
+                    dot.classList.remove('bg-gray-300');
+                    dot.classList.add('bg-primary-600');
+                } else {
+                    dot.classList.remove('bg-primary-600');
+                    dot.classList.add('bg-gray-300');
+                }
+            });
+        }
+
+        prevVideoButton.addEventListener('click', () => {
+            if (currentVideoIndex > 0) {
+                currentVideoIndex--;
+                updateVideoCarousel();
+                updateVideoDots();
+            }
+        });
+
+        nextVideoButton.addEventListener('click', () => {
+            if (currentVideoIndex < maxVideoIndex) {
+                currentVideoIndex++;
+                updateVideoCarousel();
+                updateVideoDots();
+            }
+        });
+
+        // Initialize video carousel
+        updateVideoCarousel();
+        updateVideoDots();
         // Notification Logic
         document.addEventListener('DOMContentLoaded', function() {
             const notificationButton = document.getElementById('notificationButton');
