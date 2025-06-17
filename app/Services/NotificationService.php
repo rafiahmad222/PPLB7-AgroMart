@@ -40,8 +40,6 @@ class NotificationService
                         'total_amount' => $pesanan->total,
                     ]
                 ]);
-
-                Log::info('Notifikasi dibuat untuk admin #' . $admin->id . ' dan pesanan #' . $pesanan->id_pesanan);
             } catch (\Exception $e) {
                 Log::error('Error saat membuat notifikasi: ' . $e->getMessage());
             }
