@@ -495,24 +495,25 @@
                     @foreach ($artikels as $artikel)
                         <div class="flex-none w-full p-4 sm:w-1/2 md:w-1/3">
                             <div
-                                class="p-6 transition bg-white border border-gray-100 shadow-md rounded-xl hover:shadow-xl card-hover">
+                                class="flex flex-col h-full p-6 transition bg-white border border-gray-100 shadow-md rounded-xl hover:shadow-xl card-hover">
                                 @if ($artikel->gambar)
-                                    <div class="mb-4 overflow-hidden rounded-lg">
+                                    <div class="h-48 mb-4 overflow-hidden rounded-lg">
                                         <img src="{{ asset('storage/' . $artikel->gambar) }}"
                                             alt="{{ $artikel->judul }}"
-                                            class="object-cover w-full h-48 transition-transform hover:scale-105">
+                                            class="object-cover w-full h-full transition-transform hover:scale-105">
                                     </div>
                                 @endif
                                 <div class="flex items-start justify-between">
                                     <div>
-                                        <h3 class="text-lg font-bold text-gray-800">{{ $artikel->judul }}</h3>
+                                        <h3 class="text-lg font-bold text-gray-800 line-clamp-1">{{ $artikel->judul }}
+                                        </h3>
                                         <p class="mt-1 text-sm text-gray-500">
                                             {{ \Carbon\Carbon::parse($artikel->created_at)->format('d M Y') }} •
                                             {{ $artikel->user->name }}
                                         </p>
                                     </div>
                                 </div>
-                                <p class="mt-2 text-gray-600 line-clamp-2">{{ $artikel->ringkasan }}</p>
+                                <p class="flex-grow mt-2 text-gray-600 line-clamp-2">{{ $artikel->ringkasan }}</p>
                                 <div class="flex items-center justify-end mt-4">
                                     <a href="{{ route('edukasi.show', $artikel->id_artikel) }}"
                                         class="px-3 py-2 text-sm font-medium text-center text-white rounded-full bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300">Baca
@@ -562,20 +563,22 @@
                     @foreach ($videos as $video)
                         <div class="flex-none w-full p-4 sm:w-1/2 md:w-1/3">
                             <div
-                                class="p-6 transition bg-white border border-gray-100 shadow-md rounded-xl hover:shadow-xl card-hover">
-                                <div class="mb-4 video-thumbnail"
+                                class="flex flex-col h-full p-6 transition bg-white border border-gray-100 shadow-md rounded-xl hover:shadow-xl card-hover">
+                                <div class="h-48 mb-4 overflow-hidden rounded-lg video-thumbnail"
                                     onclick="window.location.href='{{ route('edukasi.index', ['tab' => 'video']) }}#video-{{ $video->id_video }}'">
                                     <img src="https://img.youtube.com/vi/{{ $video->youtube_id }}/mqdefault.jpg"
-                                        class="object-cover w-full h-48 rounded-lg" alt="{{ $video->judul }}">
+                                        class="object-cover w-full h-full transition-transform hover:scale-105"
+                                        alt="{{ $video->judul }}">
                                 </div>
                                 <div class="flex items-start justify-between">
                                     <div>
-                                        <h3 class="text-lg font-bold text-gray-800">{{ $video->judul }}</h3>
+                                        <h3 class="text-lg font-bold text-gray-800 line-clamp-1">{{ $video->judul }}
+                                        </h3>
                                         <p class="mt-1 text-sm text-gray-500">
                                             {{ $video->created_at->format('d M Y') }} • {{ $video->user->name }}</p>
                                     </div>
                                 </div>
-                                <p class="mt-2 text-gray-600 line-clamp-2">{{ $video->deskripsi }}</p>
+                                <p class="flex-grow mt-2 text-gray-600 line-clamp-2">{{ $video->deskripsi }}</p>
                                 <div class="flex items-center justify-end mt-4">
                                     <a href="{{ route('edukasi.index', ['tab' => 'video']) }}#video-{{ $video->id_video }}"
                                         class="px-3 py-2 text-sm font-medium text-center text-white rounded-full bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300">Tonton

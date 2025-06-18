@@ -227,7 +227,7 @@
                                 class="hidden">
 
                             <p class="w-full px-3 py-2 text-sm text-center text-gray-500 bg-white rounded-md">
-                                Format gambar: JPG, PNG, atau GIF<br>
+                                Format gambar: JPG, PNG, WEBP, atau GIF<br>
                                 Maksimal ukuran: 2MB
                             </p>
                         </div>

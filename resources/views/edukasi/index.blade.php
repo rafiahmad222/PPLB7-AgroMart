@@ -275,7 +275,7 @@
                 </div>
 
                 <div class="mt-4">
-                    {{ $artikels->appends(['tab' => request('tab'), 'search' => request('search')])->links() }}
+                    {{ $artikels->appends(['tab' => 'artikel', 'search' => request('search')])->links() }}
                 </div>
             </div>
 
@@ -327,7 +327,7 @@
                 </div>
 
                 <div class="mt-4">
-                    {{ $videos->appends(['tab' => request('tab'), 'search' => request('search')])->links() }}
+                    {{ $videos->appends(['tab' => 'video', 'search' => request('search')])->links() }}
                 </div>
             </div>
         </div>
@@ -432,12 +432,31 @@
 
         // Mengaktifkan tab sesuai parameter URL
         document.addEventListener('DOMContentLoaded', function() {
+            const artikelTab = document.getElementById('artikel-tab');
+            const videoTab = document.getElementById('video-tab');
+
+            artikelTab.addEventListener('click', function() {
+                // Update URL with tab parameter without reloading the page
+                const url = new URL(window.location.href);
+                url.searchParams.set('tab', 'artikel');
+                window.history.pushState({}, '', url);
+            });
+
+            videoTab.addEventListener('click', function() {
+                // Update URL with tab parameter without reloading the page
+                const url = new URL(window.location.href);
+                url.searchParams.set('tab', 'video');
+                window.history.pushState({}, '', url);
+            });
+
+            // Make sure the correct tab is activated on page load
             const urlParams = new URLSearchParams(window.location.search);
             const tab = urlParams.get('tab');
 
             if (tab === 'video') {
-                const videoTab = document.getElementById('video-tab');
                 videoTab.click();
+            } else if (tab === 'artikel') {
+                artikelTab.click();
             }
         });
         // Notification Logic
