@@ -23,11 +23,21 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\EdukasiController;
 use App\Models\Produk;
 use App\Http\Controllers\NotificationController;
+use App\Models\Kategori;
+use App\Models\Artikel;
+use App\Models\Layanan;
+use App\Models\Video;
+use App\Models\Galeri;
 
 Route::get('/', function () {
-    $produks = Produk::all(); // Ambil semua data produk
-    return view('welcome', compact('produks')); // Kirim data ke view
-})->name('home');
+    $produks = Produk::all();
+    $kategoris = Kategori::all();
+    $layanans = Layanan::all();
+    $artikels = Artikel::all();
+    $videos = Video::all();
+    $galeris = Galeri::all();
+    return view('welcome', compact('produks', 'kategoris', 'layanans', 'artikels', 'videos', 'galeris'));
+})->name('welcome');
 
 Route::middleware(['auth'])->get('/profile/adminshowuser', [UserShowController::class, 'showUser'])->name('profile.adminshowuser');
 
