@@ -50,16 +50,18 @@ Route::get('/auth/redirect', [GoogleAuthController::class, 'redirect']);
 
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 
-Route::resource('produk', ProdukController::class);
+Route::get('/produk/filter', [ProdukController::class, 'filter'])->name('produk.filter'); // Filter harus di atas {id}
+Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
+
 Route::middleware('auth')->group(function () {
-    Route::get('produk/create', [ProdukController::class, 'create'])->name('produk.create');
-    Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
-    Route::get('/produk/filter', [ProdukController::class, 'filter'])->name('produk.filter');
-    Route::get('/produk/{id}', [ProdukController::class, 'show'])->name('produk.show');
+    Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
     Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
     Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
-    Route::get('/produk/filter', [ProdukController::class, 'filter'])->name('produk.filter');
+    Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
+    Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
 });
+
+Route::get('/produk/{id}', [ProdukController::class, 'show'])->name('produk.show');
 Route::middleware('auth')->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');

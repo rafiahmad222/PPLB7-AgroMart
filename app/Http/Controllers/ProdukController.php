@@ -99,32 +99,22 @@ class ProdukController extends Controller
             return redirect()->back()->withInput()->with('error', 'Gagal menambahkan produk: ' . $e->getMessage());
         }
     }
-
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
         $kategoris = Kategori::all();
         $produk = Produk::findOrFail($id);
         return view('produk.show', compact('kategoris', 'produk'));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
         $produk = Produk::findOrFail($id);
         $kategoris = Kategori::all();
         return view('produk.edit', compact('produk', 'kategoris'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Produk $produk)
+    public function update(Request $request, $id)
     {
+        $produk = Produk::findOrFail($id);
+
         $request->validate([
             'nama_produk' => 'required|string|max:255',
             'gambar_produk' => 'image|mimes:jpeg,png,jpg|max:2048',
@@ -136,20 +126,22 @@ class ProdukController extends Controller
 
         if ($request->hasFile('gambar_produk')) {
             $gambarPath = $request->file('gambar_produk')->store('gambar_produk', 'public');
-            $produk->update(['gambar_produk' => $gambarPath]);
+            $produk->gambar_produk = $gambarPath;
         }
 
-        $produk->update($request->only('nama_produk', 'jumlah_stok', 'harga_produk', 'deskripsi_produk', 'id_kategori'));
+        $produk->nama_produk = $request->nama_produk;
+        $produk->jumlah_stok = $request->jumlah_stok;
+        $produk->harga_produk = $request->harga_produk;
+        $produk->deskripsi_produk = $request->deskripsi_produk;
+        $produk->id_kategori = $request->id_kategori;
+        $produk->save();
 
-        return redirect()->route('produk.index')->with('success', 'Produk updated successfully.');
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui.');
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Produk $produk)
+    public function destroy($id)
     {
         try {
+            $produk = Produk::findOrFail($id);
             $produk->delete();
 
             if (request()->wantsJson() || request()->ajax()) {
