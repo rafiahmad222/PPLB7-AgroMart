@@ -96,12 +96,35 @@
                 </div>
             </div>
             <div class="flex items-center space-x-4">
-                <div class="relative">
+                <div class="relative" id="notificationContainer">
                     <img src="{{ asset('images/notifIcon.png') }}" alt="Notifikasi"
-                        class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90">
-                    <div
-                        class="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white transform -translate-y-1/2 rounded-full -right-1 bg-emerald-500 top-1">
-                        3</div>
+                        class="w-10 h-10 transition-transform cursor-pointer hover:scale-110 active:scale-90"
+                        id="notificationButton">
+                    <div class="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white transform -translate-y-1/2 rounded-full -right-1 bg-emerald-500 top-1"
+                        id="unreadCount">
+                        0</div>
+
+                    <!-- Notification Dropdown -->
+                    <div id="notificationDropdown"
+                        class="absolute right-0 z-50 hidden mt-2 overflow-hidden bg-white rounded-lg shadow-xl w-80 animate-fadeIn">
+                        <div class="flex items-center justify-between p-4 border-b">
+                            <h3 class="font-semibold text-gray-800">Notifikasi</h3>
+                            <button id="markAllAsRead" class="text-sm text-emerald-600 hover:text-emerald-800">Tandai
+                                semua dibaca</button>
+                        </div>
+                        <div id="notificationsList" class="overflow-y-auto max-h-80">
+                            <!-- Notifications will be loaded here -->
+                            <div id="emptyNotification" class="p-6 text-center text-gray-500">
+                                <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                    </path>
+                                </svg>
+                                <p>Tidak ada notifikasi baru</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div id="menuButton" class="relative">
                     <div
@@ -1314,6 +1337,210 @@
                     if (contentGrafik && !contentGrafik.classList.contains('hidden')) {
                         createPenjualanChart();
                     }
+                });
+                // Notification Logic
+                document.addEventListener('DOMContentLoaded', function() {
+                    const notificationButton = document.getElementById('notificationButton');
+                    const notificationDropdown = document.getElementById('notificationDropdown');
+                    const notificationsList = document.getElementById('notificationsList');
+                    const unreadCount = document.getElementById('unreadCount');
+                    const markAllAsRead = document.getElementById('markAllAsRead');
+                    const emptyNotification = document.getElementById('emptyNotification');
+
+                    let isNotificationOpen = false;
+
+                    // Tampilkan atau sembunyikan dropdown notifikasi
+                    notificationButton.addEventListener('click', function(e) {
+                        e.stopPropagation();
+
+                        if (!isNotificationOpen) {
+                            notificationDropdown.classList.remove('hidden');
+                            isNotificationOpen = true;
+                            // Load notifications when dropdown is opened
+                            loadNotifications();
+                        } else {
+                            notificationDropdown.classList.add('hidden');
+                            isNotificationOpen = false;
+                        }
+                    });
+
+                    // Close dropdown when clicking outside
+                    document.addEventListener('click', function() {
+                        if (isNotificationOpen) {
+                            notificationDropdown.classList.add('hidden');
+                            isNotificationOpen = false;
+                        }
+                    });
+
+                    notificationDropdown.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                    });
+
+                    // Function to load notifications from backend
+                    function loadNotifications() {
+                        fetch('/notifications')
+                            .then(response => response.json())
+                            .then(data => {
+                                displayNotifications(data.data);
+                                getUnreadCount();
+                            })
+                            .catch(error => {
+                                console.error('Error fetching notifications:', error);
+                            });
+                    }
+
+                    // Function to get unread notification count
+                    function getUnreadCount() {
+                        fetch('/notifications/unread-count')
+                            .then(response => response.json())
+                            .then(data => {
+                                const count = data.count;
+                                unreadCount.textContent = count;
+
+                                // Hide unread badge if count is 0
+                                if (count === 0) {
+                                    unreadCount.classList.add('hidden');
+                                } else {
+                                    unreadCount.classList.remove('hidden');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error fetching unread count:', error);
+                            });
+                    }
+
+                    // Function to display notifications
+                    function displayNotifications(notifications) {
+                        // Clear previous notifications except the empty state
+                        const notificationItems = notificationsList.querySelectorAll('.notification-item');
+                        notificationItems.forEach(item => item.remove());
+
+                        // Show empty state if no notifications
+                        if (notifications.length === 0) {
+                            emptyNotification.classList.remove('hidden');
+                            return;
+                        }
+
+                        // Hide empty state if there are notifications
+                        emptyNotification.classList.add('hidden');
+
+                        // Add notifications to the list
+                        notifications.forEach(notification => {
+                            const notificationItem = createNotificationItem(notification);
+                            notificationsList.insertBefore(notificationItem, notificationsList.firstChild);
+                        });
+                    }
+
+                    // Create notification item element
+                    function createNotificationItem(notification) {
+                        const item = document.createElement('div');
+                        item.className = 'notification-item p-4 border-b hover:bg-gray-50 transition cursor-pointer';
+                        if (!notification.is_read) {
+                            item.classList.add('bg-emerald-50');
+                        }
+
+                        const time = new Date(notification.created_at);
+                        const formattedTime = time.toLocaleDateString() + ' ' + time.toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+
+                        // Pilih ikon berdasarkan tipe notifikasi
+                        let iconMarkup = '<i class="fas fa-info-circle text-emerald-500"></i>'; // default icon
+
+                        if (notification.type === 'new_order') {
+                            iconMarkup = '<i class="fas fa-shopping-bag text-emerald-500"></i>';
+                        } else if (notification.type === 'status_update') {
+                            iconMarkup = '<i class="fas fa-sync-alt text-emerald-500"></i>';
+                        }
+
+                        item.innerHTML = `
+    <div class="flex items-start">
+        <div class="flex-shrink-0 mr-3">
+            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100">
+                ${iconMarkup}
+            </div>
+        </div>
+        <div class="flex-grow">
+            <p class="text-sm text-gray-800">${notification.message}</p>
+            <p class="mt-1 text-xs text-gray-500">${formattedTime}</p>
+        </div>
+        ${!notification.is_read ? '<div class="w-2 h-2 mt-2 ml-2 rounded-full bg-emerald-500"></div>' : ''}
+    </div>
+    `;
+
+                        // Mark as read when clicked
+                        item.addEventListener('click', function() {
+                            if (!notification.is_read) {
+                                markAsRead(notification.id, item);
+                            }
+
+                            // Arahkan pengguna ke halaman yang berbeda berdasarkan tipe notifikasi
+                            if (notification.pesanan_id) {
+                                // Untuk pelanggan, arahkan berdasarkan tipe notifikasi
+                                if (notification.type === 'new_order') {
+                                    window.location.href = `/status`;
+                                } else if (notification.type === 'status_update') {
+                                    window.location.href = `/pesananku`;
+                                }
+                            }
+                        });
+
+                        return item;
+                    }
+
+                    // Function to mark a notification as read
+                    function markAsRead(notificationId, itemElement) {
+                        fetch(`/notifications/${notificationId}/read`, {
+                                method: 'PATCH',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                        'content')
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(() => {
+                                // Update UI
+                                itemElement.classList.remove('bg-emerald-50');
+                                const dot = itemElement.querySelector('.bg-emerald-500');
+                                if (dot) {
+                                    dot.remove();
+                                }
+                                getUnreadCount();
+                            })
+                            .catch(error => {
+                                console.error('Error marking notification as read:', error);
+                            });
+                    }
+
+                    // Mark all notifications as read
+                    markAllAsRead.addEventListener('click', function(e) {
+                        e.preventDefault();
+
+                        fetch('/notifications/mark-all-read', {
+                                method: 'PATCH',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                        .getAttribute('content')
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(() => {
+                                // Reload notifications
+                                loadNotifications();
+                            })
+                            .catch(error => {
+                                console.error('Error marking all notifications as read:', error);
+                            });
+                    });
+
+                    // Load unread count on page load
+                    getUnreadCount();
+
+                    // Set up polling for notifications (every 30 seconds)
+                    setInterval(getUnreadCount, 30000);
                 });
             </script>
 </body>

@@ -193,10 +193,6 @@
                                 <p>Tidak ada notifikasi baru</p>
                             </div>
                         </div>
-                        <div class="p-3 text-center border-t">
-                            <a href="#" class="text-sm text-emerald-600 hover:text-emerald-800">Lihat semua
-                                notifikasi</a>
-                        </div>
                     </div>
                 </div>
                 <div id="menuButton" class="relative">
@@ -613,6 +609,73 @@
             </div>
         </div>
     </section>
+    <!-- Modern Galeri Carousel with Hover-visible Navigation -->
+    <section class="py-5">
+        <div class="px-4 mx-auto max-w-7xl">
+            <div class="text-center mb-7">
+                <h2 class="mb-2 text-3xl font-bold text-gray-800">Galeri Terbaru</h2>
+                <p class="max-w-lg mx-auto text-gray-600">Lihat koleksi foto dan video produk hidroponik terbaik dari
+                    kami.</p>
+            </div>
+
+            <div id="galeriCarouselContainer" class="relative overflow-hidden group">
+                <div class="absolute inset-0 z-10 pointer-events-none" style="width: 100%;"></div>
+
+                <div id="galeriCarousel" class="flex transition-transform duration-500 ease-in-out">
+                    @foreach ($galeris as $galeri)
+                        <div class="flex-none w-full p-4 sm:w-1/2 md:w-1/3">
+                            <div
+                                class="flex flex-col h-full p-6 transition bg-white border border-gray-100 shadow-md rounded-xl hover:shadow-xl card-hover">
+                                @if ($galeri->gambar)
+                                    <div class="h-48 mb-4 overflow-hidden rounded-lg">
+                                        <img src="{{ asset('storage/' . $galeri->gambar) }}"
+                                            alt="{{ $galeri->judul }}"
+                                            class="object-cover w-full h-full transition-transform hover:scale-105">
+                                    </div>
+                                @endif
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-gray-800 line-clamp-1">{{ $galeri->judul }}
+                                        </h3>
+                                        <p class="mt-1 text-sm text-gray-500">
+                                            {{ \Carbon\Carbon::parse($galeri->created_at)->format('d M Y') }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <p class="flex-grow mt-2 text-gray-600 line-clamp-2">{{ $galeri->deskripsi }}</p>
+                                <div class="flex items-center justify-end mt-4">
+                                    <a href="{{ route('galeri.index') }}"
+                                        class="px-3 py-2 text-sm font-medium text-center text-white rounded-full bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300">Lihat
+                                        Galeri</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- Navigation Buttons with Opacity Transition -->
+                <div
+                    class="absolute inset-y-0 left-0 z-20 flex items-center transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                    <button id="prevGaleriCarousel"
+                        class="flex items-center justify-center w-10 h-10 ml-2 text-white transition-transform -translate-y-1/2 rounded-full bg-primary-600/80 hover:bg-primary-700 hover:shadow-lg hover:scale-110">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+                <div
+                    class="absolute inset-y-0 right-0 z-20 flex items-center transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                    <button id="nextGaleriCarousel"
+                        class="flex items-center justify-center w-10 h-10 mr-2 text-white transition-transform -translate-y-1/2 rounded-full bg-primary-600/80 hover:bg-primary-700 hover:shadow-lg hover:scale-110">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Dots Navigation -->
+                <div class="flex justify-center mt-2 space-x-2" id="galeriCarouselDots">
+                    <!-- Dots will be added dynamically by JS -->
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- Footer -->
     <x-footer></x-footer>
     <!-- Logout Confirmation Modal -->
@@ -948,6 +1011,67 @@
         // Initialize video carousel
         updateVideoCarousel();
         updateVideoDots();
+        // Galeri Carousel Logic
+        const galeriCarousel = document.getElementById('galeriCarousel');
+        const prevGaleriButton = document.getElementById('prevGaleriCarousel');
+        const nextGaleriButton = document.getElementById('nextGaleriCarousel');
+        const galeriDotsContainer = document.getElementById('galeriCarouselDots');
+
+        let currentGaleriIndex = 0;
+        const galeriItemsPerPage = 3;
+        const totalGaleriItems = @json($galeris).length;
+        const maxGaleriIndex = Math.ceil(totalGaleriItems / galeriItemsPerPage) - 1;
+
+        // Create dots for galeri carousel
+        for (let i = 0; i <= maxGaleriIndex; i++) {
+            const dot = document.createElement('button');
+            dot.className = 'w-3 h-3 rounded-full bg-gray-300 hover:bg-primary-500 transition-colors';
+            dot.setAttribute('data-index', i);
+            dot.addEventListener('click', () => {
+                currentGaleriIndex = i;
+                updateGaleriCarousel();
+                updateGaleriDots();
+            });
+            galeriDotsContainer.appendChild(dot);
+        }
+
+        function updateGaleriCarousel() {
+            const offset = currentGaleriIndex * -100;
+            galeriCarousel.style.transform = `translateX(${offset}%)`;
+        }
+
+        function updateGaleriDots() {
+            const dots = galeriDotsContainer.querySelectorAll('button');
+            dots.forEach((dot, index) => {
+                if (index === currentGaleriIndex) {
+                    dot.classList.remove('bg-gray-300');
+                    dot.classList.add('bg-primary-600');
+                } else {
+                    dot.classList.remove('bg-primary-600');
+                    dot.classList.add('bg-gray-300');
+                }
+            });
+        }
+
+        prevGaleriButton.addEventListener('click', () => {
+            if (currentGaleriIndex > 0) {
+                currentGaleriIndex--;
+                updateGaleriCarousel();
+                updateGaleriDots();
+            }
+        });
+
+        nextGaleriButton.addEventListener('click', () => {
+            if (currentGaleriIndex < maxGaleriIndex) {
+                currentGaleriIndex++;
+                updateGaleriCarousel();
+                updateGaleriDots();
+            }
+        });
+
+        // Initialize galeri carousel
+        updateGaleriCarousel();
+        updateGaleriDots();
         // Notification Logic
         document.addEventListener('DOMContentLoaded', function() {
             const notificationButton = document.getElementById('notificationButton');

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Layanan;
 use App\Models\Video;
+use App\Models\Galeri;
 
 class HomeController extends Controller
 {
@@ -20,7 +21,8 @@ class HomeController extends Controller
         $layanans = Layanan::all();
         $artikels = Artikel::all();
         $videos = Video::all();
+        $galeris = Galeri::all();
 
-        return view('home', compact('user', 'produks', 'kategoris', 'layanans', 'artikels', 'videos'));
+        return view('home', compact('user', 'produks', 'kategoris', 'layanans', 'artikels', 'videos', 'galeris'));
     }
 }
