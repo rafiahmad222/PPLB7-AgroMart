@@ -95,6 +95,7 @@ Route::middleware('auth')->group(function () {
         ->name('transaksi-layanan.invoice');
     Route::get('/transaksi-layanan/create', [TransaksiLayananController::class, 'create'])->name('transaksi-layanan.create');
     Route::post('/transaksi-layanan/store', [TransaksiLayananController::class, 'store'])->name('transaksi-layanan.store');
+    Route::get('/check-jadwal-availability', [TransaksiLayananController::class, 'checkJadwalAvailability']);
 });
 Route::resource('kategori', KategoriController::class);
 // Admin

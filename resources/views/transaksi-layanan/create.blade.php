@@ -304,6 +304,16 @@
                             </button>
                         </div>
                     </form>
+                    @if ($errors->any())
+                        <div class="p-4 mb-6 text-sm text-red-700 bg-red-100 rounded-lg">
+                            <div class="font-medium">Oops! Ada beberapa masalah:</div>
+                            <ul class="mt-1.5 ml-4 list-disc list-inside">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -401,14 +411,56 @@
         const summaryHarga = document.getElementById('summary-harga');
         const summaryTotal = document.getElementById('summary-total');
 
+        // Set minimum date to today
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const hours = String(today.getHours()).padStart(2, '0');
+        const minutes = String(today.getMinutes()).padStart(2, '0');
+
+        const todayStr = `${yyyy}-${mm}-${dd}T${hours}:${minutes}`;
+        jadwalInput.setAttribute('min', todayStr);
+
         // Initialize
         updateSummaryLayanan();
 
         // Event listeners
         layananSelect.addEventListener('change', updateSummaryLayanan);
         jumlahInput.addEventListener('change', updateSummary);
-        jadwalInput.addEventListener('change', updateSummary);
+        jadwalInput.addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            if (selectedDate < new Date()) {
+                alert(
+                    'Tidak dapat memilih jadwal di masa lalu. Silakan pilih tanggal hari ini atau yang akan datang.'
+                );
+                this.value = '';
+            } else {
+                checkDateAvailability(this.value);
+            }
+            updateSummary();
+        });
         alamatSelect.addEventListener('change', updateSummary);
+
+        // Function to check if the date is already booked
+        function checkDateAvailability(selectedDateTime) {
+            // Get layanan ID for the check
+            const layananId = layananSelect.value;
+
+            // Make AJAX request to check availability
+            fetch(`/check-jadwal-availability?tanggal=${encodeURIComponent(selectedDateTime)}&layanan_id=${layananId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.available) {
+                        alert('Jadwal ini sudah dibooking. Silakan pilih waktu lain.');
+                        jadwalInput.value = '';
+                        updateSummary();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking date availability:', error);
+                });
+        }
 
         transferRadio.addEventListener('change', () => {
             buktiTransferDiv.classList.remove('hidden');

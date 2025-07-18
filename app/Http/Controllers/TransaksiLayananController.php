@@ -25,7 +25,7 @@ class TransaksiLayananController extends Controller
             'layanan_id' => 'required|exists:layanans,id_layanan',
             'alamat_id' => 'required|exists:alamat,id_alamat',
             'jumlah' => 'required|integer|min:1',
-            'jadwal_booking' => 'required|date',
+            'jadwal_booking' => 'required|date|after_or_equal:today',
             'pembayaran' => 'required|in:Transfer,COD',
             'bukti_transfer' => 'nullable|image|max:2048',
         ]);
@@ -33,8 +33,18 @@ class TransaksiLayananController extends Controller
         $layanan = Layanan::find($data['layanan_id']);
         $total = $layanan->harga_layanan * $data['jumlah'];
 
+        // Check if the date is already booked
+        $bookingDate = \Carbon\Carbon::parse($data['jadwal_booking'])->format('Y-m-d');
+        $existingBooking = TransaksiLayanan::where('layanan_id', $data['layanan_id'])
+            ->whereDate('jadwal_booking', $bookingDate)
+            ->exists();
+
+        if ($existingBooking) {
+            return back()->withErrors(['jadwal_booking' => 'Jadwal untuk layanan ini sudah dibooking pada tanggal tersebut.'])->withInput();
+        }
+
         $bukti = null;
-        if ($data['pembayaran'] == 'transfer' && $request->hasFile('bukti_transfer')) {
+        if ($data['pembayaran'] == 'Transfer' && $request->hasFile('bukti_transfer')) {
             $bukti = $request->file('bukti_transfer')->store('bukti_transfer', 'public');
         }
 
@@ -74,7 +84,27 @@ class TransaksiLayananController extends Controller
             "Metode Pembayaran: " . ucfirst($transaksi->pembayaran) . "\n" .
             "Jadwal Booking: " . \Carbon\Carbon::parse($transaksi->jadwal_booking)->format('d M Y H:i') . "\n" .
             "Alamat Instalasi: {$transaksi->alamat->detail_alamat}";
+        if (isset($transaksi->bukti_transfer) && $transaksi->bukti_transfer) {
+            $waMessage .= "\n\nBukti Pembayaran: " . asset('storage/' . $transaksi->bukti_transfer);
+        }
 
         return view('transaksi-layanan.invoice', compact('transaksi', 'ownerPhone', 'waMessage'));
+    }
+    public function checkJadwalAvailability(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        $layananId = $request->layanan_id;
+
+        // Format the date to compare just the date part (ignoring time)
+        $bookingDate = \Carbon\Carbon::parse($tanggal)->format('Y-m-d');
+
+        // Check if there's already a booking for this date and layanan
+        $existingBooking = TransaksiLayanan::where('layanan_id', $layananId)
+            ->whereDate('jadwal_booking', $bookingDate)
+            ->exists();
+
+        return response()->json([
+            'available' => !$existingBooking
+        ]);
     }
 }
